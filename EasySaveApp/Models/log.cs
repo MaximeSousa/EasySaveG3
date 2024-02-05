@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace EasySaveApp.Models
 {
@@ -19,19 +20,19 @@ namespace EasySaveApp.Models
 
     public class ExcuteLog
     {
-        public static void Main()
+        public static void ExcutLog()
         {
-            var Log = new Log
+            var log = new Log
             {
-                FileName = 123
-                FileSource = 123
-                FileTarget = 123
-                FileSize = 123
-                FileTransferTime = 123
-                FileTime = 123
+                FileName = "FileName",
+                FileSource = "FileSource",
+                FileTarget = "FileTarget",
+                FileSize = "FileSize",
+                FileTransferTime = "FileTransferTime",
+                FileTime = "FileTime",
             };
 
-            string jsonString = JsonSerializer.Serialize(Log);
+            string jsonString = JsonSerializer.Serialize(log);
 
             Console.WriteLine(jsonString);
         }
