@@ -30,10 +30,10 @@ namespace EasySaveApp.Models
                 FileSize = "FileSize",
                 FileTransferTime = "FileTransferTime",
                 FileTime = "FileTime",
-            },
+            };
             string fileName = "Log.json";
             string jsonString = JsonSerializer.Serialize(log);
-            File.WriteAllText(fileName, jsonString);
+            //File.WriteAllText(fileName, jsonString);
 
             Console.WriteLine(jsonString);
         }

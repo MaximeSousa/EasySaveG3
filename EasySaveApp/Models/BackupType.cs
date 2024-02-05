@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace EasySaveApp.Models
 {
-    class Class2
+    enum BackupType
     {
+        Full,
+        Differential
     }
 }

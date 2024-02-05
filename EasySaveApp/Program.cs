@@ -8,6 +8,10 @@ namespace EasySaveApp
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to EasySave !");
+            var backup = new BackupFile("Backup1", @"", @"", "FULL");
+            backup.FullBackup();
+
+            Console.WriteLine("La sauvegarde a été effectuée avec succès !");
         }
     }
 }
