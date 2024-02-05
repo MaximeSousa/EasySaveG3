@@ -8,7 +8,6 @@ namespace EasySaveApp
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to EasySave !");
-            new ExcuteLog();
         }
     }
 }
