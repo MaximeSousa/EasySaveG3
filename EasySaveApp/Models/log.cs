@@ -20,7 +20,6 @@ namespace EasySaveApp.Models
 
     public class LogExecute
     {
-<<<<<<< HEAD
         public static void ExcutLog()
         {
             var log = new Log
@@ -31,19 +30,6 @@ namespace EasySaveApp.Models
                 FileSize = "FileSize",
                 FileTransferTime = "FileTransferTime",
                 FileTime = "FileTime",
-=======
-        public static void MainLog()
-        {
-            var log = new Log
-            {
-                FileName = 123,
-                FileSource = 123,
-                FileTarget = 123,
-                FileSize = 123,
-                FileTransferTime = 123,
-                FileTime = 123,
->>>>>>> c92aa00c5af6aee41994402d870748867685cb3a
-            };
 
             string jsonString = JsonSerializer.Serialize(log);
 
