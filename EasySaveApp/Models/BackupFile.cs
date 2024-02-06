@@ -10,20 +10,20 @@ namespace EasySaveApp.Models
     class BackupFile
     {
 
-        public string BackupName { get; set; }
-        public string BackupSource { get; set; }
-        public string BackupTarget { get; set; }
-        public string BackupType { get; set; }
+        public string FileName { get; set; }
+        public string FileSource { get; set; }
+        public string FileTarget { get; set; }
+        public string FileType { get; set; }
 
         public static List<BackupFile> backup = new List<BackupFile>();
         public const int NumberMaxOfSave = 5;
 
-        public BackupFile(string BackupName, string BackupSource, string BackupTarget, string BackupType)
+        public BackupFile(string FileName, string FileSource, string FileTarget, string FileType)
         {
-            this.BackupName = BackupName;
-            this.BackupSource = BackupSource;
-            this.BackupTarget = BackupTarget;
-            this.BackupType = BackupType;
+            this.FileName = FileName;
+            this.FileSource = FileSource;
+            this.FileTarget = FileTarget;
+            this.FileType = FileType;
         }
 
         //        public static BackupFile CreateBackup(string BackupName, string BackupSource, string BackupTarget, BackupType BackupType)
@@ -36,19 +36,19 @@ namespace EasySaveApp.Models
         public void FullBackup()
         {
 
-            foreach (var FilePath in Directory.GetFiles(BackupSource))
+            foreach (var FilePath in Directory.GetFiles(FileSource))
             {
                 var FileName = Path.GetFileName(FilePath);
-                File.Copy(FilePath, Path.Combine(BackupTarget, FileName), true);
+                File.Copy(FilePath, Path.Combine(FileTarget, FileName), true);
             }
 
-            foreach (var directoryPath in Directory.GetDirectories(BackupSource))
+            foreach (var directoryPath in Directory.GetDirectories(FileSource))
             {
                 var directoryName = Path.GetFileName(directoryPath);
-                var newDirectoryTarget = Path.Combine(BackupTarget, directoryName);
+                var newDirectoryTarget = Path.Combine(FileTarget, directoryName);
                 Directory.CreateDirectory(newDirectoryTarget);
 
-                var subDirectoryBackup = new BackupFile(BackupName, directoryPath, newDirectoryTarget, BackupType);
+                var subDirectoryBackup = new BackupFile(FileName, directoryPath, newDirectoryTarget, FileType);
                 subDirectoryBackup.FullBackup();
             }
         }

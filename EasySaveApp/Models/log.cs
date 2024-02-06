@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.IO;
 
 namespace EasySaveApp.Models
-{
+{   
     public class Log
     {
         public string FileName { get; set; }
@@ -33,7 +34,7 @@ namespace EasySaveApp.Models
             };
             string fileName = "Log.json";
             string jsonString = JsonSerializer.Serialize(log);
-            //File.WriteAllText(fileName, jsonString);
+            File.WriteAllText(fileName, jsonString);
 
             Console.WriteLine(jsonString);
         }
