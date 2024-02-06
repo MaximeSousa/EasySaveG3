@@ -11,10 +11,10 @@ namespace EasySaveApp
             Console.WriteLine("Welcome to EasySave !");
             //var backup = new BackupFile("Backup1", @"", @"", "FULL");
             //backup.FullBackup();
-            var view = new View();
-            view.GetBackupName();
-            view.GetBackupSource();
-            view.GetBackupTarget();
+            //var view = new View();
+            //view.GetBackupName();
+            //view.GetBackupSource();
+            //view.GetBackupTarget();
             //Console.WriteLine("La sauvegarde a été effectuée avec succès !");
         }
     }
