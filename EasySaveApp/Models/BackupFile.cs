@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.Json;
 
 namespace EasySaveApp.Models
 {
@@ -26,6 +27,7 @@ namespace EasySaveApp.Models
         }
         public static BackupFile CreateBackup(string FileName, string FileSource, string FileTarget, BackupType Type)
         {
+            BackupFile.LoadBackupsFromFile();
             if (backups.Count > NumberMaxOfSave)
                 throw new Exception("Maximum number of Backup reached");
             BackupFile backup = Type switch
@@ -34,6 +36,7 @@ namespace EasySaveApp.Models
                 BackupType.Differential => new DifferentialBackupFile(FileName, FileSource, FileTarget)
             };
             backups.Add(backup);
+            BackupFile.SaveBackupsToFile();
             return backup;
         }
         public void ExecuteCopy()
@@ -53,6 +56,21 @@ namespace EasySaveApp.Models
 
                 var subDirectoryBackup = new BackupFile(FileName, directoryPath, newDirectoryTarget, FileType);
                 subDirectoryBackup.ExecuteCopy();
+            }
+        }
+
+        public static void SaveBackupsToFile()
+        {
+            string jsonString = JsonSerializer.Serialize(backups);
+            File.WriteAllText(@"C:\Users\maxim\source\repos\EasySaveApp\EasySaveApp\bin\Debug\net5.0\backups.json", jsonString);
+        }
+
+        public static void LoadBackupsFromFile()
+        {
+            if (File.Exists(@"C:\Users\maxim\source\repos\EasySaveApp\EasySaveApp\bin\Debug\net5.0\backups.json"))
+            {
+                string jsonString = File.ReadAllText(@"C:\Users\maxim\source\repos\EasySaveApp\EasySaveApp\bin\Debug\net5.0\backups.json");
+                backups = JsonSerializer.Deserialize<List<BackupFile>>(jsonString);
             }
         }
     }

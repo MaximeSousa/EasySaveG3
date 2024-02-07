@@ -25,7 +25,7 @@ namespace EasySaveApp.Views
                         Vm.CreateExecuteBackup();
                         break;
                     case "2":
-                        Console.WriteLine("Prochainement");
+                        Vm.DisplayBackups();
                         break;
                     default:
                         Console.WriteLine("Invalid option. Please try again.");

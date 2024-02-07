@@ -24,7 +24,6 @@ namespace EasySaveApp.ViewsModel
             string nameBackup = Console.ReadLine();
             while (nameBackup.Length < 1 || nameBackup.Length > 15)
             {
-                Console.Clear();
                 Console.WriteLine("This name is not valid");
                 GetBackupName();
             }
@@ -45,7 +44,6 @@ namespace EasySaveApp.ViewsModel
         {
             Console.WriteLine("Enter the Directory source for the backup");
             string sourceBackup = PathCorrector(Console.ReadLine());
-            Console.WriteLine(sourceBackup);
 
             while (!Directory.Exists(sourceBackup) && sourceBackup != "0")
             {
@@ -68,6 +66,14 @@ namespace EasySaveApp.ViewsModel
                 GetBackupTarget();
             }
             return targetBackup;
+        }
+        public void DisplayBackups()
+        {
+            BackupFile.LoadBackupsFromFile();
+            foreach (var backup in BackupFile.backups)
+            {
+                Console.WriteLine($"Nom: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.FileType}");
+            }
         }
         public BackupType GetBackupType()
         {
