@@ -62,14 +62,14 @@ namespace EasySaveApp.Models
         public static void SaveBackupsToFile()
         {
             string jsonString = JsonSerializer.Serialize(backups);
-            File.WriteAllText(@"C:\Users\maxim\source\repos\EasySaveApp\EasySaveApp\bin\Debug\net5.0\backups.json", jsonString);
+            File.WriteAllText("backups.json", jsonString);
         }
 
         public static void LoadBackupsFromFile()
         {
-            if (File.Exists(@"C:\Users\maxim\source\repos\EasySaveApp\EasySaveApp\bin\Debug\net5.0\backups.json"))
+            if (File.Exists("backups.json"))
             {
-                string jsonString = File.ReadAllText(@"C:\Users\maxim\source\repos\EasySaveApp\EasySaveApp\bin\Debug\net5.0\backups.json");
+                string jsonString = File.ReadAllText("backups.json");
                 backups = JsonSerializer.Deserialize<List<BackupFile>>(jsonString);
             }
         }
