@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace EasySaveApp.Models
 {   
-    public class Log
+    public class BackupLog
     {
         public string FileName { get; set; }
         public string FileSource { get; set; }
@@ -19,24 +20,56 @@ namespace EasySaveApp.Models
 
     }
 
-    public class LogExecute
-    {
-        public static void ExcutLog()
-        {
-            var log = new Log
-            {
-                FileName = "FileName",
-                FileSource = "FileSource",
-                FileTarget = "FileTarget",
-                FileSize = "FileSize",
-                FileTransferTime = "FileTransferTime",
-                FileTime = "FileTime",
-            };
-            string fileName = "Log.json";
-            string jsonString = JsonSerializer.Serialize(log);
-            File.WriteAllText(fileName, jsonString);
 
-            Console.WriteLine(jsonString);
+    public class BackupLogHandler
+    {
+        private Dictionary<string, BackupLog> saveLog;
+        public BackupLogHandler()
+        {
+            saveLog = new Dictionary<string, BackupLog>();
+        }
+
+        //met à jour le travail de sauvegarde
+        public void UpdateState(BackupLog Log)
+        {
+            saveLog[Log.FileName] = Log;
+            SaveLogToJson();
+        }
+        public void SaveLogToJson()
+        {
+            Console.WriteLine(Directory.GetCurrentDirectory());
+
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string parentDirectory = Directory.GetParent(currentDirectory).FullName;
+            string directoryPath = Path.Combine(parentDirectory, "EasySaveApp");
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            string folderPath = Path.Combine(directoryPath, "Log.json");
+
+            if (!File.Exists(folderPath))
+            {
+                using (File.Create(folderPath))
+                {
+
+                }
+            }
+            string json = JsonConvert.SerializeObject(saveLog, Formatting.Indented);
+            File.WriteAllText(folderPath, json);
+        }
+
+        public void LoadLogFromJson()
+        {
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "EasySaveApp", "Log.json");
+            if (File.Exists(folderPath))
+            {
+                string json = File.ReadAllText(folderPath);
+                saveLog = JsonConvert.DeserializeObject<Dictionary<string, BackupLog>>(json);
+            }
         }
     }
 }
+
+
