@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.IO;
 
 namespace EasySaveApp.Models
-{
+{   
     public class Log
     {
         public string FileName { get; set; }
