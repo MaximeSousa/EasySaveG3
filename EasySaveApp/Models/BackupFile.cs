@@ -26,13 +26,17 @@ namespace EasySaveApp.Models
             this.FileType = FileType;
         }
 
-        //        public static BackupFile CreateBackup(string BackupName, string BackupSource, string BackupTarget, BackupType BackupType)
-        //        {
-        //            if (backup.Count > NumberMaxOfSave)
-        //                throw new Exception("Maximum number of Backup reached");
-        //               
-        //  
-        //        }
+//        public static BackupFile CreateBackup(string FileName, string FileSource, string FileTarget, BackupType Type)
+//        {
+//            if (backup.Count > NumberMaxOfSave)
+//                throw new Exception("Maximum number of Backup reached");
+//            BackupFile backup = Type switch
+//            {
+//                BackupType.Full => new FullBackupFile(FileName, FileSource, FileTarget),
+//                BackupType.Differential => new DifferentialBackupFile(FileName, FileSource, FileTarget)
+//            };
+//        }
+
         public void FullBackup()
         {
 
@@ -53,4 +57,17 @@ namespace EasySaveApp.Models
             }
         }
     }
+//    class FullBackupFile : BackupFile
+//    {
+//        protected internal FullBackupFile(string FileName, string FileSource, string FileTarget)
+//        {
+//        }
+//    }
+
+//    class DifferentialBackupFile : BackupFile
+//    {
+//        protected internal DifferentialBackupFile(string FileName, string FileSource, string FileTarget)
+//        {
+//        }
+//    }
 }
