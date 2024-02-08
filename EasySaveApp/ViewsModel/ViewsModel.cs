@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using EasySaveApp.Models;
 using System.Linq;
 using System.Diagnostics;
@@ -54,25 +56,102 @@ namespace EasySaveApp.ViewsModel
 
         public string GetBackupName()
         {
-            Console.Clear();
             Console.WriteLine("Enter a name for the Backup (15 max)");
             string nameBackup = Console.ReadLine();
             while (nameBackup.Length < 1 || nameBackup.Length > 15)
             {
+                Console.Clear();
                 Console.WriteLine("This name is not valid");
-                GetBackupName();
+                nameBackup = GetBackupName();
             }
             return nameBackup;
         }
+
+
+        public void ExeBacjupJob(string[] args)
+        {
+            if (args.Length == 0)
+            {
+                Console.WriteLine("No backup numbers provided.");
+                return;
+            }
+
+            List<int> backupNumbers = ParseBackupNumbers(args);
+
+            if (backupNumbers.Count == 0)
+            {
+                Console.WriteLine("No valid backup numbers provided.");
+                return;
+            }
+
+            foreach (int backupNumber in backupNumbers)
+            {
+                if (backupNumber >= 1 && backupNumber <= BackupFile.backups.Count)
+                {
+                    BackupFile backup = BackupFile.backups[backupNumber - 1];
+                    backup.ExecuteCopy();
+                    Console.WriteLine($"Backup {backupNumber} executed successfully.");
+                }
+                else
+                {
+                    Console.WriteLine($"Backup {backupNumber} does not exist.");
+                }
+            }
+        }
+
+        private List<int> ParseBackupNumbers(string[] args)
+        {
+            List<int> backupNumbers = new List<int>();
+
+            foreach (string arg in args)
+            {
+                if (arg.Contains('-'))
+                {
+                    string[] range = arg.Split('-');
+                    if (range.Length == 2 && int.TryParse(range[0], out int start) && int.TryParse(range[1], out int end))
+                    {
+                        backupNumbers.AddRange(Enumerable.Range(start, end - start + 1));
+                    }
+                }
+                else if (arg.Contains(';'))
+                {
+                    string[] numbers = arg.Split(';');
+                    foreach (string number in numbers)
+                    {
+                        if (int.TryParse(number, out int num))
+                        {
+                            backupNumbers.Add(num);
+                        }
+                    }
+                }
+                else
+                {
+                    if (int.TryParse(arg, out int num))
+                    {
+                        backupNumbers.Add(num);
+                    }
+                }
+            }
+
+            return backupNumbers.Distinct().OrderBy(n => n).ToList();
+      }
+    
 
         public string PathCorrector(string path)
         {
             if (string.IsNullOrEmpty(path) && path != "0")
             {
-                path = path.Replace("/", "\\");
-                path.Trim();
+                path = path.Replace("/", "\\").Trim();
+
             }
-            return path;
+            try
+            {
+                return Path.IsPathRooted(path) && Directory.Exists(Path.GetPathRoot(path)) ? path : "";
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         public string GetBackupSource()
@@ -84,7 +163,7 @@ namespace EasySaveApp.ViewsModel
             {
                 Console.Clear();
                 Console.WriteLine("The directory source doesn't exist");
-                GetBackupSource();
+                sourceBackup = GetBackupSource();
 
             }
             return sourceBackup;
@@ -92,31 +171,34 @@ namespace EasySaveApp.ViewsModel
 
         public string GetBackupTarget()
         {
-            Console.WriteLine("Enter the Directory target fir the backup");
+            Console.WriteLine("Enter the Directory target for the backup");
             string targetBackup = PathCorrector(Console.ReadLine());
 
             while (!Directory.Exists(targetBackup) && targetBackup != "0")
             {
+                Console.Clear();
                 Console.WriteLine("The directory source doesn't exist");
-                GetBackupTarget();
+                targetBackup = GetBackupTarget();
             }
             return targetBackup;
         }
         public void DisplayBackups()
         {
             BackupFile.LoadBackupsFromFile();
-            foreach (var backup in BackupFile.backups)
+            for (int i = 1; i < BackupFile.backups.Count; i++)
             {
+                var backup = BackupFile.backups[i];
                 Console.WriteLine($"Nom: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.Type}");
             }
         }
+
         public BackupType GetBackupType()
         {
             Console.WriteLine("Choose the type of backup:");
             Console.WriteLine("1. Full");
             Console.WriteLine("2. Differential");
             string choice = Console.ReadLine();
-
+            Console.Clear();
             return choice switch
             {
                 "1" => BackupType.Full,
@@ -124,5 +206,6 @@ namespace EasySaveApp.ViewsModel
                 _ => throw new Exception("Invalid choice")
             };
         }
+
     }
 }
