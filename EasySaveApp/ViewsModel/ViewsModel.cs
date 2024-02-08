@@ -32,6 +32,15 @@ namespace EasySaveApp.ViewsModel
 
             DirectoryInfo dirInfo = new DirectoryInfo(_source);
             long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
+            var FileTransferTime = stopwatch.Elapsed.ToString();
+            CreateLog(_name, _source, _target, size, FileTransferTime);
+        }
+
+        public void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime)
+        {
+            BackupLogHandler a = new BackupLogHandler();
+            string sourceFilePath = _source;
+            FileInfo fileInfo = new FileInfo(sourceFilePath);
 
             var log = new BackupLog
             {
@@ -39,25 +48,7 @@ namespace EasySaveApp.ViewsModel
                 FileSource = _source,
                 FileTarget = _target,
                 FileSize = size,
-                FileTransferTime = stopwatch.Elapsed.ToString(),
-                FileTime = DateTime.Now,
-            };
-            a.UpdateLog(log);
-        }
-
-        public void CreateLog()
-        {
-            BackupLogHandler a = new BackupLogHandler();
-            string sourceFilePath = GetBackupSource();
-            FileInfo fileInfo = new FileInfo(sourceFilePath);
-
-            var log = new BackupLog
-            {
-                FileName = GetBackupName(),
-                FileSource = sourceFilePath,
-                FileTarget = GetBackupTarget(),
-                FileSize = fileInfo.Length,
-                FileTransferTime = "FileTransferTime",
+                FileTransferTime = FileTransferTime,
                 FileTime = DateTime.Now,
             };
             a.UpdateLog(log);
