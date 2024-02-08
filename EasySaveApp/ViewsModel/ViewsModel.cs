@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using EasySaveApp.Models;
+using System.Linq;
+using System.Diagnostics;
 
 namespace EasySaveApp.ViewsModel
 {
@@ -13,21 +15,29 @@ namespace EasySaveApp.ViewsModel
             string _target = GetBackupTarget();
             BackupType _type = GetBackupType();
 
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             BackupFile backup = BackupFile.CreateBackup(_name, _source, _target, _type);
             backup.ExecuteCopy();
+
+            stopwatch.Stop();
+
             Console.WriteLine("La sauvegarde a été effectuée avec succès !");
 
             BackupLogHandler a = new BackupLogHandler();
             string sourceFilePath = Path.Combine(Directory.GetCurrentDirectory());
-            //FileInfo fileInfo = new FileInfo(_source);
+
+            DirectoryInfo dirInfo = new DirectoryInfo(_source);
+            long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
 
             var log = new BackupLog
             {
                 FileName = _name,
                 FileSource = _source,
                 FileTarget = _target,
-                //FileSize = fileInfo.Length,
-                FileTransferTime = "FileTransferTime",
+                FileSize = size,
+                FileTransferTime = stopwatch.Elapsed.ToString(),
                 FileTime = DateTime.Now,
             };
             a.UpdateLog(log);
