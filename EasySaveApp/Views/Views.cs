@@ -1,56 +1,46 @@
 ﻿using System;
 using System.IO;
-
+using EasySaveApp.ViewsModel;
+using EasySaveApp.Models;
 namespace EasySaveApp.Views
 {
     class View
     {
-    public string GetBackupName()
-        {
-            Console.Clear();
-            Console.WriteLine("Enter a name for the Backup");
-            string nameBackup = Console.ReadLine();
+        ViewModel Vm;
 
-            //while (!NameAvailable(nameBackup))
-            //{
-            //    nameBackup = Console.ReadLine();
-            //}
-            return nameBackup;
+        public View()
+        {
+            Vm = new ViewModel();
         }
-
-        public string PathCorrector(string path)
+        public void Menu()
         {
-           if(path.Length >=1 && path != "0")
+            while (true)
             {
-                path = path.Replace("/", "\\");
-            }
-            return path;
-        }
-    
-        public string GetBackupSource()
-        {
-            Console.WriteLine("Enter the Directory source fir the backup");
-            string sourceBackup = PathCorrector(Console.ReadLine());
+                Console.WriteLine("1. Create a backup");
+                Console.WriteLine("2. Execute a backup");
+                string option = Console.ReadLine();
 
-            while(!Directory.Exists(sourceBackup) && sourceBackup != "0")
-            {
-                Console.WriteLine("The directory source doesn't exist");
-                sourceBackup = PathCorrector(Console.ReadLine());
-            }
-            return sourceBackup;
-        }
+                switch (option)
+                {
+                    case "1":
+                        try
+                        {
+                            Vm.CreateExecuteBackup();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
 
-        public string GetBackupTarget()
-        {
-            Console.WriteLine("Enter the Directory target fir the backup");
-            string targetBackup = PathCorrector(Console.ReadLine());
-
-            while (!Directory.Exists(targetBackup) && targetBackup != "0")
-            {
-                Console.WriteLine("The directory source doesn't exist");
-                targetBackup = PathCorrector(Console.ReadLine());
+                        break;
+                    case "2":
+                        Vm.DisplayBackups();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
+                }
             }
-            return targetBackup;
         }
     }
 }
