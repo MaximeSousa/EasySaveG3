@@ -29,12 +29,7 @@ namespace EasySaveApp.Models
             LoadBackupsFromFile();
             if (backups.Count >= NumberMaxOfSave)
                 throw new Exception("Maximum number of Backup reached");
-            BackupFile backup = Type switch
-            {
-                BackupType.Full => new FullBackupFile(FileName, FileSource, FileTarget,Type),
-                BackupType.Differential => new DifferentialBackupFile(FileName, FileSource, FileTarget,Type),
-                _ => throw new ArgumentException("Invalid type of Backup", nameof(Type))
-            };
+            BackupFile backup = new BackupFile(FileName, FileSource, FileTarget, Type);
             backups.Add(backup);
             BackupFile.SaveBackupsToFile();
             return backup;
@@ -70,47 +65,6 @@ namespace EasySaveApp.Models
                     CopyDirectory(DirectoryPath, BackupSaveFolder);
                 }
             }
-
-            //if (Type == BackupType.Full)
-            //{
-            //    foreach (var filePath in Directory.GetFiles(FileSource))
-            //    {
-            //        var fileName = Path.GetFileName(filePath);
-            //        var targetPath = Path.Combine(FileTarget, fileName);
-            //        File.Copy(filePath, targetPath, true);
-            //        CopiedFiles.Add(filePath);
-            //    }
-            //}
-            //else if (Type == BackupType.Differential)
-            //{
-            //    foreach (var filePath in Directory.GetFiles(FileSource))
-            //    {
-            //        var fileName = Path.GetFileName(filePath);
-            //        var targetPath = Path.Combine(FileTarget, fileName);
-
-            //        if (File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath))
-            //        {
-            //            File.Copy(filePath, targetPath, true);
-            //            CopiedFiles.Add(filePath);
-            //        }
-            //    }
-            //}
-
-            //foreach (var FilePath in Directory.GetFiles(FileSource))
-            //{
-            //    var FileName = Path.GetFileName(FilePath);
-            //    File.Copy(FilePath, Path.Combine(FileTarget, FileName), true);
-            //}
-
-            //foreach (var directoryPath in Directory.GetDirectories(FileSource))
-            //{
-            //    var directoryName = Path.GetFileName(directoryPath);
-            //    var newDirectoryTarget = Path.Combine(FileTarget, directoryName);
-            //    Directory.CreateDirectory(newDirectoryTarget);
-
-            //    var subDirectoryBackup = new BackupFile(FileName, directoryPath, newDirectoryTarget, Type);
-            //    subDirectoryBackup.ExecuteCopy();
-            //}
         }
 
         private void CopyDirectory(string sourceDir, string targetDir)
@@ -149,18 +103,6 @@ namespace EasySaveApp.Models
                 string jsonString = File.ReadAllText("backups.json");
                 backups = JsonSerializer.Deserialize<List<BackupFile>>(jsonString);
             }
-        }
-    }
-    class FullBackupFile : BackupFile
-    {
-        public FullBackupFile(string FileName, string FileSource, string FileTarget,BackupType Type) :base(FileName, FileSource, FileTarget, Type)
-        {
-        }
-    }
-    class DifferentialBackupFile : BackupFile
-    {
-        public DifferentialBackupFile(string FileName, string FileSource, string FileTarget, BackupType Type) : base(FileName, FileSource, FileTarget, Type)
-        {
         }
     }
 }
