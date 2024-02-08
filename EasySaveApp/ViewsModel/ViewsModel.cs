@@ -190,7 +190,7 @@ namespace EasySaveApp.ViewsModel
                 Console.WriteLine($"Nom: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.Type}");
             }
         }
-        private void ChangeBackup()
+        public void ChangeBackup()
         {
             Console.WriteLine("Enter the Name of the backup that you want to modify: ");
             string nameBackupChange = Console.ReadLine();
@@ -218,7 +218,7 @@ namespace EasySaveApp.ViewsModel
                 Console.WriteLine($"Backup '{nameBackupChange}' does not exist.");
             }
         }
-        private void DeleteBackup()
+        public void DeleteBackup()
         {
             Console.WriteLine("Enter the Name of the backup that you want to delete: ");
             string nameBackupDelete = Console.ReadLine();
