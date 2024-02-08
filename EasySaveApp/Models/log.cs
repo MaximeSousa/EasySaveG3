@@ -3,40 +3,62 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.Json;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace EasySaveApp.Models
-{   
-    public class Log
+{
+    public class BackupLog
     {
         public string FileName { get; set; }
         public string FileSource { get; set; }
         public string FileTarget { get; set; }
-        public string FileSize { get; set; }
+        public long FileSize { get; set; }
         public string FileTransferTime { get; set; }
-        public string FileTime { get; set; }
-
+        public DateTime FileTime { get; set; }
     }
 
-    public class LogExecute
-    {
-        public static void ExcutLog()
-        {
-            var log = new Log
-            {
-                FileName = "FileName",
-                FileSource = "FileSource",
-                FileTarget = "FileTarget",
-                FileSize = "FileSize",
-                FileTransferTime = "FileTransferTime",
-                FileTime = "FileTime",
-            };
-            string fileName = "Log.json";
-            string jsonString = JsonSerializer.Serialize(log);
-            File.WriteAllText(fileName, jsonString);
 
-            Console.WriteLine(jsonString);
+    public class BackupLogHandler
+    {
+        private Dictionary<string, BackupLog> saveLog;
+        //private string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log.json");
+
+        public BackupLogHandler()
+        {
+            if (File.Exists("Log.json"))
+            {
+                LoadLogFromJson();
+            }
+            else
+            {
+                saveLog = new Dictionary<string, BackupLog>();
+            }
+            Console.WriteLine("Log.json");
+        }
+
+
+        public void UpdateLog(BackupLog Log)
+        {
+            saveLog[Log.FileName] = Log;
+            SaveLogToJson();
+        }
+
+        public void SaveLogToJson()
+        {
+            string json = JsonConvert.SerializeObject(saveLog, Formatting.Indented);
+            File.WriteAllText("Log.json", json);
+        }
+
+        public void LoadLogFromJson()
+        {
+            if (File.Exists("Log.json"))
+            {
+
+                string json = File.ReadAllText("Log.json");
+                saveLog = JsonConvert.DeserializeObject<Dictionary<string, BackupLog>>(json);
+            }
         }
     }
 }
+

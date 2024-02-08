@@ -38,6 +38,17 @@ namespace EasySaveApp.Views
                     case "2":
                         Console.Clear();
                         Vm.DisplayBackups();
+                        Console.WriteLine("Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'): ");
+                        string backupSelection = Console.ReadLine();
+                        string[] args = backupSelection.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        try
+                        {
+                            Vm.ExeBacjupJob(args);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                         break;
                     default:
                         Console.WriteLine("Invalid option. Please try again.");
