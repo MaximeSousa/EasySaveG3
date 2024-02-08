@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EasySaveApp.Models;
-using System.Linq;
 using System.Diagnostics;
 
 namespace EasySaveApp.ViewsModel
@@ -200,7 +199,52 @@ namespace EasySaveApp.ViewsModel
                 Console.WriteLine($"Nom: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.Type}");
             }
         }
+        private void ChangeBackup()
+        {
+            Console.WriteLine("Enter the Name of the backup that you want to modify: ");
+            string nameBackupChange = Console.ReadLine();
+            var backup = BackupFile.backups.Skip(1).FirstOrDefault(b => b.FileName.Equals(nameBackupChange, StringComparison.OrdinalIgnoreCase));
 
+            if (backup != null)
+            {
+                Console.WriteLine("Enter the new name for the backup: ");
+                string newName = Console.ReadLine();
+                string newSource = GetBackupSource();
+                string newTarget = GetBackupTarget();
+                BackupType newType = GetBackupType();
+
+                backup.FileName = newName;
+                backup.FileSource = newSource;
+                backup.FileTarget = newTarget;
+                backup.Type = newType;
+
+                BackupFile.SaveBackupsToFile();
+
+                Console.WriteLine($"Backup '{nameBackupChange}' updated successfully.");
+            }
+            else
+            {
+                Console.WriteLine($"Backup '{nameBackupChange}' does not exist.");
+            }
+        }
+        private void DeleteBackup()
+        {
+            Console.WriteLine("Enter the Name of the backup that you want to delete: ");
+            string nameBackupDelete = Console.ReadLine();
+            var backup = BackupFile.backups.Skip(1).FirstOrDefault(b => b.FileName.Equals(nameBackupDelete, StringComparison.OrdinalIgnoreCase));
+
+            if (backup != null)
+            {
+                Directory.Delete(Path.Combine(backup.FileTarget, backup.FileName), true);
+                BackupFile.backups.Remove(backup);
+                BackupFile.SaveBackupsToFile();
+                Console.WriteLine($"Backup '{nameBackupDelete}' deleted successfully.");
+            }
+            else
+            {
+                Console.WriteLine($"Backup '{nameBackupDelete}' does not exist.");
+            }
+        }
         public BackupType GetBackupType()
         {
             Console.WriteLine("Choose the type of backup:");
