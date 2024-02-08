@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using EasySaveApp.ViewsModel;
-using EasySaveApp.Models;
 using System.Resources;
 
 namespace EasySaveApp.Views
@@ -41,7 +40,7 @@ namespace EasySaveApp.Views
                     switch (choice)
                     {
                         case "1":
-                            CreateBackupMenu();
+                            CreateBackup();
                             break;
                         case "2":
                             ExecuteBackup();
@@ -65,79 +64,68 @@ namespace EasySaveApp.Views
                 resourceManager = new ResourceManager($"EasySaveApp.Resources.{resourceFile}", typeof(Menu).Assembly);
             }
 
-            private static void CreateBackupMenu()
+            private static void CreateBackup()
+            {
+                try
+                {
+                    Console.Clear();
+                    Vm.CreateExecuteBackup();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            private static void ChangeBackup()
             {
                 Console.Clear();
-                Console.WriteLine(resourceManager.GetString("CreateBackup"));
-                Console.WriteLine($"1. {resourceManager.GetString("CreateSingle")}");
-                Console.WriteLine($"2. {resourceManager.GetString("CreateMultiple")}");
-                Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
-                string choice = Console.ReadLine();
-
-                switch (choice)
+                Vm.DisplayBackups();
+                        
+                try
                 {
-                    case "1":
-                        CreateSingleBackup();
-                        break;
-                    case "2":
-                        CreateMultipleBackup();
-                        break;
-                    default:
-                        Console.WriteLine(resourceManager.GetString("InvalidOption"));
-                        break;
+                    Vm.ChangeBackup();
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                break;   
             }
 
-            private static void CreateSingleBackup()
+            private static void ChangeBackup()
             {
-                Console.WriteLine(resourceManager.GetString("CreateSingle"));
-                Console.WriteLine($"1. {resourceManager.GetString("Full")}");
-                Console.WriteLine($"2. {resourceManager.GetString("Differential")}");
-                Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
+                Console.Clear();
+                Vm.DisplayBackups();
+                        
+                try
                 {
-                    case "1":
-                        Console.WriteLine(resourceManager.GetString("FullBackupMethod"));
-                        break;
-                    case "2":
-                        Console.WriteLine(resourceManager.GetString("DifferentialBackupMethod"));
-                        break;
-                    default:
-                        Console.WriteLine(resourceManager.GetString("InvalidOption"));
-                        break;
+                    Vm.DeleteBackup();
                 }
-            }
-
-            private static void CreateMultipleBackup()
-            {
-                Console.WriteLine(resourceManager.GetString("CreateMultiple"));
-                Console.WriteLine($"1. {resourceManager.GetString("Full")}");
-                Console.WriteLine($"2. {resourceManager.GetString("Differential")}");
-                Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
+                catch (Exception e)
                 {
-                    case "1":
-                        Console.WriteLine(resourceManager.GetString("FullBackupMethod"));
-                        break;
-                    case "2":
-                        Console.WriteLine(resourceManager.GetString("DifferentialBackupMethod"));
-                        break;
-                    default:
-                        Console.WriteLine(resourceManager.GetString("InvalidOption"));
-                        break;
+                    Console.WriteLine(e.Message);
                 }
+                break;   
             }
 
             private static void ExecuteBackup()
             {
                 Console.WriteLine(resourceManager.GetString("ExecuteBackup"));
-                // Implémentez la logique pour exécuter la sauvegarde
+                Console.Clear();
+                Vm.DisplayBackups();
+                Console.WriteLine("Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'): ");
+                string backupSelection = Console.ReadLine();
+                string[] args = backupSelection.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                try
+                {
+                    Vm.ExeBacjupJob(args);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                break;
             }
 
             private static void ChangeLanguage()

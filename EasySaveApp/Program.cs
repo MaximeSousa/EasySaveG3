@@ -11,7 +11,6 @@ namespace EasySaveApp
         {
             View view = new View();
             View.Menu.ShowMainMenu();
-            BackupFile.SaveBackupsToFile();
         }
     }
 }
