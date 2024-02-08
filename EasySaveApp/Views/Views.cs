@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using EasySaveApp.ViewsModel;
+using EasySaveApp.Models;
 namespace EasySaveApp.Views
 {
     class View
@@ -22,7 +23,15 @@ namespace EasySaveApp.Views
                 switch (option)
                 {
                     case "1":
-                        Vm.CreateExecuteBackup();
+                        try
+                        {
+                            Vm.CreateExecuteBackup();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+
                         break;
                     case "2":
                         Vm.DisplayBackups();

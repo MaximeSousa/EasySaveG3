@@ -72,7 +72,7 @@ namespace EasySaveApp.ViewsModel
             BackupFile.LoadBackupsFromFile();
             foreach (var backup in BackupFile.backups)
             {
-                Console.WriteLine($"Nom: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.FileType}");
+                Console.WriteLine($"Nom: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.Type}");
             }
         }
         public BackupType GetBackupType()

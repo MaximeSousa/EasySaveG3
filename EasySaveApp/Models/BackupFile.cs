@@ -13,27 +13,30 @@ namespace EasySaveApp.Models
         public string FileName { get; set; }
         public string FileSource { get; set; }
         public string FileTarget { get; set; }
-        public BackupType FileType { get; set; }
+        public BackupType Type { get; set; }
 
-        public static List<BackupFile> backups = new List<BackupFile>();
+        public static List<BackupFile> backups = new List<BackupFile>() { null };
+        public List<string> CopiedFiles { get; set; }
         public const int NumberMaxOfSave = 5;
 
-        public BackupFile(string FileName, string FileSource, string FileTarget, BackupType FileType)
+        public BackupFile(string FileName, string FileSource, string FileTarget, BackupType Type)
         {
             this.FileName = FileName;
             this.FileSource = FileSource;
             this.FileTarget = FileTarget;
-            this.FileType = FileType;
+            this.Type = Type;
+            CopiedFiles = new List<string>();
         }
         public static BackupFile CreateBackup(string FileName, string FileSource, string FileTarget, BackupType Type)
         {
-            BackupFile.LoadBackupsFromFile();
-            if (backups.Count > NumberMaxOfSave)
+            LoadBackupsFromFile();
+            if (backups.Count >= NumberMaxOfSave)
                 throw new Exception("Maximum number of Backup reached");
             BackupFile backup = Type switch
             {
-                BackupType.Full => new FullBackupFile(FileName, FileSource, FileTarget),
-                BackupType.Differential => new DifferentialBackupFile(FileName, FileSource, FileTarget)
+                BackupType.Full => new FullBackupFile(FileName, FileSource, FileTarget,Type),
+                BackupType.Differential => new DifferentialBackupFile(FileName, FileSource, FileTarget,Type),
+                _ => throw new ArgumentException("Invalid backup type", nameof(Type))
             };
             backups.Add(backup);
             BackupFile.SaveBackupsToFile();
@@ -41,6 +44,30 @@ namespace EasySaveApp.Models
         }
         public void ExecuteCopy()
         {
+            if (Type == BackupType.Full)
+            {
+                foreach (var filePath in Directory.GetFiles(FileSource))
+                {
+                    var fileName = Path.GetFileName(filePath);
+                    var targetPath = Path.Combine(FileTarget, fileName);
+                    File.Copy(filePath, targetPath, true);
+                    CopiedFiles.Add(filePath);
+                }
+            }
+            else if (Type == BackupType.Differential)
+            {
+                foreach (var filePath in Directory.GetFiles(FileSource))
+                {
+                    var fileName = Path.GetFileName(filePath);
+                    var targetPath = Path.Combine(FileTarget, fileName);
+
+                    if (File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath))
+                    {
+                        File.Copy(filePath, targetPath, true);
+                        CopiedFiles.Add(filePath);
+                    }
+                }
+            }
 
             foreach (var FilePath in Directory.GetFiles(FileSource))
             {
@@ -54,7 +81,7 @@ namespace EasySaveApp.Models
                 var newDirectoryTarget = Path.Combine(FileTarget, directoryName);
                 Directory.CreateDirectory(newDirectoryTarget);
 
-                var subDirectoryBackup = new BackupFile(FileName, directoryPath, newDirectoryTarget, FileType);
+                var subDirectoryBackup = new BackupFile(FileName, directoryPath, newDirectoryTarget, Type);
                 subDirectoryBackup.ExecuteCopy();
             }
         }
@@ -76,13 +103,13 @@ namespace EasySaveApp.Models
     }
     class FullBackupFile : BackupFile
     {
-        public FullBackupFile(string FileName, string FileSource, string FileTarget) :base(FileName, FileSource, FileTarget, BackupType.Full)
+        public FullBackupFile(string FileName, string FileSource, string FileTarget,BackupType Type) :base(FileName, FileSource, FileTarget, Type)
         {
         }
     }
     class DifferentialBackupFile : BackupFile
     {
-        public DifferentialBackupFile(string FileName, string FileSource, string FileTarget) : base(FileName, FileSource, FileTarget, BackupType.Differential)
+        public DifferentialBackupFile(string FileName, string FileSource, string FileTarget, BackupType Type) : base(FileName, FileSource, FileTarget, Type)
         {
         }
     }
