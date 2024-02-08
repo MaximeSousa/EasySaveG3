@@ -10,7 +10,7 @@ namespace EasySaveApp
         static void Main(string[] args)
         {
             View view = new View();
-            view.Menu();
+            View.Menu.ShowMainMenu();
             BackupFile.SaveBackupsToFile();
         }
     }

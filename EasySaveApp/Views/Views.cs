@@ -2,6 +2,8 @@
 using System.IO;
 using EasySaveApp.ViewsModel;
 using EasySaveApp.Models;
+using System.Resources;
+
 namespace EasySaveApp.Views
 {
     class View
@@ -12,34 +14,149 @@ namespace EasySaveApp.Views
         {
             Vm = new ViewModel();
         }
-        public void Menu()
+        public class Menu
         {
-            while (true)
-            {
-                Console.WriteLine("1. Create a backup");
-                Console.WriteLine("2. Execute a backup");
-                string option = Console.ReadLine();
+            // Variable pour stocker la langue sélectionnée
+            private static string language = "English";
+            private static ResourceManager resourceManager; // = new ResourceManager("EasySaveApp.Resources.Strings", Assembly.GetExecutingAssembly());
 
-                switch (option)
+
+            public static void ShowMainMenu()
+            {
+                // Charger les ressources en fonction de la langue sélectionnée
+                LoadResources();
+
+                bool exit = false;
+                while (!exit)
+                {
+                    Console.WriteLine(resourceManager.GetString("MainMenuTitle"));
+                    Console.WriteLine($"1. {resourceManager.GetString("CreateBackup")}");
+                    Console.WriteLine($"2. {resourceManager.GetString("ExecuteBackup")}");
+                    Console.WriteLine($"3. {resourceManager.GetString("ChangeLanguage")}");
+                    Console.WriteLine($"4. {resourceManager.GetString("Leave")}");
+
+                    Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
+                    string choice = Console.ReadLine();
+
+                    switch (choice)
+                    {
+                        case "1":
+                            CreateBackupMenu();
+                            break;
+                        case "2":
+                            ExecuteBackup();
+                            break;
+                        case "3":
+                            ChangeLanguage();
+                            break;
+                        case "4":
+                            exit = true;
+                            break;
+                        default:
+                            Console.WriteLine(resourceManager.GetString("InvalidOption"));
+                            break;
+                    }
+                }
+            }
+
+            private static void LoadResources()
+            {
+                string resourceFile = language == "Français" ? "Resource_fr" : "Resource_en";
+                resourceManager = new ResourceManager($"EasySaveApp.Resources.{resourceFile}", typeof(Menu).Assembly);
+            }
+
+            private static void CreateBackupMenu()
+            {
+                Console.Clear();
+                Console.WriteLine(resourceManager.GetString("CreateBackup"));
+                Console.WriteLine($"1. {resourceManager.GetString("CreateSingle")}");
+                Console.WriteLine($"2. {resourceManager.GetString("CreateMultiple")}");
+                Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
+                string choice = Console.ReadLine();
+
+                switch (choice)
                 {
                     case "1":
-                        try
-                        {
-                            Vm.CreateExecuteBackup();
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                        }
-
+                        CreateSingleBackup();
                         break;
                     case "2":
-                        Vm.DisplayBackups();
+                        CreateMultipleBackup();
                         break;
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        Console.WriteLine(resourceManager.GetString("InvalidOption"));
                         break;
                 }
+            }
+
+            private static void CreateSingleBackup()
+            {
+                Console.WriteLine(resourceManager.GetString("CreateSingle"));
+                Console.WriteLine($"1. {resourceManager.GetString("Full")}");
+                Console.WriteLine($"2. {resourceManager.GetString("Differential")}");
+                Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
+
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine(resourceManager.GetString("FullBackupMethod"));
+                        break;
+                    case "2":
+                        Console.WriteLine(resourceManager.GetString("DifferentialBackupMethod"));
+                        break;
+                    default:
+                        Console.WriteLine(resourceManager.GetString("InvalidOption"));
+                        break;
+                }
+            }
+
+            private static void CreateMultipleBackup()
+            {
+                Console.WriteLine(resourceManager.GetString("CreateMultiple"));
+                Console.WriteLine($"1. {resourceManager.GetString("Full")}");
+                Console.WriteLine($"2. {resourceManager.GetString("Differential")}");
+                Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
+
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine(resourceManager.GetString("FullBackupMethod"));
+                        break;
+                    case "2":
+                        Console.WriteLine(resourceManager.GetString("DifferentialBackupMethod"));
+                        break;
+                    default:
+                        Console.WriteLine(resourceManager.GetString("InvalidOption"));
+                        break;
+                }
+            }
+
+            private static void ExecuteBackup()
+            {
+                Console.WriteLine(resourceManager.GetString("ExecuteBackup"));
+                // Implémentez la logique pour exécuter la sauvegarde
+            }
+
+            private static void ChangeLanguage()
+            {
+                // Si la langue actuelle est le français, changez-la en anglais et vice versa
+                if (language == "Français")
+                {
+                    language = "English";
+                }
+                else
+                {
+                    language = "Français";
+                }
+
+                // Mettez à jour la variable de langue
+                Console.WriteLine($"Language changed to {language}.");
+
+                // Chargez les ressources dans la nouvelle langue
+                LoadResources();
             }
         }
     }
