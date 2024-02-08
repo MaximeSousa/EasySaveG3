@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
 
@@ -36,7 +33,7 @@ namespace EasySaveApp.Models
             {
                 BackupType.Full => new FullBackupFile(FileName, FileSource, FileTarget,Type),
                 BackupType.Differential => new DifferentialBackupFile(FileName, FileSource, FileTarget,Type),
-                _ => throw new ArgumentException("Invalid backup type", nameof(Type))
+                _ => throw new ArgumentException("Invalid type of Backup", nameof(Type))
             };
             backups.Add(backup);
             BackupFile.SaveBackupsToFile();
@@ -44,45 +41,98 @@ namespace EasySaveApp.Models
         }
         public void ExecuteCopy()
         {
-            if (Type == BackupType.Full)
+            string BackupSaveFolder = Path.Combine(FileTarget, FileName);
+            Directory.CreateDirectory(BackupSaveFolder);
+
+            foreach (var filePath in Directory.GetFiles(FileSource))
             {
-                foreach (var filePath in Directory.GetFiles(FileSource))
+                var fileName = Path.GetFileName(filePath);
+                var targetPath = Path.Combine(BackupSaveFolder, fileName);
+
+                if (Type == BackupType.Full || (Type == BackupType.Differential && File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath)))
                 {
-                    var fileName = Path.GetFileName(filePath);
-                    var targetPath = Path.Combine(FileTarget, fileName);
                     File.Copy(filePath, targetPath, true);
                     CopiedFiles.Add(filePath);
                 }
             }
-            else if (Type == BackupType.Differential)
-            {
-                foreach (var filePath in Directory.GetFiles(FileSource))
-                {
-                    var fileName = Path.GetFileName(filePath);
-                    var targetPath = Path.Combine(FileTarget, fileName);
 
-                    if (File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath))
-                    {
-                        File.Copy(filePath, targetPath, true);
-                        CopiedFiles.Add(filePath);
-                    }
+            foreach (var DirectoryPath in Directory.GetDirectories(FileSource))
+            {
+                var directoryName = Path.GetFileName(DirectoryPath);
+
+                if (!directoryName.Equals(FileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    var newDirectoryTarget = Path.Combine(BackupSaveFolder, directoryName);
+                    CopyDirectory(DirectoryPath, newDirectoryTarget);
+                }
+                else
+                {
+                    CopyDirectory(DirectoryPath, BackupSaveFolder);
                 }
             }
 
-            foreach (var FilePath in Directory.GetFiles(FileSource))
+            //if (Type == BackupType.Full)
+            //{
+            //    foreach (var filePath in Directory.GetFiles(FileSource))
+            //    {
+            //        var fileName = Path.GetFileName(filePath);
+            //        var targetPath = Path.Combine(FileTarget, fileName);
+            //        File.Copy(filePath, targetPath, true);
+            //        CopiedFiles.Add(filePath);
+            //    }
+            //}
+            //else if (Type == BackupType.Differential)
+            //{
+            //    foreach (var filePath in Directory.GetFiles(FileSource))
+            //    {
+            //        var fileName = Path.GetFileName(filePath);
+            //        var targetPath = Path.Combine(FileTarget, fileName);
+
+            //        if (File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath))
+            //        {
+            //            File.Copy(filePath, targetPath, true);
+            //            CopiedFiles.Add(filePath);
+            //        }
+            //    }
+            //}
+
+            //foreach (var FilePath in Directory.GetFiles(FileSource))
+            //{
+            //    var FileName = Path.GetFileName(FilePath);
+            //    File.Copy(FilePath, Path.Combine(FileTarget, FileName), true);
+            //}
+
+            //foreach (var directoryPath in Directory.GetDirectories(FileSource))
+            //{
+            //    var directoryName = Path.GetFileName(directoryPath);
+            //    var newDirectoryTarget = Path.Combine(FileTarget, directoryName);
+            //    Directory.CreateDirectory(newDirectoryTarget);
+
+            //    var subDirectoryBackup = new BackupFile(FileName, directoryPath, newDirectoryTarget, Type);
+            //    subDirectoryBackup.ExecuteCopy();
+            //}
+        }
+
+        private void CopyDirectory(string sourceDir, string targetDir)
+        {
+            if (!Directory.Exists(targetDir))
             {
-                var FileName = Path.GetFileName(FilePath);
-                File.Copy(FilePath, Path.Combine(FileTarget, FileName), true);
+                Directory.CreateDirectory(targetDir);
             }
 
-            foreach (var directoryPath in Directory.GetDirectories(FileSource))
+            foreach (var file in Directory.GetFiles(sourceDir))
             {
-                var directoryName = Path.GetFileName(directoryPath);
-                var newDirectoryTarget = Path.Combine(FileTarget, directoryName);
-                Directory.CreateDirectory(newDirectoryTarget);
+                var fileName = Path.GetFileName(file);
+                var destFile = Path.Combine(targetDir, fileName);
+                File.Copy(file, destFile, true);
+                CopiedFiles.Add(file);
+            }
 
-                var subDirectoryBackup = new BackupFile(FileName, directoryPath, newDirectoryTarget, Type);
-                subDirectoryBackup.ExecuteCopy();
+            foreach (var subDir in Directory.GetDirectories(sourceDir))
+            {
+                var subDirName = Path.GetFileName(subDir);
+                var newTargetDir = Path.Combine(targetDir, subDirName);
+                CopyDirectory(subDir, newTargetDir);
             }
         }
 
