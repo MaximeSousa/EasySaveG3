@@ -19,6 +19,7 @@ namespace EasySaveApp.Views
                 Console.WriteLine("1. Create a backup");
                 Console.WriteLine("2. Execute a backup");
                 Console.WriteLine("3. Change a backup");
+                Console.WriteLine("4. Delete a backup");
                 string option = Console.ReadLine();
 
                 switch (option)
@@ -50,9 +51,35 @@ namespace EasySaveApp.Views
                             Console.WriteLine(e.Message);
                         }
                         break;
+                    case "3":
+                        Console.Clear();
+                        Vm.DisplayBackups();
+                        
+                        try
+                        {
+                            Vm.ChangeBackup();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case "4":
+                        Console.Clear();
+                        Vm.DisplayBackups();
+                        try
+                        {
+                            Vm.DeleteBackup();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
                     default:
                         Console.WriteLine("Invalid option. Please try again.");
                         break;
+
                 }
             }
         }
