@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using EasySaveApp.ViewsModel;
-using EasySaveApp.Models;
+
 namespace EasySaveApp.Views
 {
     class View
@@ -18,6 +18,7 @@ namespace EasySaveApp.Views
             {
                 Console.WriteLine("1. Create a backup");
                 Console.WriteLine("2. Execute a backup");
+                Console.WriteLine("3. Change a backup");
                 string option = Console.ReadLine();
 
                 switch (option)
@@ -25,6 +26,7 @@ namespace EasySaveApp.Views
                     case "1":
                         try
                         {
+                            Console.Clear();
                             Vm.CreateExecuteBackup();
                         }
                         catch (Exception e)
@@ -34,6 +36,7 @@ namespace EasySaveApp.Views
 
                         break;
                     case "2":
+                        Console.Clear();
                         Vm.DisplayBackups();
                         Console.WriteLine("Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'): ");
                         string backupSelection = Console.ReadLine();
