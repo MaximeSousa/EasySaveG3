@@ -16,7 +16,41 @@ namespace EasySaveApp.ViewsModel
             BackupFile backup = BackupFile.CreateBackup(_name, _source, _target, _type);
             backup.ExecuteCopy();
             Console.WriteLine("La sauvegarde a été effectuée avec succès !");
+
+            BackupLogHandler a = new BackupLogHandler();
+            string sourceFilePath = Path.Combine(Directory.GetCurrentDirectory());
+            //FileInfo fileInfo = new FileInfo(_source);
+
+            var log = new BackupLog
+            {
+                FileName = _name,
+                FileSource = _source,
+                FileTarget = _target,
+                //FileSize = fileInfo.Length,
+                FileTransferTime = "FileTransferTime",
+                FileTime = DateTime.Now,
+            };
+            a.UpdateLog(log);
         }
+
+        public void CreateLog()
+        {
+            BackupLogHandler a = new BackupLogHandler();
+            string sourceFilePath = GetBackupSource();
+            FileInfo fileInfo = new FileInfo(sourceFilePath);
+
+            var log = new BackupLog
+            {
+                FileName = GetBackupName(),
+                FileSource = sourceFilePath,
+                FileTarget = GetBackupTarget(),
+                FileSize = fileInfo.Length,
+                FileTransferTime = "FileTransferTime",
+                FileTime = DateTime.Now,
+            };
+            a.UpdateLog(log);
+        }
+
         public string GetBackupName()
         {
             Console.Clear();
