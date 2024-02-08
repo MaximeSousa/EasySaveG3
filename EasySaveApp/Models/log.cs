@@ -40,7 +40,6 @@ namespace EasySaveApp.Models
 
         public void UpdateLog(BackupLog Log)
         {
-            //saveLog = new Dictionary<string, BackupLog>();
             saveLog[Log.FileName] = Log;
             SaveLogToJson();
         }
