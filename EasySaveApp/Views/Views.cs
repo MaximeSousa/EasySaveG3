@@ -133,7 +133,7 @@ namespace EasySaveApp.Views
                 string[] args = backupSelection.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 try
                 {
-                    vm.ExeBacjupJob(args);
+                    vm.ExeBackupJob(args);
                 }
                 catch (Exception e)
                 {

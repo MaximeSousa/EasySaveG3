@@ -26,6 +26,9 @@ namespace EasySaveApp.ViewsModel
 
             Console.WriteLine("La sauvegarde a été effectuée avec succès !");
 
+            string stateName = stopwatch.IsRunning ? "In Progress" : "Finished";
+
+
             BackupLogHandler a = new BackupLogHandler();
             string sourceFilePath = Path.Combine(Directory.GetCurrentDirectory());
 
@@ -35,25 +38,26 @@ namespace EasySaveApp.ViewsModel
             long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
 
             long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
+            int totalFilesToCopy = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Count();
+            int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
 
             var FileTransferTime = stopwatch.Elapsed.ToString();
             CreateLog(_name, _source, _target, size, FileTransferTime);
-            StateForBackup(_name, _source, _target, size, filesAlreadyCopied, remainingSize);
+            StateForBackup(_name, _source, _target, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
         }
-        public void StateForBackup(string _name, string _source, string _target, long size, int filesAlreadyCopied, long remainingSize)
+        public void StateForBackup(string _name, string _source, string _target, long size, int filesAlreadyCopied, long remainingSize, int remainingFiles, string stateName)
         {
             BackupStateHandler a = new BackupStateHandler();
             string sourceFilePath = _source;
             FileInfo fileInfo = new FileInfo(sourceFilePath);
             string[] files = Directory.GetFiles(sourceFilePath);
-            int totalFilesToCopy = files.Length;
-            int remainingFiles = totalFilesToCopy - filesAlreadyCopied;
 
             var state = new BackupState
             {
                 FileName = _name,
                 Timestamp = DateTime.Now,
-                TotalFilesToCopy = totalFilesToCopy,
+                StateName = stateName,
+                TotalFilesToCopy = files.Length,
                 TotalFilesSize = size,
                 RemainingFiles= remainingFiles,
                 RemainingSize = remainingSize,
@@ -93,76 +97,75 @@ namespace EasySaveApp.ViewsModel
             }
             return nameBackup;
         }
-
-
-        public void ExeBacjupJob(string[] args)
+        public void ExeBackupJob(string[] args)
         {
-            if (args.Length == 0)
+            try
             {
-                Console.WriteLine("No backup numbers provided.");
-                return;
-            }
-
-            List<int> backupNumbers = ParseBackupNumbers(args);
-
-            if (backupNumbers.Count == 0)
-            {
-                Console.WriteLine("No valid backup numbers provided.");
-                return;
-            }
-
-            foreach (int backupNumber in backupNumbers)
-            {
-                if (backupNumber >= 1 && backupNumber <= BackupFile.backups.Count)
+                if (args.Length == 0)
                 {
-                    BackupFile backup = BackupFile.backups[backupNumber - 1];
-                    backup.ExecuteCopy();
-                    Console.WriteLine($"Backup {backupNumber} executed successfully.");
+                    Console.WriteLine("No backup numbers provided.");
+                    return;
                 }
-                else
-                {
-                    Console.WriteLine($"Backup {backupNumber} does not exist.");
-                }
-            }
-        }
 
-        private List<int> ParseBackupNumbers(string[] args)
-        {
-            List<int> backupNumbers = new List<int>();
+                List<int> backupNumbers = new List<int>();
 
-            foreach (string arg in args)
-            {
-                if (arg.Contains('-'))
+                foreach (string arg in args)
                 {
-                    string[] range = arg.Split('-');
-                    if (range.Length == 2 && int.TryParse(range[0], out int start) && int.TryParse(range[1], out int end))
+                    if (arg.Contains('-'))
                     {
-                        backupNumbers.AddRange(Enumerable.Range(start, end - start + 1));
+                        string[] range = arg.Split('-');
+                        if (range.Length == 2 && int.TryParse(range[0], out int start) && int.TryParse(range[1], out int end))
+                        {
+                            backupNumbers.AddRange(Enumerable.Range(start, end - start + 1));
+                        }
                     }
-                }
-                else if (arg.Contains(';'))
-                {
-                    string[] numbers = arg.Split(';');
-                    foreach (string number in numbers)
+                    else if (arg.Contains(';'))
                     {
-                        if (int.TryParse(number, out int num))
+                        string[] numbers = arg.Split(';');
+                        foreach (string number in numbers)
+                        {
+                            if (int.TryParse(number, out int num))
+                            {
+                                backupNumbers.Add(num);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (int.TryParse(arg, out int num))
                         {
                             backupNumbers.Add(num);
                         }
                     }
                 }
-                else
+
+                backupNumbers = backupNumbers.Distinct().OrderBy(n => n).ToList();
+
+                if (backupNumbers.Count == 0)
                 {
-                    if (int.TryParse(arg, out int num))
+                    Console.WriteLine("No valid backup numbers provided.");
+                    return;
+                }
+
+                foreach (int backupNumber in backupNumbers)
+                {
+                    if (backupNumber >= 1 && backupNumber <= BackupFile.backups.Count && BackupFile.backups[backupNumber - 1] != null)
                     {
-                        backupNumbers.Add(num);
+                        BackupFile backup = BackupFile.backups[backupNumber - 1];
+                        backup.ExecuteCopy();
+                        Console.WriteLine($"Backup {backupNumber} executed successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Backup {backupNumber} does not exist.");
                     }
                 }
             }
-
-            return backupNumbers.Distinct().OrderBy(n => n).ToList();
-      }
-    
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
 
         public string PathCorrector(string path)
         {
