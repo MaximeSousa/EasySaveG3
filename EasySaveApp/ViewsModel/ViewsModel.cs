@@ -243,6 +243,7 @@ namespace EasySaveApp.ViewsModel
                 BackupFile.SaveBackupsToFile();
 
                 Console.WriteLine($"Backup '{nameBackupChange}' updated successfully.");
+                CreateLog(newName, newSource, newTarget, backup.FileSize, backup.FileTransferTime);
             }
             else
             {
@@ -261,6 +262,7 @@ namespace EasySaveApp.ViewsModel
                 BackupFile.backups.Remove(backup);
                 BackupFile.SaveBackupsToFile();
                 Console.WriteLine($"Backup '{nameBackupDelete}' deleted successfully.");
+                CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, backup.FileSize, backup.FileTransferTime);
             }
             else
             {

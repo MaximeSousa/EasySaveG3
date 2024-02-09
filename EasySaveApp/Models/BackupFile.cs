@@ -11,6 +11,8 @@ namespace EasySaveApp.Models
         public string FileSource { get; set; }
         public string FileTarget { get; set; }
         public BackupType Type { get; set; }
+        public long FileSize { get; set; }
+        public string FileTransferTime { get; set; }
 
         public static List<BackupFile> backups = new List<BackupFile>() { null };
         public List<string> CopiedFiles { get; set; }

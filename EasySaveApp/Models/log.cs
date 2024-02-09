@@ -22,8 +22,6 @@ namespace EasySaveApp.Models
     public class BackupLogHandler
     {
         private Dictionary<string, BackupLog> saveLog;
-        //private string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log.json");
-
         public BackupLogHandler()
         {
             if (File.Exists("Log.json"))
@@ -61,4 +59,3 @@ namespace EasySaveApp.Models
         }
     }
 }
-
