@@ -5,6 +5,31 @@ The “EasySave” project consists of developing software to back up your files
 
 It allows you to create, run, modify and delete a backup job.
 
+## Main Features of Easy Save
+<ol>
+  <li><strong>Management of up to 5 backup jobs:</strong>
+    <ul>
+      <li>Create and manage up to five distinct backups, each with a name, source and target directories, and backup type.</li>
+    </ul>
+  </li>
+  <li><strong>Multilingual compatibility:</strong>
+    <ul>
+      <li>Usable in both English and French to cater to users of different languages.</li>
+    </ul>
+  </li>
+  <li><strong>Flexible backup execution:</strong>
+    <ul>
+      <li>Choose to execute all backup jobs sequentially or selectively execute specific ones via command-line input.</li>
+    </ul>
+  </li>
+  <li><strong>Real-time logging and monitoring:</strong>
+    <ul>
+      <li>Record real-time backup action history in a log file.</li>
+      <li>Track the progress of backup jobs, including progress, remaining files and sizes, in a state file.</li>
+    </ul>
+  </li>
+</ol>
+
 ## How to use 
 
 <ul>
