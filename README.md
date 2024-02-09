@@ -7,10 +7,12 @@ It allows you to create, run, modify and delete a backup job.
 
 ## How to use 
 
--Installation: Clone or download the repository to your local machine.
--Configuration: Open the project in Visual Studio 2019 and ensure you have the necessary dependencies installed.
--Compilation: Build the project and run the application in Visual Studio.
--Backup Creation: Use the user interface to create new backups by specifying the file name, source folder, and target folder.
+<ul>
+  <li>Installation :Clone or download the repository to your local machine</li>
+  <li>Configuration: Open the project in Visual Studio 2019 and ensure you have the necessary dependencies installed..</li>
+  <li>Compilation: Build the project and run the application in Visual Studio..</li>
+  <li>Backup Creation: Use the user interface to create new backups by specifying the file name, source folder, and target folder.</li>
+</ul>.
  
 ## Team Members
 
