@@ -22,10 +22,18 @@ namespace EasySaveApp.Models
     //Gere l'etat des travaux de sauvegarde et chargement vers un fichier json
     public class BackupStateHandler
     {
-        private Dictionary<string, BackupState> saveState;
+        public Dictionary<string, BackupState> saveState;
         public BackupStateHandler()
         {
-            saveState = new Dictionary<string, BackupState>();
+            if (File.Exists("State.json"))
+            {
+                LoadStateFromJson();
+            }
+            else
+            {
+                saveState = new Dictionary<string, BackupState>();
+            }
+            Console.WriteLine("State.json");
         }
         //met à jour le travail de sauvegarde
         public void UpdateState(BackupState state )
@@ -36,11 +44,11 @@ namespace EasySaveApp.Models
         public void SaveStateToJson()
         {
             string json = JsonConvert.SerializeObject(saveState, Formatting.Indented);
-            File.WriteAllText("state.json", json);
+            File.WriteAllText("State.json", json);
         }
         public void LoadStateFromJson()
         {
-            if (File.Exists("state.json"))
+            if (File.Exists("State.json"))
             {
                 string json = File.ReadAllText("state.json");
                 saveState = JsonConvert.DeserializeObject<Dictionary<string, BackupState>>(json);

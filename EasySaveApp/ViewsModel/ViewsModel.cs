@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EasySaveApp.Models;
-using System.Linq;
 using System.Diagnostics;
 
 namespace EasySaveApp.ViewsModel
@@ -30,10 +29,38 @@ namespace EasySaveApp.ViewsModel
             BackupLogHandler a = new BackupLogHandler();
             string sourceFilePath = Path.Combine(Directory.GetCurrentDirectory());
 
+            int filesAlreadyCopied = backup.CopiedFiles.Count;
+
             DirectoryInfo dirInfo = new DirectoryInfo(_source);
             long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
+
+            long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
+
             var FileTransferTime = stopwatch.Elapsed.ToString();
             CreateLog(_name, _source, _target, size, FileTransferTime);
+            StateForBackup(_name, _source, _target, size, filesAlreadyCopied, remainingSize);
+        }
+        public void StateForBackup(string _name, string _source, string _target, long size, int filesAlreadyCopied, long remainingSize)
+        {
+            BackupStateHandler a = new BackupStateHandler();
+            string sourceFilePath = _source;
+            FileInfo fileInfo = new FileInfo(sourceFilePath);
+            string[] files = Directory.GetFiles(sourceFilePath);
+            int totalFilesToCopy = files.Length;
+            int remainingFiles = totalFilesToCopy - filesAlreadyCopied;
+
+            var state = new BackupState
+            {
+                FileName = _name,
+                Timestamp = DateTime.Now,
+                TotalFilesToCopy = totalFilesToCopy,
+                TotalFilesSize = size,
+                RemainingFiles= remainingFiles,
+                RemainingSize = remainingSize,
+                FileSource = _source,
+                FileTarget = _target,
+            };
+            a.UpdateState(state);
         }
 
         public void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime)
