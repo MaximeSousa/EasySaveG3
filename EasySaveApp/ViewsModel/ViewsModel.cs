@@ -4,11 +4,27 @@ using System.IO;
 using System.Linq;
 using EasySaveApp.Models;
 using System.Diagnostics;
+using System.Resources;
 
 namespace EasySaveApp.ViewsModel
 {
     class ViewModel
     {
+        // Variable pour stocker la langue sélectionnée
+        private static string language = "English";
+        private static ResourceManager resourceManager;
+
+        public ViewModel()
+        {
+            InitializeResourceManager();
+        }
+
+        private static void InitializeResourceManager()
+        {
+            string resourceFile = language == "Français" ? "Resource_fr" : "Resource_en";
+            resourceManager = new ResourceManager($"EasySaveApp.Resources.{resourceFile}", typeof(ViewModel).Assembly);
+        }
+
         public void CreateExecuteBackup()
         {
             string _name = GetBackupName();
@@ -24,7 +40,7 @@ namespace EasySaveApp.ViewsModel
 
             stopwatch.Stop();
 
-            Console.WriteLine("La sauvegarde a été effectuée avec succès !");
+            Console.WriteLine(resourceManager.GetString("The backup was completed successfully!"));
 
             string stateName = stopwatch.IsRunning ? "In Progress" : "Finished";
 
@@ -45,6 +61,7 @@ namespace EasySaveApp.ViewsModel
             CreateLog(_name, _source, _target, size, FileTransferTime);
             StateForBackup(_name, _source, _target, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
         }
+
         public void StateForBackup(string _name, string _source, string _target, long size, int filesAlreadyCopied, long remainingSize, int remainingFiles, string stateName)
         {
             BackupStateHandler a = new BackupStateHandler();
@@ -59,7 +76,7 @@ namespace EasySaveApp.ViewsModel
                 StateName = stateName,
                 TotalFilesToCopy = files.Length,
                 TotalFilesSize = size,
-                RemainingFiles= remainingFiles,
+                RemainingFiles = remainingFiles,
                 RemainingSize = remainingSize,
                 FileSource = _source,
                 FileTarget = _target,
@@ -87,23 +104,24 @@ namespace EasySaveApp.ViewsModel
 
         public string GetBackupName()
         {
-            Console.WriteLine("Enter a name for the Backup (15 max)");
+            Console.WriteLine(resourceManager.GetString("Enter a name for the Backup (15 max)"));
             string nameBackup = Console.ReadLine();
             while (nameBackup.Length < 1 || nameBackup.Length > 15)
             {
                 Console.Clear();
-                Console.WriteLine("This name is not valid");
+                Console.WriteLine(resourceManager.GetString("This name is not valid"));
                 nameBackup = GetBackupName();
             }
             return nameBackup;
         }
+
         public void ExeBackupJob(string[] args)
         {
             try
             {
                 if (args.Length == 0)
                 {
-                    Console.WriteLine("No backup numbers provided.");
+                    Console.WriteLine(resourceManager.GetString("No backup numbers provided."));
                     return;
                 }
 
@@ -143,7 +161,7 @@ namespace EasySaveApp.ViewsModel
 
                 if (backupNumbers.Count == 0)
                 {
-                    Console.WriteLine("No valid backup numbers provided.");
+                    Console.WriteLine(resourceManager.GetString("No valid backup numbers provided."));
                     return;
                 }
 
@@ -153,17 +171,18 @@ namespace EasySaveApp.ViewsModel
                     {
                         BackupFile backup = BackupFile.backups[backupNumber - 1];
                         backup.ExecuteCopy();
-                        Console.WriteLine($"Backup {backupNumber} executed successfully.");
+                        Console.WriteLine($"{resourceManager.GetString($"Backup {backupNumber} executed successfully.")}");
+
                     }
                     else
                     {
-                        Console.WriteLine($"Backup {backupNumber} does not exist.");
+                        Console.WriteLine($"{resourceManager.GetString($"Backup {backupNumber} does not exist.")}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"{resourceManager.GetString($"An error occurred: {ex.Message}")}");
             }
         }
 
@@ -186,13 +205,13 @@ namespace EasySaveApp.ViewsModel
 
         public string GetBackupSource()
         {
-            Console.WriteLine("Enter the Directory source for the backup");
+            Console.WriteLine(resourceManager.GetString("Enter the Directory source for the backup"));
             string sourceBackup = PathCorrector(Console.ReadLine());
 
             while (!Directory.Exists(sourceBackup) && sourceBackup != "0")
             {
                 Console.Clear();
-                Console.WriteLine("The directory source doesn't exist");
+                Console.WriteLine(resourceManager.GetString("The directory source doesn't exist"));
                 sourceBackup = GetBackupSource();
 
             }
@@ -201,35 +220,37 @@ namespace EasySaveApp.ViewsModel
 
         public string GetBackupTarget()
         {
-            Console.WriteLine("Enter the Directory target for the backup");
+            Console.WriteLine(resourceManager.GetString("Enter the Directory target for the backup"));
             string targetBackup = PathCorrector(Console.ReadLine());
 
             while (!Directory.Exists(targetBackup) && targetBackup != "0")
             {
                 Console.Clear();
-                Console.WriteLine("The directory source doesn't exist");
+                Console.WriteLine(resourceManager.GetString("The directory source doesn't exist"));
                 targetBackup = GetBackupTarget();
             }
             return targetBackup;
         }
+
         public void DisplayBackups()
         {
             BackupFile.LoadBackupsFromFile();
             for (int i = 1; i < BackupFile.backups.Count; i++)
             {
                 var backup = BackupFile.backups[i];
-                Console.WriteLine($"Nom: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.Type}");
+                Console.WriteLine($"{resourceManager.GetString($"Name: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.Type}")}");
             }
         }
+
         public void ChangeBackup()
         {
-            Console.WriteLine("Enter the Name of the backup that you want to modify: ");
+            Console.WriteLine(resourceManager.GetString("Enter the Name of the backup that you want to modify:"));
             string nameBackupChange = Console.ReadLine();
             var backup = BackupFile.backups.Skip(1).FirstOrDefault(b => b.FileName.Equals(nameBackupChange, StringComparison.OrdinalIgnoreCase));
 
             if (backup != null)
             {
-                Console.WriteLine("Enter the new name for the backup: ");
+                Console.WriteLine(resourceManager.GetString("Enter the new name for the backup:"));
                 string newName = Console.ReadLine();
                 string newSource = GetBackupSource();
                 string newTarget = GetBackupTarget();
@@ -242,17 +263,18 @@ namespace EasySaveApp.ViewsModel
 
                 BackupFile.SaveBackupsToFile();
 
-                Console.WriteLine($"Backup '{nameBackupChange}' updated successfully.");
+                Console.WriteLine($"{resourceManager.GetString($"Backup '{nameBackupChange}' updated successfully.")}");
                 CreateLog(newName, newSource, newTarget, backup.FileSize, backup.FileTransferTime);
             }
             else
             {
-                Console.WriteLine($"Backup '{nameBackupChange}' does not exist.");
+                Console.WriteLine($"{resourceManager.GetString($"Backup '{nameBackupChange}' does not exist.")}");
             }
         }
+
         public void DeleteBackup()
         {
-            Console.WriteLine("Enter the Name of the backup that you want to delete: ");
+            Console.WriteLine(resourceManager.GetString("Enter the Name of the backup that you want to delete:"));
             string nameBackupDelete = Console.ReadLine();
             var backup = BackupFile.backups.Skip(1).FirstOrDefault(b => b.FileName.Equals(nameBackupDelete, StringComparison.OrdinalIgnoreCase));
 
@@ -261,28 +283,48 @@ namespace EasySaveApp.ViewsModel
                 Directory.Delete(Path.Combine(backup.FileTarget, backup.FileName), true);
                 BackupFile.backups.Remove(backup);
                 BackupFile.SaveBackupsToFile();
-                Console.WriteLine($"Backup '{nameBackupDelete}' deleted successfully.");
+                Console.WriteLine($"{resourceManager.GetString($"Backup '{nameBackupDelete}' deleted successfully.")}");
                 CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, backup.FileSize, backup.FileTransferTime);
             }
             else
             {
-                Console.WriteLine($"Backup '{nameBackupDelete}' does not exist.");
+                Console.WriteLine($"{resourceManager.GetString($"Backup '{nameBackupDelete}' does not exist.")}");
             }
         }
+
         public BackupType GetBackupType()
         {
-            Console.WriteLine("Choose the type of backup:");
-            Console.WriteLine("1. Full");
-            Console.WriteLine("2. Differential");
+            Console.WriteLine(resourceManager.GetString("Choose the type of backup:"));
+            Console.WriteLine($"1. {resourceManager.GetString("Full")}");
+            Console.WriteLine($"2. {resourceManager.GetString("Differential")}");
             string choice = Console.ReadLine();
             Console.Clear();
             return choice switch
             {
                 "1" => BackupType.Full,
                 "2" => BackupType.Differential,
-                _ => throw new Exception("Invalid choice")
+                _ => throw new Exception(resourceManager.GetString("Invalid choice"))
             };
         }
 
+        private static void ChangeLanguage()
+        {
+            // Si la langue actuelle est le français, changez-la en anglais et vice versa
+            if (language == "Français")
+            {
+                language = "English";
+            }
+            else
+            {
+                language = "Français";
+            }
+
+            // Mettez à jour la variable de langue
+            Console.Clear();
+            Console.WriteLine($"{resourceManager.GetString($"Language changed to {language}.")}");
+
+            // Chargez les ressources dans la nouvelle langue
+            InitializeResourceManager();
+        }
     }
 }
