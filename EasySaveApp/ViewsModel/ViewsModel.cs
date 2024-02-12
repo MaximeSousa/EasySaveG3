@@ -10,7 +10,7 @@ namespace EasySaveApp.ViewsModel
 {
     class ViewModel
     {
-        // Variable pour stocker la langue sélectionnée
+        // Variable to store the selected language
         private static string language = "English";
         private static ResourceManager resourceManager;
 
@@ -121,7 +121,7 @@ namespace EasySaveApp.ViewsModel
             {
                 if (args.Length == 0)
                 {
-                    Console.WriteLine(resourceManager.GetString("No backup numbers provided."));
+                    Console.WriteLine(resourceManager.GetString("No backup numbers provided"));
                     return;
                 }
 
@@ -161,7 +161,7 @@ namespace EasySaveApp.ViewsModel
 
                 if (backupNumbers.Count == 0)
                 {
-                    Console.WriteLine(resourceManager.GetString("No valid backup numbers provided."));
+                    Console.WriteLine(resourceManager.GetString("No valid backup numbers provided"));
                     return;
                 }
 
@@ -309,7 +309,7 @@ namespace EasySaveApp.ViewsModel
 
         private static void ChangeLanguage()
         {
-            // Si la langue actuelle est le français, changez-la en anglais et vice versa
+            // If the current language is French, change it to English and vice versa
             if (language == "Français")
             {
                 language = "English";
@@ -319,12 +319,12 @@ namespace EasySaveApp.ViewsModel
                 language = "Français";
             }
 
-            // Mettez à jour la variable de langue
+            // Update the language variable
             Console.Clear();
             Console.WriteLine($"{resourceManager.GetString($"Language changed to {language}.")}");
 
-            // Chargez les ressources dans la nouvelle langue
-            LoadResources();
+            // Load resources in the new language
+            InitializeResourceManager();
         }
     }
 }

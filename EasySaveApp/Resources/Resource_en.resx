@@ -120,14 +120,14 @@
   <data name="An error occurred:" xml:space="preserve">
     <value>An error occurred:</value>
   </data>
-  <data name="Backup  executed successfully." xml:space="preserve">
-    <value>Backup  executed successfully.</value>
-  </data>
   <data name="Backup deleted successfully." xml:space="preserve">
     <value>Backup deleted successfully.</value>
   </data>
   <data name="Backup does not exist." xml:space="preserve">
     <value>Backup does not exist.</value>
+  </data>
+  <data name="Backup executed successfully." xml:space="preserve">
+    <value>Backup  executed successfully.</value>
   </data>
   <data name="Backup updated successfully." xml:space="preserve">
     <value>Backup updated successfully.</value>

@@ -120,14 +120,14 @@
   <data name="An error occurred:" xml:space="preserve">
     <value>Une erreur s'est produite:</value>
   </data>
-  <data name="Backup  executed successfully." xml:space="preserve">
-    <value>Sauvegarde exécutée avec succès.</value>
-  </data>
   <data name="Backup deleted successfully." xml:space="preserve">
     <value>Sauvegarde supprimée avec succès.</value>
   </data>
-  <data name="Backup does not exist." xml:space="preserve">
+  <data name="Backup does not exist" xml:space="preserve">
     <value>La sauvegarde n'existe pas.</value>
+  </data>
+  <data name="Backup executed successfully" xml:space="preserve">
+    <value>Sauvegarde exécutée avec succès.</value>
   </data>
   <data name="Backup updated successfully." xml:space="preserve">
     <value>Sauvegarde mise à jour avec succès.</value>
@@ -213,10 +213,10 @@
   <data name="Name:" xml:space="preserve">
     <value>Nom:</value>
   </data>
-  <data name="No backup numbers provided." xml:space="preserve">
+  <data name="No backup numbers provided" xml:space="preserve">
     <value>Aucun numéro de secours fourni.</value>
   </data>
-  <data name="No valid backup numbers provided." xml:space="preserve">
+  <data name="No valid backup numbers provided" xml:space="preserve">
     <value>Aucun numéro de sauvegarde valide fourni.</value>
   </data>
   <data name="The backup was completed successfully!" xml:space="preserve">
