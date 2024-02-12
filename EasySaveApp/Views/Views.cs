@@ -36,15 +36,15 @@ namespace EasySaveApp.Views
                 bool exit = false;
                 while (!exit)
                 {
-                    Console.WriteLine(resourceManager.GetString("MainMenuTitle"));
-                    Console.WriteLine($"1. {resourceManager.GetString("CreateBackup")}");
-                    Console.WriteLine($"2. {resourceManager.GetString("ExecuteBackup")}");
-                    Console.WriteLine($"3. {resourceManager.GetString("ChangeBackup")}");
-                    Console.WriteLine($"4. {resourceManager.GetString("DeleteBackup")}");
-                    Console.WriteLine($"5. {resourceManager.GetString("ChangeLanguage")}");
+                    Console.WriteLine(resourceManager.GetString("Main Menu Title"));
+                    Console.WriteLine($"1. {resourceManager.GetString("Create Backup")}");
+                    Console.WriteLine($"2. {resourceManager.GetString("Execute Backup")}");
+                    Console.WriteLine($"3. {resourceManager.GetString("Change Backup")}");
+                    Console.WriteLine($"4. {resourceManager.GetString("Delete Backup")}");
+                    Console.WriteLine($"5. {resourceManager.GetString("Change Language")}");
                     Console.WriteLine($"6. {resourceManager.GetString("Leave")}");
 
-                    Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
+                    Console.WriteLine(resourceManager.GetString("Choose An Option"));
                     string choice = Console.ReadLine();
 
                     switch (choice)
@@ -68,7 +68,7 @@ namespace EasySaveApp.Views
                             exit = true;
                             break;
                         default:
-                            Console.WriteLine(resourceManager.GetString("InvalidOption"));
+                            Console.WriteLine(resourceManager.GetString("Invalid Option"));
                             break;
                     }
                 }
@@ -125,10 +125,10 @@ namespace EasySaveApp.Views
 
             private static void ExecuteBackup(ViewModel vm)
             {
-                Console.WriteLine(resourceManager.GetString("ExecuteBackup"));
+                Console.WriteLine(resourceManager.GetString("Execute Backup"));
                 Console.Clear();
                 vm.DisplayBackups();
-                Console.WriteLine("Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'): ");
+                Console.WriteLine(resourceManager.GetString("Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'): "));
                 string backupSelection = Console.ReadLine();
                 string[] args = backupSelection.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 try
@@ -155,7 +155,7 @@ namespace EasySaveApp.Views
 
                 // Mettez à jour la variable de langue
                 Console.Clear();
-                Console.WriteLine($"Language changed to {language}.");
+                Console.WriteLine($"{resourceManager.GetString($"Language changed to {language}.")}");
 
                 // Chargez les ressources dans la nouvelle langue
                 LoadResources();
