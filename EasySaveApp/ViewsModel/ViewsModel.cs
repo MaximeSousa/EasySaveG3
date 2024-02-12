@@ -324,7 +324,7 @@ namespace EasySaveApp.ViewsModel
             Console.WriteLine($"{resourceManager.GetString($"Language changed to {language}.")}");
 
             // Chargez les ressources dans la nouvelle langue
-            InitializeResourceManager();
+            LoadResources();
         }
     }
 }
