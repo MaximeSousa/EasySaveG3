@@ -65,25 +65,16 @@ namespace EasySaveApp.Resources {
         /// </summary>
         internal static string ChangeLanguage {
             get {
-                return ResourceManager.GetString("ChangeLanguage", resourceCulture);
+                return ResourceManager.GetString("Change Language", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Choisissez une option (1-2) :.
         /// </summary>
-        internal static string ChooseAnOption__1_2__ {
+        internal static string ChooseAnOption {
             get {
-                return ResourceManager.GetString("ChooseAnOption (1-2):", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Choisissez une option(1-4):.
-        /// </summary>
-        internal static string ChooseAnOption_1_4__ {
-            get {
-                return ResourceManager.GetString("ChooseAnOption(1-4):", resourceCulture);
+                return ResourceManager.GetString("Choose An Option", resourceCulture);
             }
         }
         
@@ -92,7 +83,7 @@ namespace EasySaveApp.Resources {
         /// </summary>
         internal static string CreateBackup {
             get {
-                return ResourceManager.GetString("CreateBackup", resourceCulture);
+                return ResourceManager.GetString("Create Backup", resourceCulture);
             }
         }
         
@@ -101,16 +92,16 @@ namespace EasySaveApp.Resources {
         /// </summary>
         internal static string CreateMultiple {
             get {
-                return ResourceManager.GetString("CreateMultiple", resourceCulture);
+                return ResourceManager.GetString("Create Multiple", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Créez plusieurs sauvegardes :.
         /// </summary>
-        internal static string CreateMultipleBackups_ {
+        internal static string CreateMultipleBackups {
             get {
-                return ResourceManager.GetString("CreateMultipleBackups:", resourceCulture);
+                return ResourceManager.GetString("Create Multiple Backups:", resourceCulture);
             }
         }
         
@@ -119,16 +110,16 @@ namespace EasySaveApp.Resources {
         /// </summary>
         internal static string CreateSingle {
             get {
-                return ResourceManager.GetString("CreateSingle", resourceCulture);
+                return ResourceManager.GetString("Create Single", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Créer une sauvegarde unique :.
         /// </summary>
-        internal static string CreateSingleBackup_ {
+        internal static string CreateSingleBackup {
             get {
-                return ResourceManager.GetString("CreateSingleBackup:", resourceCulture);
+                return ResourceManager.GetString("Create Single Backup:", resourceCulture);
             }
         }
         
@@ -144,9 +135,9 @@ namespace EasySaveApp.Resources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Méthode de sauvegarde différentielle.
         /// </summary>
-        internal static string DifferentialBackuMethod {
+        internal static string DifferentialBackupMethod {
             get {
-                return ResourceManager.GetString("DifferentialBackuMethod", resourceCulture);
+                return ResourceManager.GetString("Differential Backup Method", resourceCulture);
             }
         }
         
@@ -155,7 +146,7 @@ namespace EasySaveApp.Resources {
         /// </summary>
         internal static string ExecuteBackup {
             get {
-                return ResourceManager.GetString("ExecuteBackup", resourceCulture);
+                return ResourceManager.GetString("Execute Backup", resourceCulture);
             }
         }
         
@@ -173,16 +164,16 @@ namespace EasySaveApp.Resources {
         /// </summary>
         internal static string FullBackupMethod {
             get {
-                return ResourceManager.GetString("FullBackupMethod", resourceCulture);
+                return ResourceManager.GetString("Full Backup Method", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Option invalide.
         /// </summary>
-        internal static string InvalidOption_ {
+        internal static string InvalidOption {
             get {
-                return ResourceManager.GetString("InvalidOption.", resourceCulture);
+                return ResourceManager.GetString("Invalid Option", resourceCulture);
             }
         }
         
@@ -191,7 +182,7 @@ namespace EasySaveApp.Resources {
         /// </summary>
         internal static string LanguageChangedTo {
             get {
-                return ResourceManager.GetString("LanguageChangedTo", resourceCulture);
+                return ResourceManager.GetString("Language Changed to", resourceCulture);
             }
         }
         
@@ -209,7 +200,7 @@ namespace EasySaveApp.Resources {
         /// </summary>
         internal static string MainMenuTitle {
             get {
-                return ResourceManager.GetString("MainMenuTitle", resourceCulture);
+                return ResourceManager.GetString("Main Menu Title", resourceCulture);
             }
         }
     }
