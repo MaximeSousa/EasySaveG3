@@ -203,5 +203,15 @@ namespace EasySaveApp.Resources {
                 return ResourceManager.GetString("Main Menu Title", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Changer de Langue.
+        /// </summary>
+        internal static string EnterANameForTheBackup15max {
+            get
+            {
+                return ResourceManager.GetString("Entrez un nom pour la sauvegarde-15 max", resourceCulture);
+            }
+        }
     }
 }

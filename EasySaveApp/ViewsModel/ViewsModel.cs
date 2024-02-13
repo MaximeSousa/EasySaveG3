@@ -104,7 +104,7 @@ namespace EasySaveApp.ViewsModel
 
         public string GetBackupName()
         {
-            Console.WriteLine(resourceManager.GetString("Enter a name for the Backup (15 max)"));
+            Console.WriteLine(resourceManager.GetString("Enter a name for the Backup-15 max"));
             string nameBackup = Console.ReadLine();
             while (nameBackup.Length < 1 || nameBackup.Length > 15)
             {

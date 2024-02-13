@@ -147,18 +147,6 @@
   <data name="Create Backup" xml:space="preserve">
     <value>Create Backup</value>
   </data>
-  <data name="Create Multiple" xml:space="preserve">
-    <value>Create Multiple</value>
-  </data>
-  <data name="Create Multiple Backups:" xml:space="preserve">
-    <value>Create Multiple Backups:</value>
-  </data>
-  <data name="Create Single" xml:space="preserve">
-    <value>Create Single</value>
-  </data>
-  <data name="Create Single Backup:" xml:space="preserve">
-    <value>Create Single Backup:</value>
-  </data>
   <data name="Delete Backup" xml:space="preserve">
     <value>Delete Backup</value>
   </data>
@@ -168,8 +156,8 @@
   <data name="Differential Backup Method" xml:space="preserve">
     <value>Differential Backup Method</value>
   </data>
-  <data name="Enter a name for the Backup (15 max)" xml:space="preserve">
-    <value>Enter a name for the Backup (15 max)</value>
+  <data name="Enter a name for the Backup-15 max" xml:space="preserve">
+    <value>Enter a name for the Backup-15 max</value>
   </data>
   <data name="Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'):" xml:space="preserve">
     <value>Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'):</value>
