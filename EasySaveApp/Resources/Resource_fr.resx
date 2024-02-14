@@ -132,6 +132,9 @@
   <data name="Backup updated successfully." xml:space="preserve">
     <value>Sauvegarde mise à jour avec succès.</value>
   </data>
+  <data name="backupSucess" xml:space="preserve">
+    <value>La sauvegarde a été effectuée avec succès !</value>
+  </data>
   <data name="Change Backup" xml:space="preserve">
     <value>Modifier un sauvegarde</value>
   </data>
@@ -156,9 +159,6 @@
   <data name="Differential Backup Method" xml:space="preserve">
     <value>Méthode de sauvegarde</value>
   </data>
-  <data name="Enter a name for the Backup-15 max" xml:space="preserve">
-    <value>Entrez un nom pour la sauvegarde -15 max</value>
-  </data>
   <data name="Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'):" xml:space="preserve">
     <value>Saisissez les numéros de sauvegarde à exécuter (e.g., '1', '1-3', '1;3'):</value>
   </data>
@@ -173,6 +173,9 @@
   </data>
   <data name="Enter the new name for the backup:" xml:space="preserve">
     <value>Saisissez le nouveau nom de la sauvegarde:</value>
+  </data>
+  <data name="EnterMax" xml:space="preserve">
+    <value>Entrez un nom pour la sauvegarde -15 max</value>
   </data>
   <data name="Execute Backup" xml:space="preserve">
     <value>Exécuter la sauvegarde</value>
@@ -206,9 +209,6 @@
   </data>
   <data name="No valid backup numbers provided" xml:space="preserve">
     <value>Aucun numéro de sauvegarde valide fourni.</value>
-  </data>
-  <data name="The backup was completed successfully!" xml:space="preserve">
-    <value>La sauvegarde a été effectuée avec succès !</value>
   </data>
   <data name="The directory source doesn't exist" xml:space="preserve">
     <value>La source du répertoire n'existe pas</value>

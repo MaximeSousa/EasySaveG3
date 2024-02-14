@@ -132,6 +132,9 @@
   <data name="Backup updated successfully." xml:space="preserve">
     <value>Backup updated successfully.</value>
   </data>
+  <data name="backupSucess" xml:space="preserve">
+    <value>The backup was completed successfully!</value>
+  </data>
   <data name="Change Backup" xml:space="preserve">
     <value>Change Backup</value>
   </data>
@@ -156,9 +159,6 @@
   <data name="Differential Backup Method" xml:space="preserve">
     <value>Differential Backup Method</value>
   </data>
-  <data name="Enter a name for the Backup-15 max" xml:space="preserve">
-    <value>Enter a name for the Backup-15 max</value>
-  </data>
   <data name="Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'):" xml:space="preserve">
     <value>Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'):</value>
   </data>
@@ -173,6 +173,9 @@
   </data>
   <data name="Enter the new name for the backup:" xml:space="preserve">
     <value>Enter the new name for the backup:</value>
+  </data>
+  <data name="EnterMax" xml:space="preserve">
+    <value>Enter a name for the Backup-15 max</value>
   </data>
   <data name="Execute Backup" xml:space="preserve">
     <value>Execute Backup</value>
@@ -206,9 +209,6 @@
   </data>
   <data name="No valid backup numbers provided." xml:space="preserve">
     <value>No valid backup numbers provided.</value>
-  </data>
-  <data name="The backup was completed successfully!" xml:space="preserve">
-    <value>The backup was completed successfully!</value>
   </data>
   <data name="The directory source doesn't exist" xml:space="preserve">
     <value>The directory source doesn't exist</value>

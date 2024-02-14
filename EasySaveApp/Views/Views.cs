@@ -24,11 +24,19 @@ namespace EasySaveApp.Views
             private static string language = "English";
             private static ResourceManager resourceManager;
 
-            private static void InitializeResourceManager()
+            public static void InitializeResourceManager()
             {
                 string resourceFile = language == "Français" ? "Resource_fr" : "Resource_en";
                 resourceManager = new ResourceManager($"EasySaveApp.Resources.{resourceFile}", typeof(Menu).Assembly);
+
             }
+
+            public void InitializeResourceManagerViewsModels()
+            {
+                InitializeResourceManager();
+
+            }
+
             public static void ShowMainMenu(ViewModel vm)
             {
                 // Utilisez l'instance de ViewModel passée en paramètre
@@ -74,11 +82,7 @@ namespace EasySaveApp.Views
                 }
             }
 
-            private static void LoadResources()
-            {
-                string resourceFile = language == "Français" ? "Resource_fr" : "Resource_en";
-                resourceManager = new ResourceManager($"EasySaveApp.Resources.{resourceFile}", typeof(Menu).Assembly);
-            }
+            public string getLanguage() { return language; }
 
             private static void CreateBackup(ViewModel vm)
             {
@@ -141,6 +145,11 @@ namespace EasySaveApp.Views
                 }
             }
 
+            public string getTraductor(string word)
+            {
+                return resourceManager.GetString(word);
+            }
+
             private static void ChangeLanguage()
             {
                 // Si la langue actuelle est le français, changez-la en anglais et vice versa
@@ -158,7 +167,8 @@ namespace EasySaveApp.Views
                 Console.WriteLine($"{resourceManager.GetString($"Language changed to {language}.")}");
 
                 // Chargez les ressources dans la nouvelle langue
-                LoadResources();
+                InitializeResourceManager();
+
             }
         }
     }
