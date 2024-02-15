@@ -103,6 +103,7 @@ namespace EasySaveApp.ViewsModel
             {
                 if (args.Length == 0)
                 {
+                    Console.Clear();
                     Console.WriteLine("No backup numbers provided.");
                     return;
                 }
@@ -143,6 +144,7 @@ namespace EasySaveApp.ViewsModel
 
                 if (backupNumbers.Count == 0)
                 {
+                    Console.Clear();
                     Console.WriteLine("No valid backup numbers provided.");
                     return;
                 }
@@ -153,6 +155,7 @@ namespace EasySaveApp.ViewsModel
                     {
                         BackupFile backup = BackupFile.backups[backupNumber - 1];
                         backup.ExecuteCopy();
+                        Console.Clear();
                         Console.WriteLine($"Backup {backupNumber} executed successfully.");
                     }
                     else
@@ -221,6 +224,7 @@ namespace EasySaveApp.ViewsModel
                 Console.WriteLine($"Nom: {backup.FileName}, Source: {backup.FileSource}, Destination: {backup.FileTarget}, Type: {backup.Type}");
             }
         }
+
         public void ChangeBackup()
         {
             Console.WriteLine("Enter the Name of the backup that you want to modify: ");
@@ -235,27 +239,28 @@ namespace EasySaveApp.ViewsModel
                 string newTarget = GetBackupTarget();
                 BackupType newType = GetBackupType();
 
+                string OldBackupDirectory = Path.Combine(backup.FileTarget, backup.FileName);
+                string NewBackupDirectory = Path.Combine(backup.FileTarget, newName);
+
                 if (!newName.Equals(backup.FileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    string OldBackupDirectory = Path.Combine(backup.FileTarget, backup.FileName);
-                    string newBackupDirectory = Path.Combine(backup.FileTarget, newName);
+
                     if (Directory.Exists(OldBackupDirectory))
                     {
-                        Directory.Move(OldBackupDirectory, newBackupDirectory);
+                        MoveDirectory(OldBackupDirectory, NewBackupDirectory);
+                        OldBackupDirectory = NewBackupDirectory;
                     }
                 }
 
                 if (!newSource.Equals(backup.FileSource, StringComparison.OrdinalIgnoreCase))
                 {
-                    string BackupDirectory = Path.Combine(backup.FileTarget, backup.FileName);
 
-                    if (Directory.Exists(BackupDirectory))
+                    if (Directory.Exists(OldBackupDirectory))
                     {
-                        Directory.Delete(BackupDirectory, true);
+                        Directory.Delete(OldBackupDirectory, true);
                     }
-
-                    string newBackupDirectory = Path.Combine(backup.FileTarget, newName);
-                    Directory.CreateDirectory(newBackupDirectory);
+                   
+                    Directory.CreateDirectory(NewBackupDirectory);
 
                     backup.FileSource = newSource;
                     backup.ExecuteCopy();
@@ -263,16 +268,16 @@ namespace EasySaveApp.ViewsModel
 
                 if (!newTarget.Equals(backup.FileTarget, StringComparison.OrdinalIgnoreCase))
                 {
-                    string oldBackupDir = Path.Combine(backup.FileTarget, backup.FileName);
                     string newBackupDir = Path.Combine(newTarget, backup.FileName);
 
-                    if (Directory.Exists(oldBackupDir))
+                    if (Directory.Exists(OldBackupDirectory))
                     {
-                        Directory.Move(oldBackupDir, newBackupDir);
+                        MoveDirectory(OldBackupDirectory, newBackupDir);
                     }
 
                     backup.FileTarget = newTarget;
                 }
+
 
                 backup.FileName = newName;
                 backup.Type = newType;
@@ -286,11 +291,6 @@ namespace EasySaveApp.ViewsModel
             {
                 Console.WriteLine($"Backup '{nameBackupChange}' does not exist.");
             }
-        }
-
-        private string GetBackupDirectory(string DirectoryTarget,string DirectoryName)
-        {
-            return Path.Combine(DirectoryTarget, DirectoryName);
         }
 
         private void MoveDirectory(string OldDirectory, string NewDirectory)
@@ -318,6 +318,7 @@ namespace EasySaveApp.ViewsModel
                 }
                 BackupFile.backups.Remove(backup);
                 BackupFile.SaveBackupsToFile();
+                Console.Clear();
                 Console.WriteLine($"Backup '{nameBackupDelete}' deleted successfully.");
                 CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, backup.FileSize, backup.FileTransferTime);
             }
