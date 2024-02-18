@@ -1,6 +1,8 @@
 ﻿using System.Windows.Input;
 using System.Windows.Controls;
 using EasySaveApp_WPF.View;
+using System.Windows;
+using System;
 
 namespace EasySaveApp_WPF.ViewModel
 {
@@ -21,6 +23,7 @@ namespace EasySaveApp_WPF.ViewModel
         public ICommand NavigateToExecuteBackupCommand { get; }
         public ICommand NavigateToDeleteBackupCommand { get; }
         public ICommand NavigateToHomeBackupCommand { get; }
+        public ICommand ButtonExitCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -28,6 +31,7 @@ namespace EasySaveApp_WPF.ViewModel
             NavigateToCreateBackupCommand = new RelayCommand(NavigateToCreateBackup);
             NavigateToExecuteBackupCommand = new RelayCommand(NavigateToExecuteBackup);
             NavigateToHomeBackupCommand = new RelayCommand(NavigateToHomeBackup);
+            ButtonExitCommand = new RelayCommand(ExitCommand);
 
             // Initially the current page
             CurrentPage = new HomePage();
@@ -47,6 +51,9 @@ namespace EasySaveApp_WPF.ViewModel
         {
             CurrentPage = new ExecutePage();
         }
-
+        private void ExitCommand(object obj)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }
