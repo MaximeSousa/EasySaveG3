@@ -36,7 +36,7 @@
                             <TextBlock Text="Execute" Style="{StaticResource Text_Style}" />
                         </Grid>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToSettingsBackupCommand}">
+                    <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding  NavigateToSettingsBackupCommand}">
                         <Grid>
                             <Image Source="Images/IconSetting.png" Style="{StaticResource Image_Style}"/>
                             <TextBlock Text="Settings" Style="{StaticResource Text_Style}" />
