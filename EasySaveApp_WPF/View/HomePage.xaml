@@ -8,6 +8,6 @@
       Title="HomePage">
 
     <Grid>
-        <TextBlock Text="Welcome to EasySaveApp !" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="Welcome to EasySaveApp !" FontSize="24" HorizontalAlignment="Center" Foreground="#DBDBDB" VerticalAlignment="Center"/>
     </Grid>
 </Page>

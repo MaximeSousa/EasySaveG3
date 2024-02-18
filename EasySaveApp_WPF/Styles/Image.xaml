@@ -17,4 +17,22 @@
                 Value="22,0,0,0" />
 
     </Style>
+
+    <Style x:Key="Logo_Style"
+           TargetType="Image">
+
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="Stretch"
+                Value="Uniform" />
+        <Setter Property="Height"
+                Value="50" />
+        <Setter Property="Width"
+                Value="50" />
+        <Setter Property="Margin"
+                Value="22,0,0,0" />
+
+    </Style>
 </ResourceDictionary>
