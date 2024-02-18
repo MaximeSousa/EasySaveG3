@@ -33,7 +33,6 @@ namespace EasySaveApp.Models
             {
                 saveState = new Dictionary<string, BackupState>();
             }
-            Console.WriteLine("State.json");
         }
         //met à jour le travail de sauvegarde
         public void UpdateState(BackupState state )
