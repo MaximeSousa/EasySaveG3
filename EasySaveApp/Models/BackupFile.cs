@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace EasySaveApp.Models
 {
@@ -94,7 +94,7 @@ namespace EasySaveApp.Models
 
         public static void SaveBackupsToFile()
         {
-            string jsonString = JsonSerializer.Serialize(backups);
+            string jsonString = JsonConvert.SerializeObject(backups, Formatting.Indented);
             File.WriteAllText("backups.json", jsonString);
         }
 
@@ -103,7 +103,7 @@ namespace EasySaveApp.Models
             if (File.Exists("backups.json"))
             {
                 string jsonString = File.ReadAllText("backups.json");
-                backups = JsonSerializer.Deserialize<List<BackupFile>>(jsonString);
+                backups = JsonConvert.DeserializeObject<List<BackupFile>>(jsonString);
             }
         }
     }

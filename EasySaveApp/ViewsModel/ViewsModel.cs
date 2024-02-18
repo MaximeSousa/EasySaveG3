@@ -9,6 +9,7 @@ namespace EasySaveApp.ViewsModel
 {
     class ViewModel
     {
+        public string OutputFormat { get; set; } = "json";
         public void CreateExecuteBackup()
         {
             string _name = GetBackupName();
@@ -42,7 +43,7 @@ namespace EasySaveApp.ViewsModel
             int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
 
             var FileTransferTime = stopwatch.Elapsed.ToString();
-            CreateLog(_name, _source, _target, size, FileTransferTime);
+            CreateLog(_name, _source, _target, size, FileTransferTime, "create", OutputFormat);
             StateForBackup(_name, _source, _target, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
         }
         public void StateForBackup(string _name, string _source, string _target, long size, int filesAlreadyCopied, long remainingSize, int remainingFiles, string stateName)
@@ -67,7 +68,7 @@ namespace EasySaveApp.ViewsModel
             a.UpdateState(state);
         }
 
-        public void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime)
+        public void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime, string details, string outputFormat)
         {
             BackupLogHandler a = new BackupLogHandler();
             string sourceFilePath = _source;
@@ -81,8 +82,9 @@ namespace EasySaveApp.ViewsModel
                 FileSize = size,
                 FileTransferTime = FileTransferTime,
                 FileTime = DateTime.Now,
+                Details = details
             };
-            a.UpdateLog(log);
+            a.UpdateLog(log, outputFormat);
         }
 
         public string GetBackupName()
@@ -157,6 +159,7 @@ namespace EasySaveApp.ViewsModel
                         backup.ExecuteCopy();
                         Console.Clear();
                         Console.WriteLine($"Backup {backupNumber} executed successfully.");
+                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, backup.FileSize, backup.FileTransferTime, "execute", OutputFormat);
                     }
                     else
                     {
@@ -285,7 +288,7 @@ namespace EasySaveApp.ViewsModel
                 BackupFile.SaveBackupsToFile();
 
                 Console.WriteLine($"Backup '{nameBackupChange}' updated successfully.");
-                CreateLog(newName, newSource, newTarget, backup.FileSize, backup.FileTransferTime);
+                CreateLog(newName, newSource, newTarget, backup.FileSize, backup.FileTransferTime, "change", OutputFormat);
             }
             else
             {
@@ -320,7 +323,7 @@ namespace EasySaveApp.ViewsModel
                 BackupFile.SaveBackupsToFile();
                 Console.Clear();
                 Console.WriteLine($"Backup '{nameBackupDelete}' deleted successfully.");
-                CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, backup.FileSize, backup.FileTransferTime);
+                CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, backup.FileSize, backup.FileTransferTime, "delete", OutputFormat);
             }
             else
             {

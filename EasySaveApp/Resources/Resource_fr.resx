@@ -123,6 +123,9 @@
   <data name="ChangeLanguage" xml:space="preserve">
     <value>Changer de Langue</value>
   </data>
+  <data name="ChangeOutputFormat" xml:space="preserve">
+    <value>Changez le format Log</value>
+  </data>
   <data name="ChooseAnOption (1-2):" xml:space="preserve">
     <value>Choisissez une option (1-2) :</value>
   </data>
