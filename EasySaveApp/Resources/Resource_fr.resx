@@ -117,61 +117,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChangeBackup" xml:space="preserve">
+  <data name="An error occurred:" xml:space="preserve">
+    <value>Une erreur s'est produite:</value>
+  </data>
+  <data name="Backup deleted successfully." xml:space="preserve">
+    <value>Sauvegarde supprimée avec succès.</value>
+  </data>
+  <data name="Backup does not exist" xml:space="preserve">
+    <value>La sauvegarde n'existe pas.</value>
+  </data>
+  <data name="Backup executed successfully" xml:space="preserve">
+    <value>Sauvegarde exécutée avec succès.</value>
+  </data>
+  <data name="Backup updated successfully." xml:space="preserve">
+    <value>Sauvegarde mise à jour avec succès.</value>
+  </data>
+  <data name="backupSucess" xml:space="preserve">
+    <value>La sauvegarde a été effectuée avec succès !</value>
+  </data>
+  <data name="Change Backup" xml:space="preserve">
     <value>Modifier un sauvegarde</value>
   </data>
-  <data name="ChangeLanguage" xml:space="preserve">
+  <data name="Change Language" xml:space="preserve">
     <value>Changer de Langue</value>
   </data>
-  <data name="ChooseAnOption (1-2):" xml:space="preserve">
-    <value>Choisissez une option (1-2) :</value>
+  <data name="Choose An Option" xml:space="preserve">
+    <value>Choisissez une option</value>
   </data>
-  <data name="ChooseAnOption(1-4):" xml:space="preserve">
-    <value>Choisissez une option(1-4):</value>
+  <data name="Choose the type of backup:" xml:space="preserve">
+    <value>Choisissez le type de sauvegarde:</value>
   </data>
-  <data name="CreateBackup" xml:space="preserve">
+  <data name="Create Backup" xml:space="preserve">
     <value>Créer une sauvegarde</value>
   </data>
-  <data name="CreateMultiple" xml:space="preserve">
-    <value>Créer plusieurs</value>
-  </data>
-  <data name="CreateMultipleBackups:" xml:space="preserve">
-    <value>Créez plusieurs sauvegardes :</value>
-  </data>
-  <data name="CreateSingle" xml:space="preserve">
-    <value>Créer une seule</value>
-  </data>
-  <data name="CreateSingleBackup:" xml:space="preserve">
-    <value>Créer une sauvegarde unique :</value>
-  </data>
-  <data name="DeleteBackup" xml:space="preserve">
-    <value>Supprimer un sauvegarde</value>
+  <data name="Delete Backup" xml:space="preserve">
+    <value>Supprimer la sauvegarde</value>
   </data>
   <data name="Differential" xml:space="preserve">
     <value>Différentielle</value>
   </data>
-  <data name="DifferentialBackuMethod" xml:space="preserve">
-    <value>Méthode de sauvegarde différentielle</value>
+  <data name="Differential Backup Method" xml:space="preserve">
+    <value>Méthode de sauvegarde</value>
   </data>
-  <data name="ExecuteBackup" xml:space="preserve">
+  <data name="Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'):" xml:space="preserve">
+    <value>Saisissez les numéros de sauvegarde à exécuter (e.g., '1', '1-3', '1;3'):</value>
+  </data>
+  <data name="Enter the Directory source for the backup" xml:space="preserve">
+    <value>Entrez la source du répertoire pour la sauvegarde</value>
+  </data>
+  <data name="Enter the Name of the backup that you want to delete:" xml:space="preserve">
+    <value>Saisissez le nom de la sauvegarde que vous souhaitez supprimer:</value>
+  </data>
+  <data name="Enter the Name of the backup that you want to modify:" xml:space="preserve">
+    <value>Saisissez le nom de la sauvegarde que vous souhaitez modifier:</value>
+  </data>
+  <data name="Enter the new name for the backup:" xml:space="preserve">
+    <value>Saisissez le nouveau nom de la sauvegarde:</value>
+  </data>
+  <data name="EnterMax" xml:space="preserve">
+    <value>Entrez un nom pour la sauvegarde -15 max</value>
+  </data>
+  <data name="Execute Backup" xml:space="preserve">
     <value>Exécuter la sauvegarde</value>
   </data>
   <data name="Full" xml:space="preserve">
     <value>Complète</value>
   </data>
-  <data name="FullBackupMethod" xml:space="preserve">
+  <data name="Full Backup Method" xml:space="preserve">
     <value>Méthode de sauvegarde complète</value>
   </data>
-  <data name="InvalidOption." xml:space="preserve">
+  <data name="Invalid choice" xml:space="preserve">
+    <value>Choix invalide</value>
+  </data>
+  <data name="Invalid Option" xml:space="preserve">
     <value>Option invalide</value>
   </data>
-  <data name="LanguageChangedTo" xml:space="preserve">
+  <data name="Language changed to" xml:space="preserve">
     <value>La langue a été modifiée en</value>
   </data>
   <data name="Leave" xml:space="preserve">
     <value>Quitter</value>
   </data>
-  <data name="MainMenuTitle" xml:space="preserve">
+  <data name="Main Menu Title" xml:space="preserve">
     <value>Menu</value>
+  </data>
+  <data name="Name:" xml:space="preserve">
+    <value>Nom:</value>
+  </data>
+  <data name="No backup numbers provided" xml:space="preserve">
+    <value>Aucun numéro de secours fourni.</value>
+  </data>
+  <data name="No valid backup numbers provided" xml:space="preserve">
+    <value>Aucun numéro de sauvegarde valide fourni.</value>
+  </data>
+  <data name="The directory source doesn't exist" xml:space="preserve">
+    <value>La source du répertoire n'existe pas</value>
+  </data>
+  <data name="This name is not valid" xml:space="preserve">
+    <value>Ce nom n'est pas valide</value>
   </data>
 </root>
