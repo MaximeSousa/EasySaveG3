@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\IconCreate.png" />
+    <None Remove="Images\IconDelete.png" />
+    <None Remove="Images\IconExecute.png" />
+    <None Remove="Images\IconHome.png" />
+    <None Remove="Images\IconPencil.png" />
+    <None Remove="Images\IconSetting.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\IconCreate.png" />
+    <Resource Include="Images\IconDelete.png" />
+    <Resource Include="Images\IconExecute.png" />
+    <Resource Include="Images\IconHome.png" />
+    <Resource Include="Images\IconPencil.png" />
+    <Resource Include="Images\IconSetting.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\CreatePage - Copier.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>CreatePage.xaml.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,41 @@
+﻿<Page x:Class="EasySaveApp_WPF.View.CreatePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EasySaveApp_WPF.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="400"
+      Title="CreatePage"
+      Language="{Binding Language, RelativeSource={RelativeSource AncestorType={x:Type Page}}}">
+
+    <Page.Resources>
+        <local:VMCreateBackup x:Key="CreateBackupViewModel"/>
+    </Page.Resources>
+
+    <Grid DataContext="{StaticResource CreateBackupViewModel}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Create a Save"  Foreground="#DBDBDB"
+                   FontSize="18"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Margin="20,60,0,20" />
+            <TextBlock Text="Name" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+            <TextBox Text="{Binding BackupName}" Margin="20,5,0,10" Width="300" HorizontalAlignment="Left"/>
+            
+            <TextBlock Text="Source" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+            <TextBox Text="{Binding Source}"  Width="300" Margin="20,5,0,10" HorizontalAlignment="Left"/>
+            
+            <TextBlock Text="Target" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+            <TextBox Text="{Binding Destination}" Margin="20,5,0,10" Width="300" HorizontalAlignment="Left"/>
+            
+            <TextBlock Text="Type of Save" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+            <StackPanel Orientation="Horizontal" Margin="25,10,0,10" Width="250" HorizontalAlignment="Left">
+
+                <RadioButton Content="Full" Margin="0,0,50,0" GroupName="BackupType" IsChecked="{Binding IsFullBackup, Mode=TwoWay}" Foreground="White"/>
+                <RadioButton Content="Differential" GroupName="BackupType" IsChecked="{Binding IsDifferentialBackup, Mode=TwoWay}" Foreground="White"/>
+            </StackPanel>
+            <Button Content="Confirm" Command="{Binding CreateBackupCommand}" Margin="25,10,0,10" HorizontalAlignment="left"/>
+        </StackPanel>
+    </Grid>
+</Page>
