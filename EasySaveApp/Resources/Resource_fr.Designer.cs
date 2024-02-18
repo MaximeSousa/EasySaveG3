@@ -61,110 +61,74 @@ namespace EasySaveApp.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Une erreur s&apos;est produite:.
-        /// </summary>
-        internal static string An_error_occurred_ {
-            get {
-                return ResourceManager.GetString("An error occurred:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Sauvegarde supprimée avec succès..
-        /// </summary>
-        internal static string Backup_deleted_successfully_ {
-            get {
-                return ResourceManager.GetString("Backup deleted successfully.", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à La sauvegarde n&apos;existe pas..
-        /// </summary>
-        internal static string Backup_does_not_exist {
-            get {
-                return ResourceManager.GetString("Backup does not exist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Sauvegarde exécutée avec succès..
-        /// </summary>
-        internal static string Backup_executed_successfully {
-            get {
-                return ResourceManager.GetString("Backup executed successfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Sauvegarde mise à jour avec succès..
-        /// </summary>
-        internal static string Backup_updated_successfully_ {
-            get {
-                return ResourceManager.GetString("Backup updated successfully.", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à La sauvegarde a été effectuée avec succès !.
-        /// </summary>
-        internal static string backupSucess {
-            get {
-                return ResourceManager.GetString("backupSucess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Modifier un sauvegarde.
-        /// </summary>
-        internal static string Change_Backup {
-            get {
-                return ResourceManager.GetString("Change Backup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Changer de Langue.
         /// </summary>
-        internal static string Change_Language {
+        internal static string ChangeLanguage {
             get {
-                return ResourceManager.GetString("Change Language", resourceCulture);
+                return ResourceManager.GetString("ChangeLanguage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Choisissez une option.
+        ///   Recherche une chaîne localisée semblable à Choisissez une option (1-2) :.
         /// </summary>
-        internal static string Choose_An_Option {
+        internal static string ChooseAnOption__1_2__ {
             get {
-                return ResourceManager.GetString("Choose An Option", resourceCulture);
+                return ResourceManager.GetString("ChooseAnOption (1-2):", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Choisissez le type de sauvegarde:.
+        ///   Recherche une chaîne localisée semblable à Choisissez une option(1-4):.
         /// </summary>
-        internal static string Choose_the_type_of_backup_ {
+        internal static string ChooseAnOption_1_4__ {
             get {
-                return ResourceManager.GetString("Choose the type of backup:", resourceCulture);
+                return ResourceManager.GetString("ChooseAnOption(1-4):", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Créer une sauvegarde.
         /// </summary>
-        internal static string Create_Backup {
+        internal static string CreateBackup {
             get {
-                return ResourceManager.GetString("Create Backup", resourceCulture);
+                return ResourceManager.GetString("CreateBackup", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Supprimer la sauvegarde.
+        ///   Recherche une chaîne localisée semblable à Créer plusieurs.
         /// </summary>
-        internal static string Delete_Backup {
+        internal static string CreateMultiple {
             get {
-                return ResourceManager.GetString("Delete Backup", resourceCulture);
+                return ResourceManager.GetString("CreateMultiple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Créez plusieurs sauvegardes :.
+        /// </summary>
+        internal static string CreateMultipleBackups_ {
+            get {
+                return ResourceManager.GetString("CreateMultipleBackups:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Créer une seule.
+        /// </summary>
+        internal static string CreateSingle {
+            get {
+                return ResourceManager.GetString("CreateSingle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Créer une sauvegarde unique :.
+        /// </summary>
+        internal static string CreateSingleBackup_ {
+            get {
+                return ResourceManager.GetString("CreateSingleBackup:", resourceCulture);
             }
         }
         
@@ -178,74 +142,20 @@ namespace EasySaveApp.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Méthode de sauvegarde.
+        ///   Recherche une chaîne localisée semblable à Méthode de sauvegarde différentielle.
         /// </summary>
-        internal static string Differential_Backup_Method {
+        internal static string DifferentialBackuMethod {
             get {
-                return ResourceManager.GetString("Differential Backup Method", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Saisissez les numéros de sauvegarde à exécuter (e.g., &apos;1&apos;, &apos;1-3&apos;, &apos;1;3&apos;):.
-        /// </summary>
-        internal static string Enter_the_backup_numbers_to_execute__e_g____1____1_3____1_3___ {
-            get {
-                return ResourceManager.GetString("Enter the backup numbers to execute (e.g., \'1\', \'1-3\', \'1;3\'):", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Entrez la source du répertoire pour la sauvegarde.
-        /// </summary>
-        internal static string Enter_the_Directory_source_for_the_backup {
-            get {
-                return ResourceManager.GetString("Enter the Directory source for the backup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Saisissez le nom de la sauvegarde que vous souhaitez supprimer:.
-        /// </summary>
-        internal static string Enter_the_Name_of_the_backup_that_you_want_to_delete_ {
-            get {
-                return ResourceManager.GetString("Enter the Name of the backup that you want to delete:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Saisissez le nom de la sauvegarde que vous souhaitez modifier:.
-        /// </summary>
-        internal static string Enter_the_Name_of_the_backup_that_you_want_to_modify_ {
-            get {
-                return ResourceManager.GetString("Enter the Name of the backup that you want to modify:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Saisissez le nouveau nom de la sauvegarde:.
-        /// </summary>
-        internal static string Enter_the_new_name_for_the_backup_ {
-            get {
-                return ResourceManager.GetString("Enter the new name for the backup:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Entrez un nom pour la sauvegarde -15 max.
-        /// </summary>
-        internal static string EnterMax {
-            get {
-                return ResourceManager.GetString("EnterMax", resourceCulture);
+                return ResourceManager.GetString("DifferentialBackuMethod", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Exécuter la sauvegarde.
         /// </summary>
-        internal static string Execute_Backup {
+        internal static string ExecuteBackup {
             get {
-                return ResourceManager.GetString("Execute Backup", resourceCulture);
+                return ResourceManager.GetString("ExecuteBackup", resourceCulture);
             }
         }
         
@@ -261,36 +171,27 @@ namespace EasySaveApp.Resources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Méthode de sauvegarde complète.
         /// </summary>
-        internal static string Full_Backup_Method {
+        internal static string FullBackupMethod {
             get {
-                return ResourceManager.GetString("Full Backup Method", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Choix invalide.
-        /// </summary>
-        internal static string Invalid_choice {
-            get {
-                return ResourceManager.GetString("Invalid choice", resourceCulture);
+                return ResourceManager.GetString("FullBackupMethod", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Option invalide.
         /// </summary>
-        internal static string Invalid_Option {
+        internal static string InvalidOption_ {
             get {
-                return ResourceManager.GetString("Invalid Option", resourceCulture);
+                return ResourceManager.GetString("InvalidOption.", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à La langue a été modifiée en.
         /// </summary>
-        internal static string Language_changed_to {
+        internal static string LanguageChangedTo {
             get {
-                return ResourceManager.GetString("Language changed to", resourceCulture);
+                return ResourceManager.GetString("LanguageChangedTo", resourceCulture);
             }
         }
         
@@ -306,54 +207,9 @@ namespace EasySaveApp.Resources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Menu.
         /// </summary>
-        internal static string Main_Menu_Title {
+        internal static string MainMenuTitle {
             get {
-                return ResourceManager.GetString("Main Menu Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Nom:.
-        /// </summary>
-        internal static string Name_ {
-            get {
-                return ResourceManager.GetString("Name:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Aucun numéro de secours fourni..
-        /// </summary>
-        internal static string No_backup_numbers_provided {
-            get {
-                return ResourceManager.GetString("No backup numbers provided", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Aucun numéro de sauvegarde valide fourni..
-        /// </summary>
-        internal static string No_valid_backup_numbers_provided {
-            get {
-                return ResourceManager.GetString("No valid backup numbers provided", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à La source du répertoire n&apos;existe pas.
-        /// </summary>
-        internal static string The_directory_source_doesn_t_exist {
-            get {
-                return ResourceManager.GetString("The directory source doesn\'t exist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Ce nom n&apos;est pas valide.
-        /// </summary>
-        internal static string This_name_is_not_valid {
-            get {
-                return ResourceManager.GetString("This name is not valid", resourceCulture);
+                return ResourceManager.GetString("MainMenuTitle", resourceCulture);
             }
         }
     }
