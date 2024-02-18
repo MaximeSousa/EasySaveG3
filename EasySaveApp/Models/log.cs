@@ -32,7 +32,6 @@ namespace EasySaveApp.Models
             {
                 saveLog = new Dictionary<string, BackupLog>();
             }
-            Console.WriteLine("Log.json");
         }
 
 

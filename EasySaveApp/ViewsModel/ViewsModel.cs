@@ -117,7 +117,12 @@ namespace EasySaveApp.ViewsModel
             {
                 if (args.Length == 0)
                 {
+
                     Console.WriteLine(viewController.getTraductor("No backup numbers provided"));
+
+                    Console.Clear();
+                    Console.WriteLine("No backup numbers provided.");
+
                     return;
                 }
 
@@ -157,7 +162,12 @@ namespace EasySaveApp.ViewsModel
 
                 if (backupNumbers.Count == 0)
                 {
+
                     Console.WriteLine(viewController.getTraductor("No valid backup numbers provided"));
+
+                    Console.Clear();
+                    Console.WriteLine("No valid backup numbers provided.");
+
                     return;
                 }
 
@@ -167,7 +177,12 @@ namespace EasySaveApp.ViewsModel
                     {
                         BackupFile backup = BackupFile.backups[backupNumber - 1];
                         backup.ExecuteCopy();
+
                         Console.WriteLine($"{viewController.getTraductor($"Backup {backupNumber} executed successfully.")}");
+
+
+                        Console.Clear();
+                        Console.WriteLine($"Backup {backupNumber} executed successfully.");
 
                     }
                     else
@@ -252,9 +267,47 @@ namespace EasySaveApp.ViewsModel
                 string newTarget = GetBackupTarget();
                 BackupType newType = GetBackupType();
 
+                string OldBackupDirectory = Path.Combine(backup.FileTarget, backup.FileName);
+                string NewBackupDirectory = Path.Combine(backup.FileTarget, newName);
+
+                if (!newName.Equals(backup.FileName, StringComparison.OrdinalIgnoreCase))
+                {
+
+                    if (Directory.Exists(OldBackupDirectory))
+                    {
+                        MoveDirectory(OldBackupDirectory, NewBackupDirectory);
+                        OldBackupDirectory = NewBackupDirectory;
+                    }
+                }
+
+                if (!newSource.Equals(backup.FileSource, StringComparison.OrdinalIgnoreCase))
+                {
+
+                    if (Directory.Exists(OldBackupDirectory))
+                    {
+                        Directory.Delete(OldBackupDirectory, true);
+                    }
+                   
+                    Directory.CreateDirectory(NewBackupDirectory);
+
+                    backup.FileSource = newSource;
+                    backup.ExecuteCopy();
+                }
+
+                if (!newTarget.Equals(backup.FileTarget, StringComparison.OrdinalIgnoreCase))
+                {
+                    string newBackupDir = Path.Combine(newTarget, backup.FileName);
+
+                    if (Directory.Exists(OldBackupDirectory))
+                    {
+                        MoveDirectory(OldBackupDirectory, newBackupDir);
+                    }
+
+                    backup.FileTarget = newTarget;
+                }
+
+
                 backup.FileName = newName;
-                backup.FileSource = newSource;
-                backup.FileTarget = newTarget;
                 backup.Type = newType;
 
                 BackupFile.SaveBackupsToFile();
@@ -268,18 +321,40 @@ namespace EasySaveApp.ViewsModel
             }
         }
 
+
+
+        private void MoveDirectory(string OldDirectory, string NewDirectory)
+        {
+            if (Directory.Exists(OldDirectory))
+            {
+                Directory.Move(OldDirectory,NewDirectory);
+            }
+        }
+
+
         public void DeleteBackup()
         {
             Console.WriteLine(viewController.getTraductor("Enter the Name of the backup that you want to delete:"));
             string nameBackupDelete = Console.ReadLine();
             var backup = BackupFile.backups.Skip(1).FirstOrDefault(b => b.FileName.Equals(nameBackupDelete, StringComparison.OrdinalIgnoreCase));
 
+            
             if (backup != null)
             {
-                Directory.Delete(Path.Combine(backup.FileTarget, backup.FileName), true);
+                string BackupFileDirectory = Path.Combine(backup.FileTarget, backup.FileName);
+
+                if (Directory.Exists(BackupFileDirectory))
+                {
+                    Directory.Delete(BackupFileDirectory, true);
+                }
                 BackupFile.backups.Remove(backup);
                 BackupFile.SaveBackupsToFile();
+
                 Console.WriteLine($"{viewController.getTraductor($"Backup '{nameBackupDelete}' deleted successfully.")}");
+
+                Console.Clear();
+                Console.WriteLine($"Backup '{nameBackupDelete}' deleted successfully.");
+
                 CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, backup.FileSize, backup.FileTransferTime);
             }
             else
