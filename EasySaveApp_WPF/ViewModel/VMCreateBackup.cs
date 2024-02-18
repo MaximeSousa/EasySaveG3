@@ -154,7 +154,7 @@ namespace EasySaveApp_WPF.ViewModel
                 IsFullBackup = false;
                 IsDifferentialBackup = false;
 
-                MessageBox.Show("Backup created successfully.");
+                MessageBox.Show("Backup created successfully and crypted.");
             }
             catch (Exception ex)
             {
