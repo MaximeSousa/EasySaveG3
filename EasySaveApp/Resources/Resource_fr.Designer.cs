@@ -203,13 +203,22 @@ namespace EasySaveApp.Resources {
                 return ResourceManager.GetString("Leave", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Menu.
         /// </summary>
-        internal static string MainMenuTitle {
-            get {
+        internal static string MainMenuTitle
+        {
+            get
+            {
                 return ResourceManager.GetString("MainMenuTitle", resourceCulture);
+            }
+        }
+        internal static string ChangeOutputFormat
+        {
+            get
+            {
+                return ResourceManager.GetString("Change Log Format", resourceCulture);
             }
         }
     }

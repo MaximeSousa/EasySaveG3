@@ -42,7 +42,8 @@ namespace EasySaveApp.Views
                     Console.WriteLine($"3. {resourceManager.GetString("ChangeBackup")}");
                     Console.WriteLine($"4. {resourceManager.GetString("DeleteBackup")}");
                     Console.WriteLine($"5. {resourceManager.GetString("ChangeLanguage")}");
-                    Console.WriteLine($"6. {resourceManager.GetString("Leave")}");
+                    Console.WriteLine($"6. {resourceManager.GetString("ChangeOutputFormat")}");
+                    Console.WriteLine($"7. {resourceManager.GetString("Leave")}");
 
                     Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
                     string choice = Console.ReadLine();
@@ -65,6 +66,9 @@ namespace EasySaveApp.Views
                             ChangeLanguage();
                             break;
                         case "6":
+                            ChangeOutputFormat(vm);
+                            break;
+                        case "7":
                             exit = true;
                             break;
                         default:
@@ -159,6 +163,21 @@ namespace EasySaveApp.Views
 
                 // Chargez les ressources dans la nouvelle langue
                 LoadResources();
+            }
+            private static void ChangeOutputFormat(ViewModel vm)
+            {
+                Console.WriteLine("Enter the output format (json or xml): ");
+                string format = Console.ReadLine();
+                if (format == "json" || format == "xml")
+                {
+                    vm.OutputFormat = format;
+                    Console.Clear();
+                    Console.WriteLine($"Output format changed to {format}.");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid output format. Please enter either 'json' or 'xml'.");
+                }
             }
         }
     }
