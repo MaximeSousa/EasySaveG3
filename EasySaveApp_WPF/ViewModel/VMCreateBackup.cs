@@ -143,7 +143,6 @@ namespace EasySaveApp_WPF.ViewModel
                     Backups.Add(newBackup);
                     BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
                 }
-                // Encrypter les fichiers si c'est une sauvegarde complète
                 if (IsFullBackup || IsDifferentialBackup)
                 {
                     EncryptFiles(Source, Destination);
@@ -165,7 +164,6 @@ namespace EasySaveApp_WPF.ViewModel
         {
             string[] files = Directory.GetFiles(Source);
 
-            // Parallélisation du chiffrement des fichiers
             Parallel.ForEach(files, file =>
             {
                 EncryptFile(file, Destination);
@@ -176,12 +174,10 @@ namespace EasySaveApp_WPF.ViewModel
             string fileName = Path.GetFileName(filePath);
             string extension = Path.GetExtension(fileName);
 
-            // Vérifier si l'extension du fichier est autorisée à être chiffrée
             if (AllowedExtensions.Contains(extension.ToLower()))
             {
                 string encryptedFilePath = Path.Combine(Destination, fileName + ".encrypted");
 
-                // Clé de chiffrement
                 byte[] key = Encoding.UTF8.GetBytes("cledechiffrement");
 
                 using (FileStream sourceStream = File.OpenRead(filePath))
