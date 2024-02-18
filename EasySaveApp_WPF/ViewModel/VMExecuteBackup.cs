@@ -54,6 +54,8 @@ namespace EasySaveApp_WPF.ViewModel
         public string Destination { get; set; }
         public BackupType Type { get; set; }
 
+        public string OutputFormat { get; set; } = "json";
+
         public VMExecuteBackup()
         {
             LoadBackups();
@@ -184,6 +186,7 @@ namespace EasySaveApp_WPF.ViewModel
                             Directory.Delete(BackupFolder, true);
                         }
                         BackupHandler.BackupHandlerInstance.DeleteBackup(backup);
+                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget,0,"", "Delete", OutputFormat);
                     }
                     BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
                 }
@@ -232,7 +235,7 @@ namespace EasySaveApp_WPF.ViewModel
                         int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
 
                         var FileTransferTime = stopwatch.Elapsed.ToString();
-                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, FileTransferTime);
+                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, FileTransferTime, "Execute", OutputFormat);
                         StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
                     }
                     catch (Exception ex)
@@ -272,7 +275,7 @@ namespace EasySaveApp_WPF.ViewModel
             a.UpdateState(state);
         }
 
-        public void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime)
+        public void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime, string details, string outputFormat)
         {
             BackupLogHandler a = new BackupLogHandler();
             string sourceFilePath = _source;
@@ -289,7 +292,7 @@ namespace EasySaveApp_WPF.ViewModel
                     FileTransferTime = FileTransferTime,
                     FileTime = DateTime.Now,
                 };
-                a.UpdateLog(log);
+                a.UpdateLog(log, outputFormat);
             }
             else
             {

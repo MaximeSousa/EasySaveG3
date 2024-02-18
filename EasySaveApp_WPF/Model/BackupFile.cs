@@ -100,27 +100,6 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-
-
-        //public static void SaveBackupsToFile()
-        //{
-
-        //    string jsonString = JsonSerializer.Serialize(backups);
-        //    File.WriteAllText("backups.json", jsonString);
-        //}
-
-        //public static List<BackupFile> LoadBackupsFromFile()
-        //{
-        //    if (File.Exists("backups.json"))
-        //    {
-        //        string jsonString = File.ReadAllText("backups.json");
-        //        backups = JsonSerializer.Deserialize<List<BackupFile>>(jsonString);
-        //    }
-        //    return backups;
-        //}
-
-
-
         public void Dispose()
         {
             // Libérer les ressources non managées si nécessaire

@@ -1,10 +1,13 @@
-﻿<Window x:Class="EasySaveApp_WPF.MainWindow"
+<Window x:Class="EasySaveApp_WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
-    Title="EasySave" Height="450" Width="800"
+        ResizeMode="NoResize"
+        Title="EasySave" Height="450" Width="800"
+        Icon="Images/IconBackup.png"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
     <Grid>
 
         <Border Background="#344D59" CornerRadius="0,0,10,10"/>
@@ -15,34 +18,52 @@
                 <ColumnDefinition Width="600"/>
             </Grid.ColumnDefinitions>
 
-            <Grid HorizontalAlignment="Left" Width="200" >
-                <Border Background="#7A90A4" CornerRadius="0,0,10,10"/>
-                <StackPanel Height="300" Width="200">
-                    <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToHomeBackupCommand}">
-                        <Grid>
-                            <Image Source="Images/IconHome.png" Style="{StaticResource Image_Style}"/>
-                            <TextBlock Text="Home" Style="{StaticResource Text_Style}" />
-                        </Grid>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToCreateBackupCommand}">
-                        <Grid>
-                            <Image Source="Images/IconCreate.png" Style="{StaticResource Image_Style}"/>
-                            <TextBlock Text="Create" Style="{StaticResource Text_Style}" />
-                        </Grid>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToExecuteBackupCommand}">
-                        <Grid>
-                            <Image Source="Images/IconExecute.png" Style="{StaticResource Image_Style}"/>
-                            <TextBlock Text="Execute" Style="{StaticResource Text_Style}" />
-                        </Grid>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding  NavigateToSettingsBackupCommand}">
-                        <Grid>
-                            <Image Source="Images/IconSetting.png" Style="{StaticResource Image_Style}"/>
-                            <TextBlock Text="Settings" Style="{StaticResource Text_Style}" />
-                        </Grid>
-                    </RadioButton>
-                </StackPanel>
+            <Grid HorizontalAlignment="Left" Width="200">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition  Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Border Background="#718291" CornerRadius="0,0,0,0"/>
+                    <Image Source="Images/IconBackup.png" Style="{StaticResource Logo_Style}"/>
+                    <TextBlock Text="EasySave" Style="{StaticResource TextLogo_Style}"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Border Background="#7A90A4" CornerRadius="0,0,10,10"/>
+                    <StackPanel Height="300" Width="200">
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToHomeBackupCommand}">
+                            <Grid>
+                                <Image Source="Images/IconHome.png" Style="{StaticResource Image_Style}"/>
+                                <TextBlock Text="Home" Style="{StaticResource Text_Style}" />
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToCreateBackupCommand}">
+                            <Grid>
+                                <Image Source="Images/IconCreate.png" Style="{StaticResource Image_Style}"/>
+                                <TextBlock Text="Create" Style="{StaticResource Text_Style}" />
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToExecuteBackupCommand}">
+                            <Grid>
+                                <Image Source="Images/IconExecute.png" Style="{StaticResource Image_Style}"/>
+                                <TextBlock Text="Execute" Style="{StaticResource Text_Style}" />
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToSettingsBackupCommand}">
+                            <Grid>
+                                <Image Source="Images/IconSetting.png" Style="{StaticResource Image_Style}"/>
+                                <TextBlock Text="Settings" Style="{StaticResource Text_Style}" />
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding ButtonExitCommand}">
+                            <Grid>
+                                <Image Source="Images/IconExit.png" Style="{StaticResource Image_Style}"/>
+                                <TextBlock Text="Exit" Style="{StaticResource Text_Style}" />
+                            </Grid>
+                        </RadioButton>
+                    </StackPanel>
+                </Grid>
             </Grid>
 
             <Frame Grid.Column="1" NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}">

@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\IconBackup.png" />
     <None Remove="Images\IconCreate.png" />
     <None Remove="Images\IconDelete.png" />
     <None Remove="Images\IconExecute.png" />
+    <None Remove="Images\IconExit.png" />
     <None Remove="Images\IconHome.png" />
     <None Remove="Images\IconPencil.png" />
     <None Remove="Images\IconSetting.png" />
@@ -20,9 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\IconBackup.png" />
     <Resource Include="Images\IconCreate.png" />
     <Resource Include="Images\IconDelete.png" />
     <Resource Include="Images\IconExecute.png" />
+    <Resource Include="Images\IconExit.png" />
     <Resource Include="Images\IconHome.png" />
     <Resource Include="Images\IconPencil.png" />
     <Resource Include="Images\IconSetting.png" />

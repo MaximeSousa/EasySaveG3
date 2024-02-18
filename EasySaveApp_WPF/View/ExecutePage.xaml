@@ -37,8 +37,8 @@
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Header="Name of the Save" Binding="{Binding FileName}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Source" Binding="{Binding FileSource}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Target" Binding="{Binding FileTarget}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Source" Binding="{Binding FileSource}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Target" Binding="{Binding FileTarget}" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="*"/>
 
                 </DataGrid.Columns>
