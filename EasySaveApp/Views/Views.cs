@@ -24,19 +24,11 @@ namespace EasySaveApp.Views
             private static string language = "English";
             private static ResourceManager resourceManager;
 
-            public static void InitializeResourceManager()
+            private static void InitializeResourceManager()
             {
                 string resourceFile = language == "Français" ? "Resource_fr" : "Resource_en";
                 resourceManager = new ResourceManager($"EasySaveApp.Resources.{resourceFile}", typeof(Menu).Assembly);
-
             }
-
-            public void InitializeResourceManagerViewsModels()
-            {
-                InitializeResourceManager();
-
-            }
-
             public static void ShowMainMenu(ViewModel vm)
             {
                 // Utilisez l'instance de ViewModel passée en paramètre
@@ -44,15 +36,15 @@ namespace EasySaveApp.Views
                 bool exit = false;
                 while (!exit)
                 {
-                    Console.WriteLine(resourceManager.GetString("Main Menu Title"));
-                    Console.WriteLine($"1. {resourceManager.GetString("Create Backup")}");
-                    Console.WriteLine($"2. {resourceManager.GetString("Execute Backup")}");
-                    Console.WriteLine($"3. {resourceManager.GetString("Change Backup")}");
-                    Console.WriteLine($"4. {resourceManager.GetString("Delete Backup")}");
-                    Console.WriteLine($"5. {resourceManager.GetString("Change Language")}");
+                    Console.WriteLine(resourceManager.GetString("MainMenuTitle"));
+                    Console.WriteLine($"1. {resourceManager.GetString("CreateBackup")}");
+                    Console.WriteLine($"2. {resourceManager.GetString("ExecuteBackup")}");
+                    Console.WriteLine($"3. {resourceManager.GetString("ChangeBackup")}");
+                    Console.WriteLine($"4. {resourceManager.GetString("DeleteBackup")}");
+                    Console.WriteLine($"5. {resourceManager.GetString("ChangeLanguage")}");
                     Console.WriteLine($"6. {resourceManager.GetString("Leave")}");
 
-                    Console.WriteLine(resourceManager.GetString("Choose An Option"));
+                    Console.WriteLine(resourceManager.GetString("ChooseAnOption"));
                     string choice = Console.ReadLine();
 
                     switch (choice)
@@ -76,13 +68,17 @@ namespace EasySaveApp.Views
                             exit = true;
                             break;
                         default:
-                            Console.WriteLine(resourceManager.GetString("Invalid Option"));
+                            Console.WriteLine(resourceManager.GetString("InvalidOption"));
                             break;
                     }
                 }
             }
 
-            public string getLanguage() { return language; }
+            private static void LoadResources()
+            {
+                string resourceFile = language == "Français" ? "Resource_fr" : "Resource_en";
+                resourceManager = new ResourceManager($"EasySaveApp.Resources.{resourceFile}", typeof(Menu).Assembly);
+            }
 
             private static void CreateBackup(ViewModel vm)
             {
@@ -129,10 +125,10 @@ namespace EasySaveApp.Views
 
             private static void ExecuteBackup(ViewModel vm)
             {
-                Console.WriteLine(resourceManager.GetString("Execute Backup"));
+                Console.WriteLine(resourceManager.GetString("ExecuteBackup"));
                 Console.Clear();
                 vm.DisplayBackups();
-                Console.WriteLine(resourceManager.GetString("Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'): "));
+                Console.WriteLine("Enter the backup numbers to execute (e.g., '1', '1-3', '1;3'): ");
                 string backupSelection = Console.ReadLine();
                 string[] args = backupSelection.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 try
@@ -143,11 +139,6 @@ namespace EasySaveApp.Views
                 {
                     Console.WriteLine(e.Message);
                 }
-            }
-
-            public string getTraductor(string word)
-            {
-                return resourceManager.GetString(word);
             }
 
             private static void ChangeLanguage()
@@ -164,11 +155,10 @@ namespace EasySaveApp.Views
 
                 // Mettez à jour la variable de langue
                 Console.Clear();
-                Console.WriteLine($"{resourceManager.GetString($"Language changed to {language}.")}");
+                Console.WriteLine($"Language changed to {language}.");
 
                 // Chargez les ressources dans la nouvelle langue
-                InitializeResourceManager();
-
+                LoadResources();
             }
         }
     }
