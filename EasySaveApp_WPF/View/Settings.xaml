@@ -1,0 +1,44 @@
+﻿<Page x:Class="EasySaveApp_WPF.View.Settings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:EasySaveApp_WPF.ViewModel"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="400"
+      Title="SettingsPage">
+
+    <Page.Resources>
+        <local:VMSettings x:Key="VMSettings"/>
+    </Page.Resources>
+ 
+        <Grid DataContext="{StaticResource VMSettings}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Settings" Foreground="#DBDBDB"
+                       FontSize="18"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="20,60,0,20" />
+
+            <!-- Language -->
+            <TextBlock Text="Language" Margin="20,0,0,0" Foreground="#DBDBDB" />
+            <ComboBox SelectedItem="{Binding SelectedLanguage}" Width="200" Margin="20,5,0,10">
+                <ComboBoxItem Content="French" />
+                <ComboBoxItem Content="English" />
+            </ComboBox>
+
+            <!-- Logiciel métier -->
+            <TextBlock Text="Logiciel Métier" Margin="20,0,0,0" Foreground="#DBDBDB" />
+            <StackPanel Orientation="Horizontal" Margin="20,5,0,10">
+                <TextBox Text="{Binding MetierSoftwarePath}" Width="200" Margin="0,0,10,0" />
+                <Button Content="Browse" Command="{Binding BrowseMetierSoftwareCommand}" Width="100" />
+            </StackPanel>
+
+            <!-- Log -->
+            <TextBlock Text="Log" Margin="20,0,0,0" Foreground="#DBDBDB" />
+            <RadioButton GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Content="XML" Margin="20,5,0,0"  Foreground="#DBDBDB" />
+            <RadioButton GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Content="JSON" Margin="20,0,0,0"  Foreground="#DBDBDB" />
+            <Button Content="Valider" Width="130"/>
+        </StackPanel>
+    </Grid>
+</Page>
