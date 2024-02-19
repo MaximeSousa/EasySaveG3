@@ -15,34 +15,26 @@ namespace EasySaveApp_WPF.ViewModel
         private ResourceManager _resourceManager;
         private CultureInfo _currentCulture;
 
-        private static readonly string METIER_SOFTWARE = "CalculatorApp"; // Logiciel métier
-
         public ICommand ChangeLanguageToFrenchCommand { get; }
         public ICommand ChangeLanguageToEnglishCommand { get; }
-        public ICommand BrowseMetierSoftwareCommand { get; } // Ajout de la commande de navigation
-
-        private string _metierSoftwarePath; // Ajout de la propriété de stockage du chemin du logiciel métier
-        public string MetierSoftwarePath
-        {
-            get { return _metierSoftwarePath; }
-            set
-            {
-                _metierSoftwarePath = value;
-                OnPropertyChanged(nameof(MetierSoftwarePath));
-            }
-        }
-
-        public object LocalizedStrings { get; private set; }
 
         public VMSettings()
         {
             ChangeLanguageToFrenchCommand = new RelayCommand(ChangeLanguageToFrench);
             ChangeLanguageToEnglishCommand = new RelayCommand(ChangeLanguageToEnglish);
-            BrowseMetierSoftwareCommand = new RelayCommand(BrowseMetierSoftware); // Initialisation de la commande de navigation
 
             // Initialisation du gestionnaire de ressources pour les langues
-            _resourceManager = new ResourceManager("EasySaveApp_WPF.Resources.Lang.Resources", Assembly.GetExecutingAssembly());
+            _resourceManager = new ResourceManager("EasySaveApp_WPF.Resources.Resources", Assembly.GetExecutingAssembly());
             _currentCulture = CultureInfo.CurrentUICulture;
+
+            // Charger les ressources localisées
+            LoadLocalizedResources();
+        }
+
+        private void LoadLocalizedResources()
+        {
+            // Charger les ressources localisées correspondant à la culture actuelle
+            LocalizedStrings = _resourceManager.GetResourceSet(_currentCulture, true, true);
         }
 
         private void ChangeLanguageToFrench(object obj)
@@ -63,8 +55,8 @@ namespace EasySaveApp_WPF.ViewModel
                 CultureInfo.DefaultThreadCurrentCulture = _currentCulture;
                 CultureInfo.DefaultThreadCurrentUICulture = _currentCulture;
 
-                // Actualisation des ressources dans l'interface utilisateur
-                OnPropertyChanged(nameof(LocalizedStrings));
+                // Charger les ressources localisées correspondant à la nouvelle culture
+                LoadLocalizedResources();
             }
         }
 
@@ -74,29 +66,6 @@ namespace EasySaveApp_WPF.ViewModel
             {
                 return _resourceManager.GetString(key, _currentCulture);
             }
-        }
-
-        private void BrowseMetierSoftware(object obj)
-        {
-            // Ouvrir une boîte de dialogue de navigation pour sélectionner le fichier du logiciel métier
-            // Par exemple :
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "Exécutables (*.exe)|*.exe";
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            openFileDialog.Title = "Sélectionner le logiciel métier";
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                MetierSoftwarePath = openFileDialog.FileName;
-            }
-        }
-
-
-        // Méthode pour vérifier si le logiciel métier est en cours d'exécution
-        private bool IsMetierSoftwareRunning()
-        {
-            Process[] processes = Process.GetProcessesByName(METIER_SOFTWARE);
-            return processes.Length > 0;
         }
     }
 }
