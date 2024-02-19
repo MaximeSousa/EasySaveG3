@@ -9,36 +9,23 @@
       Title="SettingsPage">
 
     <Page.Resources>
-        <local:VMSettings x:Key="VMSettings"/>
+
     </Page.Resources>
  
-        <Grid DataContext="{StaticResource VMSettings}">
+        <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="Settings" Foreground="#DBDBDB"
+            <TextBlock Text="{DynamicResource settings}" Foreground="#DBDBDB"
                        FontSize="18"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Margin="20,60,0,20" />
 
             <!-- Language -->
-            <TextBlock Text="Language" Margin="20,0,0,0" Foreground="#DBDBDB" />
+            <TextBlock Text="{DynamicResource Language}" Margin="20,0,0,0" Foreground="#DBDBDB" />
             <ComboBox SelectedItem="{Binding SelectedLanguage}" Width="200" Margin="20,5,0,10">
-                <ComboBoxItem Content="French" />
-                <ComboBoxItem Content="English" />
+                <ComboBoxItem Content="French" Selected="ComboBoxItem_Selected" />
+                <ComboBoxItem Content="English" Selected="ComboBoxItem_Selected_1" />
             </ComboBox>
-
-            <!-- Logiciel métier -->
-            <TextBlock Text="Logiciel Métier" Margin="20,0,0,0" Foreground="#DBDBDB" />
-            <StackPanel Orientation="Horizontal" Margin="20,5,0,10">
-                <TextBox Text="{Binding MetierSoftwarePath}" Width="200" Margin="0,0,10,0" />
-                <Button Content="Browse" Command="{Binding BrowseMetierSoftwareCommand}" Width="100" />
-            </StackPanel>
-
-            <!-- Log -->
-            <TextBlock Text="Log" Margin="20,0,0,0" Foreground="#DBDBDB" />
-            <RadioButton GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Content="XML" Margin="20,5,0,0"  Foreground="#DBDBDB" />
-            <RadioButton GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Content="JSON" Margin="20,0,0,0"  Foreground="#DBDBDB" />
-            <Button Content="Valider" Width="130"/>
         </StackPanel>
     </Grid>
 </Page>

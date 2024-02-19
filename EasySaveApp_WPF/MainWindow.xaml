@@ -4,14 +4,13 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         ResizeMode="NoResize"
-        Title="EasySave" Height="450" Width="800"
+        Title="('EasySave')"
+        Height="450" Width="800"
         Icon="Images/IconBackup.png"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid>
-
         <Border Background="#344D59" CornerRadius="0,0,10,10"/>
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
@@ -35,31 +34,31 @@
                         <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToHomeBackupCommand}">
                             <Grid>
                                 <Image Source="Images/IconHome.png" Style="{StaticResource Image_Style}"/>
-                                <TextBlock Text="Home" Style="{StaticResource Text_Style}" />
+                                <TextBlock Text="{DynamicResource Home}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
                         <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToCreateBackupCommand}">
                             <Grid>
                                 <Image Source="Images/IconCreate.png" Style="{StaticResource Image_Style}"/>
-                                <TextBlock Text="Create" Style="{StaticResource Text_Style}" />
+                                <TextBlock Text="{DynamicResource Create}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
                         <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToExecuteBackupCommand}">
                             <Grid>
                                 <Image Source="Images/IconExecute.png" Style="{StaticResource Image_Style}"/>
-                                <TextBlock Text="Execute" Style="{StaticResource Text_Style}" />
+                                <TextBlock Text="{DynamicResource Execute}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
                         <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToSettingsBackupCommand}">
                             <Grid>
                                 <Image Source="Images/IconSetting.png" Style="{StaticResource Image_Style}"/>
-                                <TextBlock Text="Settings" Style="{StaticResource Text_Style}" />
+                                <TextBlock Text="{DynamicResource Settings}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
                         <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding ButtonExitCommand}">
                             <Grid>
                                 <Image Source="Images/IconExit.png" Style="{StaticResource Image_Style}"/>
-                                <TextBlock Text="Exit" Style="{StaticResource Text_Style}" />
+                                <TextBlock Text="{DynamicResource Exit}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
                     </StackPanel>

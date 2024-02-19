@@ -36,10 +36,10 @@
             <DataGrid ItemsSource="{Binding Backups}" Grid.Row="1" AutoGenerateColumns="False" SelectionMode="Extended" SelectionChanged="Backup_SelectionChanged" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Name="Backup">
                 <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="Name of the Save" Binding="{Binding FileName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Source" Binding="{Binding FileSource}" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn Header="{DynamicResource Name of the Save}" Binding="{Binding FileName}" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn Header="{DynamicResource Source}" Binding="{Binding FileSource}" IsReadOnly="True" Width="*"/>
                             <DataGridTextColumn Header="Target" Binding="{Binding FileTarget}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn Header="{DynamicResource Type}" Binding="{Binding Type}" IsReadOnly="True" Width="*"/>
 
                 </DataGrid.Columns>
             </DataGrid>
@@ -54,13 +54,13 @@
             <Grid Grid.Column="0">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Grid.Row="2">
 
-                    <TextBlock Text=" New Name" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+                    <TextBlock Text="{DynamicResource New Name}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
                     <TextBox Text="{Binding BackupName}" Margin="20,5,0,10" Width="200" HorizontalAlignment="Left"/>
 
-                    <TextBlock Text="New Source" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+                    <TextBlock Text="{DynamicResource New Source}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
                     <TextBox Text="{Binding Source}" Width="200" Margin="20,5,0,10" HorizontalAlignment="Left"/>
 
-                    <TextBlock Text="New Target" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+                    <TextBlock Text="{DynamicResource New Target}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
                     <TextBox Text="{Binding Destination}" Margin="20,5,0,10" Width="200" HorizontalAlignment="Left"/>
                 </StackPanel>
             </Grid>
@@ -68,12 +68,12 @@
             <Grid  Grid.Column="1">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Row="2">
 
-                    <TextBlock Text="Type of Save" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+                    <TextBlock Text="{DynamicResource Type of Save}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
                     <StackPanel Orientation="Horizontal" Margin="25,10,0,10" Width="200" HorizontalAlignment="Left">
-                        <RadioButton Content="Full" Margin="0,0,50,0" GroupName="BackupType" IsChecked="{Binding IsFullBackup, Mode=TwoWay}" Foreground="White"/>
-                        <RadioButton Content="Differential" GroupName="BackupType" IsChecked="{Binding IsDifferentialBackup, Mode=TwoWay}" Foreground="White"/>
+                        <RadioButton Content="{DynamicResource Full}" Margin="0,0,50,0" GroupName="BackupType" IsChecked="{Binding IsFullBackup, Mode=TwoWay}" Foreground="White"/>
+                        <RadioButton Content="{DynamicResource Differential}" GroupName="BackupType" IsChecked="{Binding IsDifferentialBackup, Mode=TwoWay}" Foreground="White"/>
                     </StackPanel>
-                    <Button Content="Change" Command="{Binding ChangeBackupCommand}" Margin="25,15,0,10" HorizontalAlignment="left"/>
+                    <Button Content="{DynamicResource Change}" Command="{Binding ChangeBackupCommand}" Margin="25,15,0,10" HorizontalAlignment="left"/>
                 </StackPanel>
             </Grid>
         </Grid>

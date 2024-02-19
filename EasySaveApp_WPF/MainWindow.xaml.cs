@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System;
 using EasySaveApp_WPF.ViewModel;
 
 namespace EasySaveApp_WPF
@@ -12,6 +13,7 @@ namespace EasySaveApp_WPF
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
         }
 
     }
