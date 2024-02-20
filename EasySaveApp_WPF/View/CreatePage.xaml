@@ -15,7 +15,7 @@
 
     <Grid DataContext="{StaticResource CreateBackupViewModel}">
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="{DynamicResource Create a Save}"  Foreground="#DBDBDB"
+            <TextBlock Text="{DynamicResource CreateaSave}"  Foreground="#DBDBDB"
                    FontSize="18"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"

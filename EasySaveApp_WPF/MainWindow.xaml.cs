@@ -13,7 +13,7 @@ namespace EasySaveApp_WPF
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
+            Application.Current.Resources.MergedDictionaries[index: 0].Source = new Uri("Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
         }
 
     }

@@ -18,14 +18,18 @@ namespace EasySaveApp_WPF.View
             InitializeComponent();
         }
 
-        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Setting.TraductorFrench();
-        }
-
-        private void ComboBoxItem_Selected_1(object sender, RoutedEventArgs e)
-        {
-            Setting.TraductorEnglish();
+            ComboBoxItem selectedItems = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+           
+            if (selectedItems.Content.ToString() == "French")
+            {
+                Setting.TraductorFrench();
+            }
+            else
+            {
+                Setting.TraductorEnglish();
+            }
         }
     }
 }

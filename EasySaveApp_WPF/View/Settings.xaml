@@ -22,9 +22,9 @@
 
             <!-- Language -->
             <TextBlock Text="{DynamicResource Language}" Margin="20,0,0,0" Foreground="#DBDBDB" />
-            <ComboBox SelectedItem="{Binding SelectedLanguage}" Width="200" Margin="20,5,0,10">
-                <ComboBoxItem Content="French" Selected="ComboBoxItem_Selected" />
-                <ComboBoxItem Content="English" Selected="ComboBoxItem_Selected_1" />
+            <ComboBox Width="200" Margin="20,5,0,10" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBoxItem>French</ComboBoxItem>
+                <ComboBoxItem>English</ComboBoxItem>
             </ComboBox>
         </StackPanel>
     </Grid>

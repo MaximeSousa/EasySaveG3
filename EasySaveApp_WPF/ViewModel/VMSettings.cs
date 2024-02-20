@@ -19,11 +19,11 @@ namespace EasySaveApp_WPF.ViewModel
 
         public void TraductorEnglish()
         {
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
         }
         public void TraductorFrench()
         {
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("Resources/DictionaryFrench.xaml", UriKind.RelativeOrAbsolute);
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryFrench.xaml", UriKind.RelativeOrAbsolute);
         }
     }
 }

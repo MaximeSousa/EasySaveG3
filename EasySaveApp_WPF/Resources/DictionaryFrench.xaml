@@ -14,14 +14,15 @@
     <system:String x:Key="Name">Nom</system:String>
     <system:String x:Key="Home">Menu</system:String>
     <system:String x:Key="Target">Direction</system:String>
-    <system:String x:Key="Type of Save">Type de sauvegarde</system:String>
+    <system:String x:Key="TypeofSave">Type de sauvegarde</system:String>
     <system:String x:Key="Confirm">Confirmer</system:String>
-    <system:String x:Key="Create a Save">Créer une sauvegarde</system:String>
-    <system:String x:Key="New Name">Nouveau nom</system:String>
-    <system:String x:Key="New Source">Nouvelle source</system:String>
-    <system:String x:Key="New Target">Nouvelle destination</system:String>
+    <system:String x:Key="CreateaSave">Créer une sauvegarde</system:String>
+    <system:String x:Key="NewName">Nouveau nom</system:String>
+    <system:String x:Key="NewSource">Nouvelle source</system:String>
+    <system:String x:Key="NewTarget">Nouvelle destination</system:String>
     <system:String x:Key="Change">Changer</system:String>
-    <system:String x:Key="Welcome to EasySaveApp !">Bienvenue à EasySaveApp !</system:String>
+    <system:String x:Key="WelcometoEasySaveApp !">Bienvenue à EasySaveApp !</system:String>
     <system:String x:Key="Execute">Executer</system:String>
     <system:String x:Key="Exit">Quitter</system:String>
+    <system:String x:Key="Nameofthesave">Nom de la sauvegarde</system:String>
 </ResourceDictionary>

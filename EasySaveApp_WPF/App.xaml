@@ -192,7 +192,6 @@
                 </Style.Triggers>
             </Style>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/DictionaryFrench.xaml"/>
                 <ResourceDictionary Source="Resources/DictionaryEnglish.xaml"/>
                 <ResourceDictionary Source="Styles/Button.xaml"/>
                 <ResourceDictionary Source="Styles/Image.xaml"/>
