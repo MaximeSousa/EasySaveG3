@@ -31,31 +31,31 @@
                 <Grid Grid.Row="1">
                     <Border Background="#7A90A4" CornerRadius="0,0,10,10"/>
                     <StackPanel Height="300" Width="200">
-                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToHomeBackupCommand}">
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding DataContext.NavigateToHomeBackupCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Grid>
                                 <Image Source="Images/IconHome.png" Style="{StaticResource Image_Style}"/>
                                 <TextBlock Text="{DynamicResource Home}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToCreateBackupCommand}">
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding DataContext.NavigateToCreateBackupCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Grid>
                                 <Image Source="Images/IconCreate.png" Style="{StaticResource Image_Style}"/>
                                 <TextBlock Text="{DynamicResource Create}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToExecuteBackupCommand}">
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding DataContext.NavigateToExecuteBackupCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Grid>
                                 <Image Source="Images/IconExecute.png" Style="{StaticResource Image_Style}"/>
                                 <TextBlock Text="{DynamicResource Execute}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding NavigateToSettingsBackupCommand}">
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding DataContext.NavigateToSettingsBackupCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Grid>
                                 <Image Source="Images/IconSetting.png" Style="{StaticResource Image_Style}"/>
                                 <TextBlock Text="{DynamicResource Settings}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding ButtonExitCommand}">
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding DataContext.ButtonExitCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Grid>
                                 <Image Source="Images/IconExit.png" Style="{StaticResource Image_Style}"/>
                                 <TextBlock Text="{DynamicResource Exit}" Style="{StaticResource Text_Style}" />

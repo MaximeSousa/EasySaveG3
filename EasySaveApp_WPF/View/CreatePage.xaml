@@ -35,7 +35,7 @@
                 <RadioButton Content="{DynamicResource Full}" Margin="0,0,50,0" GroupName="BackupType" IsChecked="{Binding IsFullBackup, Mode=TwoWay}" Foreground="White"/>
                 <RadioButton Content="{DynamicResource Differential}" GroupName="BackupType" IsChecked="{Binding IsDifferentialBackup, Mode=TwoWay}" Foreground="White"/>
             </StackPanel>
-            <Button Content="Confirm" Command="{Binding CreateBackupCommand}" Margin="25,10,0,10" HorizontalAlignment="left"/>
+            <Button Content="{DynamicResource Confirm}" Command="{Binding CreateBackupCommand}" Margin="25,10,0,10" HorizontalAlignment="left"/>
         </StackPanel>
     </Grid>
 </Page>

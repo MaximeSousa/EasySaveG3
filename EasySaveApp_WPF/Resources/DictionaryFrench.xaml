@@ -25,4 +25,6 @@
     <system:String x:Key="Execute">Executer</system:String>
     <system:String x:Key="Exit">Quitter</system:String>
     <system:String x:Key="Nameofthesave">Nom de la sauvegarde</system:String>
+    <system:String x:Key="Type">Type</system:String>
+
 </ResourceDictionary>
