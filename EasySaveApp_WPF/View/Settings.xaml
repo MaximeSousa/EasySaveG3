@@ -11,9 +11,13 @@
     <Page.Resources>
         <local:VMSettings x:Key="VMSettings"/>
     </Page.Resources>
- 
-        <Grid DataContext="{StaticResource VMSettings}">
-        <StackPanel Orientation="Vertical">
+
+    <Grid DataContext="{StaticResource VMSettings}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.RowSpan="2">
             <TextBlock Text="Settings" Foreground="#DBDBDB"
                        FontSize="18"
                        HorizontalAlignment="Left"
@@ -36,9 +40,9 @@
 
             <!-- Log -->
             <TextBlock Text="Log" Margin="20,0,0,0" Foreground="#DBDBDB" />
-            <RadioButton GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Content="XML" Margin="20,5,0,0"  Foreground="#DBDBDB" />
-            <RadioButton GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Content="JSON" Margin="20,0,0,0"  Foreground="#DBDBDB" />
-            <Button Content="Valider" Width="130"/>
+            <RadioButton Content="XML" Margin="20,5,0,0" GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Foreground="White" />
+            <RadioButton Content="JSON" Margin="20,0,0,0" GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Foreground="White" />
+            <Button Content="Confirm" Command="{Binding SelectFormat}" Margin="25,10,0,10" HorizontalAlignment="left"/>
         </StackPanel>
     </Grid>
 </Page>
