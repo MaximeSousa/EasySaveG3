@@ -7,12 +7,15 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Text;
 using System.Linq;
+using Microsoft.Win32;
 
 namespace EasySaveApp_WPF.ViewModel
 {
     public class VMCreateBackup : VMBaseViewModel
     {
         public ICommand CreateBackupCommand { get; }
+        public ICommand BrowseSourceCommand { get; }
+        public ICommand BrowseTargetCommand { get; }
 
         private string _backupName;
         public string BackupName
@@ -84,6 +87,38 @@ namespace EasySaveApp_WPF.ViewModel
         {
             LoadBackups();
             CreateBackupCommand = new RelayCommand(CreateBackup);
+            BrowseSourceCommand = new RelayCommand(BrowseSource);
+            BrowseTargetCommand = new RelayCommand(BrowseTarget);
+        }
+
+        private void BrowseSource(object obj)
+        {
+            OpenFileDialog FolderDialog = new();
+
+            FolderDialog.CheckFileExists = false;
+            FolderDialog.FileName = "Source Folder";
+
+            if (FolderDialog.ShowDialog() == true)
+            {
+                // Récupérer le chemin du dossier sélectionné
+                string FolderPath = Path.GetDirectoryName(FolderDialog.FileName);
+                Source = FolderPath;
+            }
+        }
+
+        private void BrowseTarget(object obj)
+        {
+            OpenFileDialog FolderDialog = new();
+
+            FolderDialog.CheckFileExists = false;
+            FolderDialog.FileName = "Target Folder";
+
+            if (FolderDialog.ShowDialog() == true)
+            {
+                // Récupérer le chemin du dossier sélectionné
+                string FolderPath = Path.GetDirectoryName(FolderDialog.FileName);
+                Destination = FolderPath;
+            }
         }
 
         private void LoadBackups()

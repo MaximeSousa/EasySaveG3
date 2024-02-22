@@ -130,6 +130,11 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
+        public BackupFile Clone()
+        {
+            return new BackupFile(FileName, FileSource, FileTarget, Type);
+        }
+
         public void Dispose()
         {
             // Libérer les ressources non managées si nécessaire
@@ -166,11 +171,10 @@ namespace EasySaveApp_WPF.Models
 
         public void UpdateBackup(BackupFile backup)
         {
-
             int index = _saveBackups.FindIndex(b => b.FileName == backup.FileName && b.FileSource == backup.FileSource && b.FileTarget == backup.FileTarget);
-          
+
             if (index != -1)
-            { 
+            {
                 // Mettre à jour la sauvegarde existante
                 _saveBackups[index] = backup;
                 SaveBackupsToJson();
@@ -182,6 +186,7 @@ namespace EasySaveApp_WPF.Models
                 SaveBackupsToJson();
             }
         }
+
 
         public void SaveBackupsToJson()
         {
