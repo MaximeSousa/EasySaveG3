@@ -4,7 +4,7 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         ResizeMode="NoResize"
-        Title="('EasySave')"
+        Title="EasySave"
         Height="450" Width="800"
         Icon="Images/IconBackup.png"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
