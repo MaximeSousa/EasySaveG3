@@ -1,5 +1,8 @@
 ﻿using System.Windows;
+using System;
+using EasySaveApp_WPF.Models;
 using EasySaveApp_WPF.ViewModel;
+using System.Windows.Threading;
 
 namespace EasySaveApp_WPF
 {
@@ -11,7 +14,12 @@ namespace EasySaveApp_WPF
         public MainWindow()
         {
             InitializeComponent();
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler((sender, e) => BackupFile.MonitorProcess());
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
             DataContext = new MainWindowViewModel();
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
         }
 
     }

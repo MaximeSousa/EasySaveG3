@@ -1,18 +1,19 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Globalization;
 using System.Resources;
 using System.Reflection;
 using System.Windows.Input;
+using EasySaveApp_WPF.ViewModel;
+using System.Configuration;
 using System.Windows;
+
 
 namespace EasySaveApp_WPF.ViewModel
 {
     public class VMSettings : VMBaseViewModel
     {
+        public VMSettings()
+        {
         private ResourceManager _resourceManager;
         private CultureInfo _currentCulture;
 
@@ -65,40 +66,15 @@ namespace EasySaveApp_WPF.ViewModel
                 CultureInfo.DefaultThreadCurrentCulture = _currentCulture;
                 CultureInfo.DefaultThreadCurrentUICulture = _currentCulture;
 
-                // Actualisation des ressources dans l'interface utilisateur
-                OnPropertyChanged(nameof(LocalizedStrings));
-            }
         }
 
-        public string this[string key]
+        public void TraductorEnglish()
         {
-            get
-            {
-                return _resourceManager.GetString(key, _currentCulture);
-            }
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
         }
-
-        private void BrowseMetierSoftware(object obj)
+        public void TraductorFrench()
         {
-            // Ouvrir une boîte de dialogue de navigation pour sélectionner le fichier du logiciel métier
-            // Par exemple :
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "Exécutables (*.exe)|*.exe";
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            openFileDialog.Title = "Sélectionner le logiciel métier";
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                MetierSoftwarePath = openFileDialog.FileName;
-            }
-        }
-
-
-        // Méthode pour vérifier si le logiciel métier est en cours d'exécution
-        private bool IsMetierSoftwareRunning()
-        {
-            Process[] processes = Process.GetProcessesByName(METIER_SOFTWARE);
-            return processes.Length > 0;
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryFrench.xaml", UriKind.RelativeOrAbsolute);
         }
 
         private bool _isXmlSelected;

@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using Newtonsoft.Json;
 
 namespace EasySaveApp_WPF.Models
 {
     public class BackupFile : IBase
     {
+        public static bool canBeExecuted = true;
+        private static bool IsInExecution = false;
         public string FileName { get; set; }
         public string FileSource { get; set; }
         public string FileTarget { get; set; }
@@ -40,6 +44,24 @@ namespace EasySaveApp_WPF.Models
             CopiedFiles = new List<string>();
         }
 
+        public static void MonitorProcess()
+        {
+            // Start the process monitoring thread
+            Process[] processes = Process.GetProcessesByName("CalculatorApp");
+            if (processes.Length > 0)   // check if a software of the list is running
+            {
+                canBeExecuted = false;
+                if (IsInExecution == true)
+                {
+                    // Pause
+                    Thread.Sleep(1000);
+                }
+
+            }
+            else
+                canBeExecuted = true;
+        }
+
         public static BackupFile CreateBackup(string FileName, string FileSource, string FileTarget, BackupType Type)
         {
             //LoadBackupsFromFile();
@@ -64,6 +86,10 @@ namespace EasySaveApp_WPF.Models
 
                 if (Type == BackupType.Full || (Type == BackupType.Differential && File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath)))
                 {
+                    while (!canBeExecuted)
+                    {
+                        Thread.Sleep(1000);
+                    }
                     File.Copy(filePath, targetPath, true);
                     CopiedFiles.Add(filePath);
                 }
@@ -71,6 +97,10 @@ namespace EasySaveApp_WPF.Models
 
             foreach (var DirectoryPath in Directory.GetDirectories(FileSource))
             {
+                while (!canBeExecuted)
+                {
+                    Thread.Sleep(1000);
+                }
                 var directoryName = Path.GetFileName(DirectoryPath);
                 var newDirectoryTarget = Path.Combine(BackupSaveFolder, directoryName);
                 CopyDirectory(DirectoryPath, newDirectoryTarget);

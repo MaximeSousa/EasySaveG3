@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using EasySaveApp_WPF.Models;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EasySaveApp_WPF.ViewModel
 {
@@ -107,7 +109,6 @@ namespace EasySaveApp_WPF.ViewModel
                         backup.FileName = BackupName;
                     }
 
-
                     if (!string.IsNullOrEmpty(Source) && Source != backup.FileSource)
                     {
                         backup.FileSource = Source;
@@ -175,45 +176,48 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
-
-
         private void ExecuteBackup(object parameter)
         {
             if (SelectedBackups != null)
             {
-                foreach (var backup in SelectedBackups)
+                Parallel.ForEach(SelectedBackups, backup =>
                 {
-                    try
+                    Thread backupThread = new Thread(() =>
                     {
-                        Stopwatch stopwatch = new();
-                        stopwatch.Start();
+                        try
+                        {
+                            Stopwatch stopwatch = new Stopwatch();
+                            stopwatch.Start();
 
-                        backup.ExecuteCopy();
-                        backup.Executed = true;
-                        stopwatch.Stop();
-                        string stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
+                            backup.ExecuteCopy();
+                            backup.Executed = true;
+                            stopwatch.Stop();
+                            string stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
 
-                        BackupLogHandler a = new();
-                        string sourceFilePath = backup.FileSource;
+                            BackupLogHandler a = new BackupLogHandler();
+                            string sourceFilePath = backup.FileSource;
 
-                        int filesAlreadyCopied = backup.CopiedFiles.Count;
-                        
-                        DirectoryInfo dirInfo = new(backup.FileSource);
-                        long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
+                            int filesAlreadyCopied = backup.CopiedFiles.Count;
 
-                        long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
-                        int totalFilesToCopy = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Count();
-                        int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
+                            DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
+                            long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
 
-                        var FileTransferTime = stopwatch.Elapsed.ToString();
-                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, FileTransferTime, "Execute", OutputFormat);
-                        StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error executing backup '{backup.FileName}': {ex.Message}");
-                    }
-                }
+                            long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
+                            int totalFilesToCopy = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Count();
+                            int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
+
+                            var FileTransferTime = stopwatch.Elapsed.ToString();
+                            CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, FileTransferTime, "Execute", OutputFormat);
+                            StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error executing backup '{backup.FileName}': {ex.Message}");
+                        }
+                    });
+
+                    backupThread.Start();
+                });
 
                 MessageBox.Show("Selected backups execution successful.");
                 LoadBackups();

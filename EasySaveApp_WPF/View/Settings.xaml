@@ -9,40 +9,30 @@
       Title="SettingsPage">
 
     <Page.Resources>
-        <local:VMSettings x:Key="VMSettings"/>
-    </Page.Resources>
 
-    <Grid DataContext="{StaticResource VMSettings}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0*"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Grid.RowSpan="2">
-            <TextBlock Text="Settings" Foreground="#DBDBDB"
+    </Page.Resources>
+ 
+        <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="{DynamicResource settings}" Foreground="#DBDBDB"
+
                        FontSize="18"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Margin="20,60,0,20" />
 
             <!-- Language -->
-            <TextBlock Text="Language" Margin="20,0,0,0" Foreground="#DBDBDB" />
-            <ComboBox SelectedItem="{Binding SelectedLanguage}" Width="200" Margin="20,5,0,10">
-                <ComboBoxItem Content="French" />
-                <ComboBoxItem Content="English" />
+            <TextBlock Text="{DynamicResource Language}" Margin="20,0,0,0" Foreground="#DBDBDB" />
+            <ComboBox Width="200" Margin="20,5,0,10" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBoxItem>French</ComboBoxItem>
+                <ComboBoxItem>English</ComboBoxItem>
             </ComboBox>
-
-            <!-- Logiciel métier -->
-            <TextBlock Text="Logiciel Métier" Margin="20,0,0,0" Foreground="#DBDBDB" />
-            <StackPanel Orientation="Horizontal" Margin="20,5,0,10">
-                <TextBox Text="{Binding MetierSoftwarePath}" Width="200" Margin="0,0,10,0" />
-                <Button Content="Browse" Command="{Binding BrowseMetierSoftwareCommand}" Width="100" />
-            </StackPanel>
-
             <!-- Log -->
             <TextBlock Text="Log" Margin="20,0,0,0" Foreground="#DBDBDB" />
             <RadioButton Content="XML" Margin="20,5,0,0" GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Foreground="White" />
             <RadioButton Content="JSON" Margin="20,0,0,0" GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Foreground="White" />
             <Button Content="Confirm" Command="{Binding SelectFormat}" Margin="25,10,0,10" HorizontalAlignment="left"/>
+
         </StackPanel>
     </Grid>
 </Page>
