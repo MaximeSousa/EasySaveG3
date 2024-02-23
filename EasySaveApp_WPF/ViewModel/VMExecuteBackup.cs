@@ -54,7 +54,7 @@ namespace EasySaveApp_WPF.ViewModel
         public string Destination { get; set; }
         public BackupType Type { get; set; }
 
-        public string OutputFormat { get; set; } = "json";
+        public static string OutputFormat { get; set; } = "json";
 
         public VMExecuteBackup()
         {
