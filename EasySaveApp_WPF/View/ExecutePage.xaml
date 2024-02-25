@@ -3,13 +3,15 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EasySaveApp_WPF.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ExecutePage">
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:VMExecuteBackup x:Key="ExecuteBackupViewModel"/>
     </Page.Resources>
-
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -38,7 +40,7 @@
 
                     <DataGridTextColumn Header="{DynamicResource Nameofthesave}" Binding="{Binding FileName}" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn Header="{DynamicResource Source}" Binding="{Binding FileSource}" IsReadOnly="True" Width="*"/>
-                            <DataGridTextColumn Header="Target" Binding="{Binding FileTarget}" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn Header="Target" Binding="{Binding FileTarget}" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn Header="{DynamicResource Type}" Binding="{Binding Type}" IsReadOnly="True" Width="*"/>
 
                 </DataGrid.Columns>
