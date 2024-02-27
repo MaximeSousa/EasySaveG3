@@ -220,7 +220,7 @@ namespace EasySaveApp_WPF.ViewModel
 
                         MessageBox.Show("Backup modification successful.");
                         LoadBackups();
-                        isChange = false;
+                        IsChange = false;
                     }
                     else
                     {

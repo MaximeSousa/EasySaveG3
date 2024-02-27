@@ -16,7 +16,7 @@ namespace EasySaveApp_WPF.Model
 
         public Server()
         {
-            _server = Connect();
+            //_server = Connect();
         }
 
         public static Socket Connect()
