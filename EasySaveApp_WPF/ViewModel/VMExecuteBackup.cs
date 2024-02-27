@@ -35,6 +35,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+
         private bool _isFullBackup;
         public bool IsFullBackup
         {
@@ -138,53 +139,6 @@ namespace EasySaveApp_WPF.ViewModel
             IsChange = true;
         }
 
-        //private void ChangeBackup(object parameter)
-        //{
-        //    if (SelectedBackups != null && SelectedBackups.Count == 1)
-        //    {
-        //        var backup = SelectedBackups[0];
-
-        //        try
-        //        {
-        //            BackupFile originalBackup = new BackupFile(backup.FileName, backup.FileSource, backup.FileTarget, backup.Type);
-        //            if (!string.IsNullOrEmpty(BackupName) && BackupName != backup.FileName)
-        //            {
-        //                backup.FileName = BackupName;
-        //            }
-
-        //            if (!string.IsNullOrEmpty(Source) && Source != backup.FileSource)
-        //            {
-        //                backup.FileSource = Source;
-        //            }
-
-        //            if (!string.IsNullOrEmpty(Destination) && Destination != backup.FileTarget)
-        //            {
-        //                backup.FileTarget = Destination;
-        //            }
-
-        //            if (Type != backup.Type)
-        //            {
-        //                backup.Type = Type;
-        //            }
-
-        //            BackupHandler.BackupHandlerInstance.UpdateBackup(originalBackup);
-
-        //            BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
-
-        //            MessageBox.Show("Backup modification successful.");
-        //            LoadBackups();
-        //            isChange = false;
-        //        }
-        //        finally
-        //        {
-        //            backup.Dispose();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Please select a backup to modify.");
-        //    }
-        //}
         private void ChangeBackup(object parameter)
         {
             if (SelectedBackups != null && SelectedBackups.Count == 1)

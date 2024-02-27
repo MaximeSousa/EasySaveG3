@@ -21,7 +21,6 @@ namespace Client_WPF
         public void Client()
         {
             Socket socket = Seconnecter();
-            //DialoguerRezo(socket);
             Task.Run(async () => await DialoguerRezo(socket));
         }
 
@@ -41,36 +40,44 @@ namespace Client_WPF
             return server;
         }
 
-        //private static void DialoguerRezo(Socket serveur)
+        //private async Task DialoguerRezo(Socket server)
         //{
-        //    byte[] data = new byte[1024];
-        //    int recv = serveur.Receive(data);
-        //    string stringData;
-        //    stringData = Encoding.UTF8.GetString(data, 0, recv);
-        //    Console.WriteLine(stringData);
-
         //    while (true)
         //    {
-        //        var TimeClient = new Stopwatch();
-        //        TimeClient.Start();
-        //        for (int k = 0; k < 100; k++)
-        //        {
+        //        byte[] data = new byte[1024];
+        //        int recv = await ReceiveAsync(server, data);
+        //        string stringData = Encoding.UTF8.GetString(data, 0, recv);
+        //        //string[] parts = stringData.Split(':');
+        //        //if (parts.Length == 4)
+        //        //{
+        //        //    string backupName = parts[0];
+        //        //    string BackupState = parts[1];
+        //        //    double percentage = double.Parse(parts[2]);
+        //        //    double progress = double.Parse(parts[3]);
 
-        //            data = new byte[1024];
-        //            recv = serveur.Receive(data);
-        //            stringData = Encoding.UTF8.GetString(data, 0, recv);
-        //            string progress = stringData;
-        //            Console.WriteLine($"-Serveur: [{progress}] {k}% - {TimeClient.Elapsed:mm\\:ss}");
-        //            System.Threading.Thread.Sleep(100); // Simule un traitement
-        //            Console.SetCursorPosition(0, Console.CursorTop - 1); // Retour en arrière pour effacer la ligne précédente
+        //        //    OnBackupInfoReceived(backupName, progress, BackupState, percentage);
+        //        //}
+        //        string[] backupMessages = stringData.Split(new string[] { "Backup_" }, StringSplitOptions.RemoveEmptyEntries);
+        //        foreach (string backupMessage in backupMessages)
+        //        {
+        //            string[] parts = backupMessage.Split(':');
+        //            if (parts.Length == 4)
+        //            {
+        //                string backupName = "Backup_" + parts[0];
+        //                string backupState = parts[1];
+        //                double percentage = double.Parse(parts[2]);
+        //                double progress = double.Parse(parts[3]);
+
+        //                OnBackupInfoReceived(backupName, progress, backupState, percentage);
+        //            }
+        //            else
+        //            {
+        //                // Le message n'est pas dans le format attendu
+        //            }
         //        }
-        //        TimeClient.Stop();
-        //        Deco(serveur);
-        //        //break;
+        //        await Task.Delay(100);
         //    }
         //}
-
-
 
         private async Task DialoguerRezo(Socket server)
         {
@@ -79,7 +86,22 @@ namespace Client_WPF
             {
                 int recv = await ReceiveAsync(server, data);
                 string stringData = Encoding.UTF8.GetString(data, 0, recv);
-                OnMessageReceived(stringData);
+                string[] backupMessages = stringData.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string backupMessage in backupMessages)
+                {
+                    string[] parts = backupMessage.Split(':');
+                    if (parts.Length == 2)
+                    {
+                        string backupName = parts[0];
+                        string backupState = parts[1];
+
+                        OnBackupInfoReceived(backupName, backupState);
+                    }
+                    else
+                    {
+                        // Le message n'est pas dans le format attendu
+                    }
+                }
                 await Task.Delay(100);
             }
         }
@@ -91,22 +113,13 @@ namespace Client_WPF
                 socket.EndReceive);
         }
 
-        //private void OnMessageReceived(string message)
-        //{
-        //    MessageReceived?.Invoke(this, message);
-        //}
-
-        private void OnMessageReceived(string message)
+        private void OnBackupInfoReceived(string backupName, string BackupState)
         {
             _dispatcher.Invoke(() =>
             {
-                MessageReceived?.Invoke(this, message);
+                MessageReceived?.Invoke(this, backupName + ":" + BackupState);
+
             });
         }
-
-        //private static void Deco(Socket socket)
-        //{
-        //    socket.Close();//  socket.Shutdown(SocketShutdown.Both);
-        //}
     }
 }

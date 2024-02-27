@@ -3,7 +3,6 @@ using System;
 using EasySaveApp_WPF.Models;
 using EasySaveApp_WPF.ViewModel;
 using System.Windows.Threading;
-using EasySaveApp_WPF.Model;
 
 namespace EasySaveApp_WPF
 {
@@ -13,6 +12,7 @@ namespace EasySaveApp_WPF
     public partial class MainWindow : Window
     {
         private Server _server;
+        private VMExecuteBackup executeModel;
         public MainWindow()
         {
             InitializeComponent();
@@ -21,7 +21,7 @@ namespace EasySaveApp_WPF
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
             DataContext = new MainWindowViewModel();
-            _server = new Server();
+            _server = new Server(executeModel);
             Application.Current.Resources.MergedDictionaries[0].Source = new Uri("Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
         }
 

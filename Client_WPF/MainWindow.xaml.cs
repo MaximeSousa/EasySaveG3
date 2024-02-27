@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
-
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Client_WPF
 {
@@ -14,10 +16,11 @@ namespace Client_WPF
     public partial class MainWindow : Window
     {
         private ClientWindows _client;
-
+        private ObservableCollection<BackupModel> backupModels = new ObservableCollection<BackupModel>();
         public MainWindow()
         {
             InitializeComponent();
+            BackupListView.ItemsSource = backupModels;
             _client = new ClientWindows(Dispatcher);
             _client.MessageReceived += OnMessageReceived;
             _client.Client();
@@ -28,32 +31,58 @@ namespace Client_WPF
             // Mise à jour de l'interface utilisateur sur le thread de l'interface utilisateur
             Dispatcher.Invoke(() =>
             {
-                // Diviser le message en nom de sauvegarde et progrès
                 string[] parts = message.Split(':');
-                if (parts.Length == 2 && int.TryParse(parts[1], out int progress))
+                if (parts.Length == 2)
                 {
-                    // Mettre à jour la barre de progression
-                    UpdateProgressBar(parts[0], progress);
+                    string backupName = parts[0];
+                    string backupstate = parts[1];
+
+                    var existingBackup = backupModels.FirstOrDefault(b => b.BackupName == backupName);
+                    if (existingBackup != null)
+                    {
+                        existingBackup.BackupState = backupstate;
+                    }
+                    else
+                    {
+                        backupModels.Add(new BackupModel { BackupName = backupName, BackupState = backupstate });
+                    }
                 }
                 else
                 {
-                   
+                    // Le message n'est pas dans le format attendu
                 }
             });
         }
-
-        private void UpdateProgressBar(string backupName, int progress)
+    }
+    public class BackupModel : INotifyPropertyChanged
+    {
+        private string _backupName;
+        public string BackupName
         {
-            if (backupName == "Backup1")
+            get { return _backupName; }
+            set
             {
-                ProgressBar1.Value = progress;
-            }
-            else if (backupName == "Backup2")
-            {
-                ProgressBar2.Value = progress;
+                _backupName = value;
+                OnPropertyChanged(nameof(BackupName));
             }
         }
 
-       
+        private string _backupState;
+        public string BackupState
+        {
+            get { return _backupState; }
+            set
+            {
+                _backupState = value;
+                OnPropertyChanged(nameof(BackupState));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
+
 }
