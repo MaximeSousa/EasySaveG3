@@ -28,6 +28,12 @@
                 <Button Command="{Binding ExecuteBackupCommand}">
                     <Image Source="/Images/IconExecute.png" Style="{StaticResource Image_Style}"/>
                 </Button>
+                <Button Content="Pause" Command="{Binding PauseBackupCommand}">
+                </Button>
+                <Button Content="Continuer" Command="{Binding ContinueBackupCommand}">
+                </Button>
+                <Button Content="Arrêter" Command="{Binding StopBackupCommand}">
+                </Button>
             </StackPanel>
         </Grid>
 

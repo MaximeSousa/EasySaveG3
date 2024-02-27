@@ -26,17 +26,17 @@
             <TextBlock Text="Source" Margin="20,0,0,0" Foreground="#DBDBDB"/>
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding Source}"  Width="300" Margin="20,5,0,5" HorizontalAlignment="Left"/>
-                <Button Content="Browse" Command="{Binding BrowseSourceCommand}" Height="20" Width="50" Margin="5,5,0,5" />
+                <Button Content="{DynamicResource Browse}" Command="{Binding BrowseSourceCommand}" Height="20" Width="50" Margin="5,5,0,5" />
             </StackPanel>
             
             
             <TextBlock Text="Target" Margin="20,0,0,0" Foreground="#DBDBDB"/>
             <StackPanel  Orientation="Horizontal">
                 <TextBox Name="Destination" Text="{Binding Destination}" Margin="20,5,0,5" Width="300" HorizontalAlignment="Left"/>
-                <Button Content="Browse" Command="{Binding BrowseTargetCommand}" Height="20" Width="50" Margin="5,5,0,5" />
+                <Button Content="{DynamicResource Browse}" Command="{Binding BrowseTargetCommand}" Height="20" Width="50" Margin="5,5,0,5" />
             </StackPanel>
-            
-            <TextBlock Text="Type of Save" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+
+            <TextBlock Text="{DynamicResource Type of Save}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
             <StackPanel Orientation="Horizontal" Margin="25,10,0,10" Width="250" HorizontalAlignment="Left">
 
                 <RadioButton Content="{DynamicResource Full}" Margin="0,0,50,0" GroupName="BackupType" IsChecked="{Binding IsFullBackup, Mode=TwoWay}" Foreground="White"/>
