@@ -387,6 +387,7 @@ namespace EasySaveApp_WPF.ViewModel
             BackupLogHandler a = new BackupLogHandler(vmSettings);
             string sourceFilePath = _source;
             FileInfo fileInfo = new(sourceFilePath);
+            string currentDate = DateTime.Now.ToString("yyyyMMdd");
 
             if (_name != null && _source != null && _target != null && FileTransferTime != null)
             {
@@ -400,6 +401,14 @@ namespace EasySaveApp_WPF.ViewModel
                     FileTime = DateTime.Now,
                 };
                 a.UpdateLog(log);
+                if (outputFormat == "json")
+                {
+                    a.SaveLogToJson($"Log_{currentDate}.json");
+                }
+                else
+                {
+                    a.SaveLogToXml($"Log_{currentDate}.xml");
+                }
             }
             else
             {

@@ -105,27 +105,28 @@ namespace EasySaveApp_WPF.Models
         public void UpdateLog(BackupLog log)
         {
             saveLog[log.FileName] = log;
+            string currentDate = DateTime.Now.ToString("yyyyMMdd");
             if (_vmSettings.OutputFormat == "json")
             {
-                SaveLogToJson();
+                SaveLogToJson($"Log_{currentDate}.json");
             }
             else
             {
-                SaveLogToXml();
+                SaveLogToXml($"Log_{currentDate}.xml");
             }
         }
 
 
-        public void SaveLogToJson()
+        public void SaveLogToJson(string fileName)
         {
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(saveLog, Newtonsoft.Json.Formatting.Indented);
-            System.IO.File.WriteAllText("Log.json", json);
+            System.IO.File.WriteAllText(fileName, json);
         }
 
-        public void SaveLogToXml()
+        public void SaveLogToXml(string fileName)
         {
             var serializer = new XmlSerializer(typeof(SerializableDictionary<string, BackupLog>));
-            using (var stream = new StreamWriter("Log.xml"))
+            using (var stream = new StreamWriter(fileName))
             {
                 serializer.Serialize(stream, saveLog);
             }
