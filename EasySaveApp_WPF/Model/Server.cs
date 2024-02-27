@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows;
-using EasySaveApp_WPF.Models;
 
 namespace EasySaveApp_WPF.Model
 {
@@ -17,7 +16,7 @@ namespace EasySaveApp_WPF.Model
 
         public Server()
         {
-            //_server = Connect();
+            _server = Connect();
         }
 
         public static Socket Connect()
@@ -76,27 +75,6 @@ namespace EasySaveApp_WPF.Model
 
             return new ExecuteBackupInfo { RunningBackups = runningBackups };
         }
-
-        //static async Task SendRunningBackups(Socket client, ExecuteBackupInfo backupInfo)
-        //{
-        //    foreach (var backup in backupInfo.RunningBackups)
-        //    {
-        //        SendClient(client, backup.FileName, backup.Progress);
-        //        await Task.Delay(100);
-        //    }
-        //}
-
-        //static async Task SendRunningBackups(Socket client, ExecuteBackupInfo backupInfo)
-        //{
-        //    foreach (var backup in backupInfo.RunningBackups)
-        //    {
-        //        for (int progress = 0; progress <= backup.Progress; progress++)
-        //        {
-        //            SendClient(client, backup.FileName, progress);
-        //            await Task.Delay(100);
-        //        }
-        //    }
-        //}
         static async Task SendRunningBackups(Socket client, ExecuteBackupInfo backupInfo)
         {
             List<Task> tasks = new List<Task>();
