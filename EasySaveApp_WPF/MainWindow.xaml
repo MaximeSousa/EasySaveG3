@@ -55,10 +55,10 @@
                                 <TextBlock Text="{DynamicResource Settings}" Style="{StaticResource Text_Style}" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding DataContext.ButtonExitCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                        <RadioButton Style="{StaticResource BtnStyle}" Command="{Binding DataContext.ButtonExitCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                             <Grid>
                                 <Image Source="Images/IconExit.png" Style="{StaticResource Image_Style}"/>
-                                <TextBlock Text="{DynamicResource Exit}" Style="{StaticResource Text_Style}" />
+                                <TextBlock Text="{DynamicResource Exit}" Style="{StaticResource Text_Style}" RenderTransformOrigin="0.907,0.531" />
                             </Grid>
                         </RadioButton>
                     </StackPanel>

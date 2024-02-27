@@ -31,7 +31,7 @@
             <TextBlock Text="Log" Margin="20,0,0,0" Foreground="#DBDBDB" />
             <RadioButton Content="XML" Margin="20,5,0,0" GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Foreground="White" />
             <RadioButton Content="JSON" Margin="20,0,0,0" GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Foreground="White" />
-            <Button Content="Confirm" Command="{Binding SelectFormat}" Margin="25,10,0,10" HorizontalAlignment="left"/>
+            <Button Content="{DynamicResource Confirm}" Command="{Binding SelectFormat}" Margin="25,10,0,10" HorizontalAlignment="left"/>
 
         </StackPanel>
     </Grid>
