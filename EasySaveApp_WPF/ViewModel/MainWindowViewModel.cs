@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using System.Windows.Controls;
 using EasySaveApp_WPF.View;
+using EasySaveApp_WPF.Model;
 using System.Windows;
 using System;
 
@@ -28,7 +29,6 @@ namespace EasySaveApp_WPF.ViewModel
 
         public MainWindowViewModel()
         {
-
             NavigateToCreateBackupCommand = new RelayCommand(NavigateToCreateBackup);
             NavigateToExecuteBackupCommand = new RelayCommand(NavigateToExecuteBackup);
             NavigateToHomeBackupCommand = new RelayCommand(NavigateToHomeBackup);

@@ -35,6 +35,44 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        private bool _isFullBackup;
+        public bool IsFullBackup
+        {
+            get { return _isFullBackup; }
+            set
+            {
+                if (_isFullBackup != value)
+                {
+                    _isFullBackup = value;
+                    OnPropertyChanged(nameof(IsFullBackup));
+
+                    if (value)
+                    {
+                        Type = BackupType.Full;
+                    }
+                }
+            }
+        }
+
+        private bool _isDifferentialBackup;
+        public bool IsDifferentialBackup
+        {
+            get { return _isDifferentialBackup; }
+            set
+            {
+                if (_isDifferentialBackup != value)
+                {
+                    _isDifferentialBackup = value;
+                    OnPropertyChanged(nameof(IsDifferentialBackup));
+
+                    if (value)
+                    {
+                        Type = BackupType.Differential;
+                    }
+                }
+            }
+        }
+
         private bool _isChange;
         public bool IsChange
         {
@@ -59,7 +97,7 @@ namespace EasySaveApp_WPF.ViewModel
         public string Destination { get; set; }
         public BackupType Type { get; set; }
 
-        public string OutputFormat { get; set; } = "json";
+        public static string OutputFormat { get; set; } = "json";
 
         public VMExecuteBackup()
         {
@@ -100,6 +138,53 @@ namespace EasySaveApp_WPF.ViewModel
             IsChange = true;
         }
 
+        //private void ChangeBackup(object parameter)
+        //{
+        //    if (SelectedBackups != null && SelectedBackups.Count == 1)
+        //    {
+        //        var backup = SelectedBackups[0];
+
+        //        try
+        //        {
+        //            BackupFile originalBackup = new BackupFile(backup.FileName, backup.FileSource, backup.FileTarget, backup.Type);
+        //            if (!string.IsNullOrEmpty(BackupName) && BackupName != backup.FileName)
+        //            {
+        //                backup.FileName = BackupName;
+        //            }
+
+        //            if (!string.IsNullOrEmpty(Source) && Source != backup.FileSource)
+        //            {
+        //                backup.FileSource = Source;
+        //            }
+
+        //            if (!string.IsNullOrEmpty(Destination) && Destination != backup.FileTarget)
+        //            {
+        //                backup.FileTarget = Destination;
+        //            }
+
+        //            if (Type != backup.Type)
+        //            {
+        //                backup.Type = Type;
+        //            }
+
+        //            BackupHandler.BackupHandlerInstance.UpdateBackup(originalBackup);
+
+        //            BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
+
+        //            MessageBox.Show("Backup modification successful.");
+        //            LoadBackups();
+        //            isChange = false;
+        //        }
+        //        finally
+        //        {
+        //            backup.Dispose();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Please select a backup to modify.");
+        //    }
+        //}
         private void ChangeBackup(object parameter)
         {
             if (SelectedBackups != null && SelectedBackups.Count == 1)
@@ -108,34 +193,39 @@ namespace EasySaveApp_WPF.ViewModel
 
                 try
                 {
-                    BackupFile originalBackup = new BackupFile(backup.FileName, backup.FileSource, backup.FileTarget, backup.Type);
-                    if (!string.IsNullOrEmpty(BackupName) && BackupName != backup.FileName)
+                    BackupHandler backupHandler = BackupHandler.BackupHandlerInstance;
+                    // Recherche de la sauvegarde existante dans la liste _saveBackups
+                    var existingBackup = backupHandler._saveBackups.FirstOrDefault(b => b.FileName == backup.FileName
+                                                                       && b.FileSource == backup.FileSource
+                                                                       && b.FileTarget == backup.FileTarget);
+
+                    if (existingBackup != null)
                     {
-                        backup.FileName = BackupName;
-                    }
+                        string BackupFolder = Path.Combine(backup.FileTarget, backup.FileName);
+                        if (Directory.Exists(BackupFolder))
+                        {
+                            MessageBox.Show("Backup already exists. Please delete it before change.");
+                            return;
+                        }
 
-                    if (!string.IsNullOrEmpty(Source) && Source != backup.FileSource)
+                        // Mise à jour de la sauvegarde existante avec les nouvelles valeurs
+                        existingBackup.FileName = !string.IsNullOrEmpty(BackupName) ? BackupName : existingBackup.FileName;
+                        existingBackup.FileSource = !string.IsNullOrEmpty(Source) ? Source : existingBackup.FileSource;
+                        existingBackup.FileTarget = !string.IsNullOrEmpty(Destination) ? Destination : existingBackup.FileTarget;
+                        existingBackup.Type = Type;
+
+
+                        // Enregistrement des modifications dans le système de sauvegarde
+                        backupHandler.UpdateBackup(existingBackup);
+
+                        MessageBox.Show("Backup modification successful.");
+                        LoadBackups();
+                        isChange = false;
+                    }
+                    else
                     {
-                        backup.FileSource = Source;
+                        MessageBox.Show("Backup not found in the list.");
                     }
-
-                    if (!string.IsNullOrEmpty(Destination) && Destination != backup.FileTarget)
-                    {
-                        backup.FileTarget = Destination;
-                    }
-
-                    if (Type != backup.Type)
-                    {
-                        backup.Type = Type;
-                    }
-
-                    BackupHandler.BackupHandlerInstance.UpdateBackup(originalBackup);
-
-                    BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
-
-                    MessageBox.Show("Backup modification successful.");
-                    LoadBackups();
-                    IsChange = false;
                 }
                 finally
                 {
@@ -147,7 +237,6 @@ namespace EasySaveApp_WPF.ViewModel
                 MessageBox.Show("Please select a backup to modify.");
             }
         }
-
         private void DeleteBackup(object parameter)
         {
             if (SelectedBackups != null && SelectedBackups.Count > 0)

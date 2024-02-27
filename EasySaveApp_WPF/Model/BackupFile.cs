@@ -128,11 +128,6 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-        public BackupFile Clone()
-        {
-            return new BackupFile(FileName, FileSource, FileTarget, Type);
-        }
-
         public void Dispose()
         {
             // Libérer les ressources non managées si nécessaire

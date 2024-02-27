@@ -6,8 +6,7 @@
       xmlns:local="clr-namespace:EasySaveApp_WPF.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="400"
-      Title="CreatePage"
-      Language="{Binding Language, RelativeSource={RelativeSource AncestorType={x:Type Page}}}">
+      Title="CreatePage">
 
     <Page.Resources>
         <local:VMCreateBackup x:Key="CreateBackupViewModel"/>

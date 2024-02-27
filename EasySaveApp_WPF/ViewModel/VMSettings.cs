@@ -50,7 +50,9 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
-        private string _outputFormat;
+        
+
+        public string _outputFormat;
         public string OutputFormat
         {
             get { return _outputFormat; }
@@ -58,8 +60,10 @@ namespace EasySaveApp_WPF.ViewModel
             {
                 _outputFormat = value;
                 OnPropertyChanged("OutputFormat");
+
             }
         }
+
         private void ConfirmFormat(object parameter)
         {
             MessageBox.Show($"Output format changed to {OutputFormat}.");
