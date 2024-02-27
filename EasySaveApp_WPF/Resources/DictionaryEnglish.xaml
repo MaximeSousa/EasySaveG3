@@ -14,7 +14,7 @@
     <system:String x:Key="Name">Name</system:String>
     <system:String x:Key="Home">Home</system:String>
     <system:String x:Key="Target">Target</system:String>
-    <system:String x:Key="TypeofSave">Type of Save</system:String>
+    <system:String x:Key="Type of Save">Type of Save</system:String>
     <system:String x:Key="CreateaSave">Create a Save</system:String>
     <system:String x:Key="Confirm">Confirm</system:String>
     <system:String x:Key="NewName">New Name</system:String>
@@ -26,6 +26,7 @@
     <system:String x:Key="Exit">Exit</system:String>
     <system:String x:Key="Nameofthesave">Name of the save</system:String>
     <system:String x:Key="Type">Type</system:String>
+    <system:String x:Key="Browse">Browse</system:String>
 
 
 </ResourceDictionary>
