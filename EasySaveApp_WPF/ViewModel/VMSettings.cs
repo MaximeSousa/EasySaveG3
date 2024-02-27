@@ -16,7 +16,6 @@ namespace EasySaveApp_WPF.ViewModel
         public VMSettings()
         {
             SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
-
         }
 
         public void TraductorEnglish()
@@ -39,6 +38,7 @@ namespace EasySaveApp_WPF.ViewModel
                 if (value)
                 {
                     OutputFormat = "xml";
+                    IsJsonSelected = false;
                 }
             }
         }
@@ -54,10 +54,10 @@ namespace EasySaveApp_WPF.ViewModel
                 if (value)
                 {
                     OutputFormat = "json";
+                    IsXmlSelected = false;
                 }
             }
         }
-
 
         public string _outputFormat;
         public string OutputFormat

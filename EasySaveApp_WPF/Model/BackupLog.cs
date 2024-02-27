@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
-
+using EasySaveApp_WPF.ViewModel;
 
 namespace EasySaveApp_WPF.Models
 {
@@ -83,9 +83,12 @@ namespace EasySaveApp_WPF.Models
     }
     public class BackupLogHandler
     {
+        private VMSettings _vmSettings;
+
         private SerializableDictionary<string, BackupLog> saveLog;
-        public BackupLogHandler()
+        public BackupLogHandler(VMSettings vmSettings)
         {
+            _vmSettings = vmSettings;
             saveLog = new SerializableDictionary<string, BackupLog>();
 
             if (File.Exists("Log.json"))
@@ -99,10 +102,10 @@ namespace EasySaveApp_WPF.Models
         }
 
 
-        public void UpdateLog(BackupLog log, string outputFormat)
+        public void UpdateLog(BackupLog log)
         {
             saveLog[log.FileName] = log;
-            if (outputFormat == "json")
+            if (_vmSettings.OutputFormat == "json")
             {
                 SaveLogToJson();
             }
