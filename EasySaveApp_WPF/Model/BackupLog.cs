@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
-
+using EasySaveApp_WPF.ViewModel;
 
 namespace EasySaveApp_WPF.Models
 {
@@ -83,9 +83,12 @@ namespace EasySaveApp_WPF.Models
     }
     public class BackupLogHandler
     {
+        private VMSettings _vmSettings;
+
         private SerializableDictionary<string, BackupLog> saveLog;
-        public BackupLogHandler()
+        public BackupLogHandler(VMSettings vmSettings)
         {
+            _vmSettings = vmSettings;
             saveLog = new SerializableDictionary<string, BackupLog>();
 
             if (File.Exists("Log.json"))
@@ -99,30 +102,31 @@ namespace EasySaveApp_WPF.Models
         }
 
 
-        public void UpdateLog(BackupLog log, string outputFormat)
+        public void UpdateLog(BackupLog log)
         {
             saveLog[log.FileName] = log;
-            if (outputFormat == "json")
+            string currentDate = DateTime.Now.ToString("yyyyMMdd");
+            if (_vmSettings.OutputFormat == "json")
             {
-                SaveLogToJson();
+                SaveLogToJson($"Log_{currentDate}.json");
             }
             else
             {
-                SaveLogToXml();
+                SaveLogToXml($"Log_{currentDate}.xml");
             }
         }
 
 
-        public void SaveLogToJson()
+        public void SaveLogToJson(string fileName)
         {
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(saveLog, Newtonsoft.Json.Formatting.Indented);
-            System.IO.File.WriteAllText("Log.json", json);
+            System.IO.File.WriteAllText(fileName, json);
         }
 
-        public void SaveLogToXml()
+        public void SaveLogToXml(string fileName)
         {
             var serializer = new XmlSerializer(typeof(SerializableDictionary<string, BackupLog>));
-            using (var stream = new StreamWriter("Log.xml"))
+            using (var stream = new StreamWriter(fileName))
             {
                 serializer.Serialize(stream, saveLog);
             }

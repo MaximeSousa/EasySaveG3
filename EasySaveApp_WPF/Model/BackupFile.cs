@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
+using EasySaveApp_WPF.ViewModel;
 using Newtonsoft.Json;
 
 namespace EasySaveApp_WPF.Models
@@ -20,6 +21,7 @@ namespace EasySaveApp_WPF.Models
         public long FileSize { get; set; }
         public string FileTransferTime { get; set; }
         public bool IsPaused { get; set; } // Ajout de la propriété IsPaused pour gérer la pause
+        public VMSettings Settings { get; set; }
 
         public List<string> CopiedFiles { get; set; }
 

@@ -7,14 +7,15 @@ using EasySaveApp_WPF.ViewModel;
 using System.Configuration;
 using System.Windows;
 
-
 namespace EasySaveApp_WPF.ViewModel
 {
     public class VMSettings : VMBaseViewModel
     {
+        public ICommand SelectFormat { get; private set; }
+
         public VMSettings()
         {
-
+            SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
         }
 
         public void TraductorEnglish()
@@ -34,7 +35,11 @@ namespace EasySaveApp_WPF.ViewModel
             {
                 _isXmlSelected = value;
                 OnPropertyChanged("IsXmlSelected");
-                if (value) OutputFormat = "xml";
+                if (value)
+                {
+                    OutputFormat = "xml";
+                    IsJsonSelected = false;
+                }
             }
         }
 
@@ -46,11 +51,13 @@ namespace EasySaveApp_WPF.ViewModel
             {
                 _isJsonSelected = value;
                 OnPropertyChanged("IsJsonSelected");
-                if (value) OutputFormat = "json";
+                if (value)
+                {
+                    OutputFormat = "json";
+                    IsXmlSelected = false;
+                }
             }
         }
-
-        
 
         public string _outputFormat;
         public string OutputFormat
@@ -66,7 +73,14 @@ namespace EasySaveApp_WPF.ViewModel
 
         private void ConfirmFormat(object parameter)
         {
-            MessageBox.Show($"Output format changed to {OutputFormat}.");
+            if (CanConfirmFormat(null))
+            {
+                MessageBox.Show($"Output format changed to {OutputFormat}.");
+            }
+            else
+            {
+                MessageBox.Show("Please select a format.");
+            }
         }
 
         private bool CanConfirmFormat(object parameter)

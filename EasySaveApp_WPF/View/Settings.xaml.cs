@@ -16,6 +16,7 @@ namespace EasySaveApp_WPF.View
         public Settings()
         {
             InitializeComponent();
+            this.DataContext = new VMSettings();
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
