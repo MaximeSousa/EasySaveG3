@@ -11,7 +11,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <local:VMExecuteBackup x:Key="ExecuteBackupViewModel"/>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -40,17 +40,19 @@
         </Grid>
 
         <Grid Grid.Row="1">
-
-            <DataGrid ItemsSource="{Binding Backups}" Grid.Row="1" AutoGenerateColumns="False" SelectionMode="Extended" SelectionChanged="Backup_SelectionChanged" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" Name="Backup">
-                <DataGrid.Columns>
-
-                    <DataGridTextColumn Header="{DynamicResource Nameofthesave}" Binding="{Binding FileName}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="{DynamicResource Source}" Binding="{Binding FileSource}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Target" Binding="{Binding FileTarget}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="{DynamicResource Type}" Binding="{Binding Type}" IsReadOnly="True" Width="*"/>
-
-                </DataGrid.Columns>
-            </DataGrid>
+            <ListBox ItemsSource="{Binding Backups}" Grid.Row="1" SelectionMode="Extended" Name="Backup">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding FileName}" Width="100"/>
+                            <TextBlock Text="{Binding FileSource}" Width="100"/>
+                            <TextBlock Text="{Binding FileTarget}" Width="100"/>
+                            <TextBlock Text="{Binding Type}" Width="100"/>
+                            <ProgressBar Width="200" Value="{Binding Progress}" Minimum="0" Maximum="100" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
         <Grid Grid.Row="2" Visibility="{Binding isChange, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
@@ -72,11 +74,11 @@
                     <TextBox Text="{Binding Destination}" Margin="20,5,0,10" Width="200" HorizontalAlignment="Left"/>
                 </StackPanel>
             </Grid>
-            
+
             <Grid  Grid.Column="1">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Row="2">
 
-                    <TextBlock Text="{DynamicResource TypeofSave}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+                    <TextBlock Text="TypeofSave}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
                     <StackPanel Orientation="Horizontal" Margin="25,10,0,10" Width="200" HorizontalAlignment="Left">
                         <RadioButton Content="{DynamicResource Full}" Margin="0,0,50,0" GroupName="BackupType" IsChecked="{Binding IsFullBackup, Mode=TwoWay}" Foreground="White"/>
                         <RadioButton Content="{DynamicResource Differential}" GroupName="BackupType" IsChecked="{Binding IsDifferentialBackup, Mode=TwoWay}" Foreground="White"/>
@@ -87,3 +89,4 @@
         </Grid>
     </Grid>
 </Page>
+
