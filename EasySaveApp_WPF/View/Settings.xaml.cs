@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using EasySaveApp_WPF.ViewModel;
-
+using System.Text.RegularExpressions;
+using System;
 
 namespace EasySaveApp_WPF.View
 {
@@ -16,6 +17,8 @@ namespace EasySaveApp_WPF.View
         public Settings()
         {
             InitializeComponent();
+            DataContext = new VMSettings();
+
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -31,5 +34,7 @@ namespace EasySaveApp_WPF.View
                 Setting.TraductorEnglish();
             }
         }
+
+
     }
 }
