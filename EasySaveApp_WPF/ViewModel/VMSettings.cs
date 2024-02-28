@@ -110,6 +110,11 @@ namespace EasySaveApp_WPF.ViewModel
                 MessageBox.Show("Please select a format.");
             }
         }
+        private bool CanConfirmFormat(object parameter)
+        {
+            return OutputFormat == "xml" || OutputFormat == "json";
+        }
+
         private ObservableCollection<ExtensionItem> _allowedExtensions = new ObservableCollection<ExtensionItem>();
         public ObservableCollection<ExtensionItem> AllowedExtensions
         {
