@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using EasySaveApp_WPF.ViewModel;
+using System.Configuration;
+
 
 namespace EasySaveApp_WPF.ViewModel
 {
@@ -27,8 +29,11 @@ namespace EasySaveApp_WPF.ViewModel
 
     public class VMSettings : VMBaseViewModel
     {
+        public ICommand SelectFormat { get; private set; }
+
         public VMSettings()
         {
+
             AddCustomExtensionCommand = new RelayCommand(AddCustomExtension);
             RemoveSelectedExtensionsCommand = new RelayCommand(RemoveSelectedExtensions);
 
@@ -36,6 +41,8 @@ namespace EasySaveApp_WPF.ViewModel
         {
             new ExtensionItem { Extension = ".docx", IsSelected = true }
         };
+
+            SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
         }
 
         public void TraductorEnglish()
@@ -56,7 +63,11 @@ namespace EasySaveApp_WPF.ViewModel
             {
                 _isXmlSelected = value;
                 OnPropertyChanged("IsXmlSelected");
-                if (value) OutputFormat = "xml";
+                if (value)
+                {
+                    OutputFormat = "xml";
+                    IsJsonSelected = false;
+                }
             }
         }
 
@@ -68,11 +79,13 @@ namespace EasySaveApp_WPF.ViewModel
             {
                 _isJsonSelected = value;
                 OnPropertyChanged("IsJsonSelected");
-                if (value) OutputFormat = "json";
+                if (value)
+                {
+                    OutputFormat = "json";
+                    IsXmlSelected = false;
+                }
             }
         }
-
-        
 
         public string _outputFormat;
         public string OutputFormat
@@ -88,7 +101,14 @@ namespace EasySaveApp_WPF.ViewModel
 
         private void ConfirmFormat(object parameter)
         {
-            MessageBox.Show($"Output format changed to {OutputFormat}.");
+            if (CanConfirmFormat(null))
+            {
+                MessageBox.Show($"Output format changed to {OutputFormat}.");
+            }
+            else
+            {
+                MessageBox.Show("Please select a format.");
+            }
         }
         private ObservableCollection<ExtensionItem> _allowedExtensions = new ObservableCollection<ExtensionItem>();
         public ObservableCollection<ExtensionItem> AllowedExtensions

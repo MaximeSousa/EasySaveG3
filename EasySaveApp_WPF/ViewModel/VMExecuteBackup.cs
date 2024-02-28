@@ -275,11 +275,14 @@ namespace EasySaveApp_WPF.ViewModel
                             Stopwatch stopwatch = new Stopwatch();
                             stopwatch.Start();
                             string stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
-                            backup.ExecuteCopy();
+                            backup.ExecuteCopy(backup);
+
                             backup.Executed = true;
                             stopwatch.Stop();
                             stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
 
+                            BackupLogHandler a = new BackupLogHandler(backup.Settings);
+                            string sourceFilePath = backup.FileSource;
 
                             int filesAlreadyCopied = backup.CopiedFiles.Count;
 
@@ -377,9 +380,11 @@ namespace EasySaveApp_WPF.ViewModel
 
         public void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime, string details, string outputFormat)
         {
-            BackupLogHandler a = new BackupLogHandler();
+            VMSettings vmSettings = new VMSettings();
+            BackupLogHandler a = new BackupLogHandler(vmSettings);
             string sourceFilePath = _source;
             FileInfo fileInfo = new(sourceFilePath);
+            string currentDate = DateTime.Now.ToString("yyyyMMdd");
 
             if (_name != null && _source != null && _target != null && FileTransferTime != null)
             {
@@ -392,7 +397,15 @@ namespace EasySaveApp_WPF.ViewModel
                     FileTransferTime = FileTransferTime,
                     FileTime = DateTime.Now,
                 };
-                a.UpdateLog(log, outputFormat);
+                a.UpdateLog(log);
+                if (outputFormat == "json")
+                {
+                    a.SaveLogToJson($"Log_{currentDate}.json");
+                }
+                else
+                {
+                    a.SaveLogToXml($"Log_{currentDate}.xml");
+                }
             }
             else
             {
