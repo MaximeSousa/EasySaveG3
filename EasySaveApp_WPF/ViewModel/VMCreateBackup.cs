@@ -170,7 +170,7 @@ namespace EasySaveApp_WPF.ViewModel
                 LoadBackups();
                 BackupType type = IsFullBackup ? BackupType.Full : BackupType.Differential;
 
-                BackupFile newBackup = BackupFile.CreateBackup(BackupName, Source, Destination, type);
+                BackupFile newBackup = BackupFile.CreateBackup(BackupName, Source, Destination, type, false);
 
                 newBackup.Executed = false;
                 if (!Backups.Contains(newBackup))

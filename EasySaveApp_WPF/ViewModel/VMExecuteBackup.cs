@@ -283,7 +283,7 @@ namespace EasySaveApp_WPF.ViewModel
                             Stopwatch stopwatch = new Stopwatch();
                             stopwatch.Start();
 
-                            backup.ExecuteCopy();
+                            backup.ExecuteCopy(backup);
                             backup.Executed = true;
                             stopwatch.Stop();
                             string stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
