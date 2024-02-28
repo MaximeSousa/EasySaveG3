@@ -9,11 +9,14 @@ using System.Text;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace EasySaveApp_WPF.ViewModel
 {
     public class VMCreateBackup : VMBaseViewModel
     {
+               
+
         public ICommand CreateBackupCommand { get; }
         public ICommand BrowseSourceCommand { get; }
         public ICommand BrowseTargetCommand { get; }
@@ -83,6 +86,7 @@ namespace EasySaveApp_WPF.ViewModel
                 OnPropertyChanged(nameof(Backups));
             }
         }
+
         public VMCreateBackup()
         {
             LoadBackups();
@@ -181,8 +185,35 @@ namespace EasySaveApp_WPF.ViewModel
 
                 VMSettings settings = new VMSettings();
                 ObservableCollection<ExtensionItem> allowedExtensions = settings.AllowedExtensions;
+                int maxFileSize = settings.MaxFileSize;
+
+                if (maxFileSize <= 0)
+                {
+                    throw new InvalidOperationException("Veuillez définir une taille maximale des fichiers valide.");
+                
+                }
 
                 string[] allFiles = Directory.GetFiles(Source, "*", SearchOption.AllDirectories);
+
+                List<string> oversizedFiles = new List<string>();
+
+                // Vérifier la taille de chaque fichier
+                //Parallel.ForEach(allFiles, filePath =>
+                //{
+                //    FileInfo fileInfo = new FileInfo(filePath);
+                //    if (fileInfo.Length > maxFileSize * 1024) // Convertir la taille maximale en octets
+                //    {
+                //        oversizedFiles.Add(filePath);
+                //    }
+                //});
+
+                //// Vérifier s'il existe des fichiers dont la taille dépasse la limite
+                //if (oversizedFiles.Any())
+                //{
+                //    string oversizedFileList = string.Join(Environment.NewLine, oversizedFiles);
+                //    MessageBox.Show($"Les fichiers suivants dépassent la taille maximale autorisée ({maxFileSize} Ko) :\n{oversizedFileList}");
+                //    return; // Arrêter le processus de sauvegarde si des fichiers sont trop volumineux
+                //}
 
                 // Exécution en parallèle
                 Parallel.ForEach(allFiles, filePath =>
@@ -193,7 +224,8 @@ namespace EasySaveApp_WPF.ViewModel
                     if (allowedExtensions.Any(ext => ext.Extension.Equals(fileExtension, StringComparison.OrdinalIgnoreCase)))
                     {
                         // Appeler l'exécutable CryptoSoft pour crypter les fichiers
-                        string cryptoSoftPath = @"C:\Users\akiza\source\repos\MaximeSousa\EasySaveG3\CryptoSoft\bin\Debug\net5.0\CryptoSoft.exe";
+                        string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                        string cryptoSoftPath = Path.Combine(appDirectory, "CryptoSoft");
                         string arguments = $"\"{Source}\" \"{Destination}\" \"(x:W$\"";
 
                         ProcessStartInfo startInfo = new ProcessStartInfo(cryptoSoftPath, arguments);
@@ -208,7 +240,7 @@ namespace EasySaveApp_WPF.ViewModel
                     else
                     {
                         // Afficher un message indiquant que le fichier n'a pas été crypté en raison de son extension non autorisée
-                        MessageBox.Show($"Le fichier '{filePath}' n'a pas été crypté car son extension n'est pas autorisée.");
+                        //MessageBox.Show($"Le fichier '{filePath}' n'a pas été crypté car son extension n'est pas autorisée.");
                     }
                 });
 

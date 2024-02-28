@@ -40,7 +40,7 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <ListBox ItemsSource="{Binding Backups}" Grid.Row="1" SelectionMode="Extended" Name="Backup">
+            <ListBox ItemsSource="{Binding Backups}" Grid.Row="1" SelectionMode="Extended" SelectionChanged="Backup_SelectionChanged" Name="Backup">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
