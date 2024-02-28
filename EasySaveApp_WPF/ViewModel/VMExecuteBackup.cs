@@ -274,17 +274,10 @@ namespace EasySaveApp_WPF.ViewModel
                         {
                             Stopwatch stopwatch = new Stopwatch();
                             stopwatch.Start();
-                            string stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
                             backup.ExecuteCopy(backup);
 
                             backup.Executed = true;
-                            stopwatch.Stop();
-                            stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
-
-                            BackupLogHandler a = new BackupLogHandler(backup.Settings);
-                            string sourceFilePath = backup.FileSource;
-
-                            int filesAlreadyCopied = backup.CopiedFiles.Count;
+                            stopwatch.Stop();            
 
                             DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
                             long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
@@ -292,14 +285,7 @@ namespace EasySaveApp_WPF.ViewModel
                             Interlocked.Add(ref _bytesCopied, size);
 
                             ProgressPercentage = (int)((double)_bytesCopied / _totalBytes * 100);
-                            long remainingSize = _totalBytes - _bytesCopied;
-                            //long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
-                            int totalFilesToCopy = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Count();
-                            int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
-
-                            var FileTransferTime = stopwatch.Elapsed.ToString();
-                            CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, FileTransferTime, "Execute", OutputFormat);
-                            StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
+                            backup.Progress = ProgressPercentage; // Mettre à jour la progression de la sauvegarde
                         }
                         catch (Exception ex)
                         {
@@ -309,9 +295,6 @@ namespace EasySaveApp_WPF.ViewModel
 
                     backupThread.Start();
                 });
-
-                MessageBox.Show("Selected backups execution successful.");
-                LoadBackups();
             }
             else
             {
