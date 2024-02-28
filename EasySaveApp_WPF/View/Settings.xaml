@@ -13,7 +13,11 @@
     </Page.Resources>
 
     <Grid>
-        <StackPanel Orientation="Vertical" RenderTransformOrigin="0.5,0.5" Margin="-13,3,-10,20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" RenderTransformOrigin="0.5,0.5" Margin="-2,-1,-87,-3" Grid.ColumnSpan="2">
             <StackPanel.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

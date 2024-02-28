@@ -89,7 +89,7 @@ namespace EasySaveApp_WPF.ViewModel
         private void ConfirmFormat(object parameter)
         {
             MessageBox.Show($"Output format changed to {OutputFormat}.");
-
+        }
         private ObservableCollection<ExtensionItem> _allowedExtensions = new ObservableCollection<ExtensionItem>();
         public ObservableCollection<ExtensionItem> AllowedExtensions
         {
