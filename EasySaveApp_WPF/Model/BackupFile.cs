@@ -117,6 +117,7 @@ namespace EasySaveApp_WPF.Models
 
                     currentFile++;
                     Progress = (int)(((double)currentFile / totalFiles) * 100);
+                    OnPropertyChanged(nameof(Progress));
                 }
             }
 
