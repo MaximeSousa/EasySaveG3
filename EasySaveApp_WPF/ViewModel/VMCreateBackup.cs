@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Linq;
 
 namespace EasySaveApp_WPF.ViewModel
 {
@@ -178,22 +179,39 @@ namespace EasySaveApp_WPF.ViewModel
                     BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
                 }
 
-                if (IsFullBackup || IsDifferentialBackup)
+                VMSettings settings = new VMSettings();
+                ObservableCollection<ExtensionItem> allowedExtensions = settings.AllowedExtensions;
+
+                string[] allFiles = Directory.GetFiles(Source, "*", SearchOption.AllDirectories);
+
+                // Exécution en parallèle
+                Parallel.ForEach(allFiles, filePath =>
                 {
-                    // Appeler l'exécutable CryptoSoft pour crypter les fichiers
-                    string cryptoSoftPath = @"C:\Users\akiza\source\repos\MaximeSousa\EasySaveG3\CryptoSoft\bin\Debug\net5.0\CryptoSoft.exe";
-                    string arguments = $"\"{Source}\" \"{Destination}\" \"(x:W$\"";  
+                    string fileExtension = Path.GetExtension(filePath);
 
-                    ProcessStartInfo startInfo = new ProcessStartInfo(cryptoSoftPath, arguments);
-                    startInfo.CreateNoWindow = true;
-                    startInfo.UseShellExecute = false;
-
-                    using (Process process = Process.Start(startInfo))
+                    // Vérifier si l'extension du fichier est autorisée
+                    if (allowedExtensions.Any(ext => ext.Extension.Equals(fileExtension, StringComparison.OrdinalIgnoreCase)))
                     {
-                        process.WaitForExit();
+                        // Appeler l'exécutable CryptoSoft pour crypter les fichiers
+                        string cryptoSoftPath = @"C:\Users\akiza\source\repos\MaximeSousa\EasySaveG3\CryptoSoft\bin\Debug\net5.0\CryptoSoft.exe";
+                        string arguments = $"\"{Source}\" \"{Destination}\" \"(x:W$\"";
+
+                        ProcessStartInfo startInfo = new ProcessStartInfo(cryptoSoftPath, arguments);
+                        startInfo.CreateNoWindow = true;
+                        startInfo.UseShellExecute = false;
+
+                        using (Process process = Process.Start(startInfo))
+                        {
+                            process.WaitForExit();
+                        }
                     }
-                }
-                BackupName = "";
+                    else
+                    {
+                        // Afficher un message indiquant que le fichier n'a pas été crypté en raison de son extension non autorisée
+                        MessageBox.Show($"Le fichier '{filePath}' n'a pas été crypté car son extension n'est pas autorisée.");
+                    }
+                });
+
                 Source = "";
                 Destination = "";
                 IsFullBackup = false;
