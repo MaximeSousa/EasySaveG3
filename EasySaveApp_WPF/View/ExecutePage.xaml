@@ -48,7 +48,7 @@
                     <DataGridTextColumn Header="{DynamicResource Source}" Binding="{Binding FileSource}" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn Header="Target" Binding="{Binding FileTarget}" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn Header="{DynamicResource Type}" Binding="{Binding Type}" IsReadOnly="True" Width="*"/>
-
+                    
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
@@ -72,7 +72,7 @@
                     <TextBox Text="{Binding Destination}" Margin="20,5,0,10" Width="200" HorizontalAlignment="Left"/>
                 </StackPanel>
             </Grid>
-            
+
             <Grid  Grid.Column="1">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Row="2">
 

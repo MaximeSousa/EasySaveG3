@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using EasySaveApp_WPF.Models;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace EasySaveApp_WPF.ViewModel
 {
@@ -84,6 +85,32 @@ namespace EasySaveApp_WPF.ViewModel
                 OnPropertyChanged(nameof(IsChange));
             }
         }
+
+        private long _totalBytes;
+        public long TotalBytes
+        {
+            get { return _totalBytes; }
+            set
+            {
+                _totalBytes = value;
+                OnPropertyChanged(nameof(TotalBytes));
+            }
+        }
+
+        private long _bytesCopied;
+        public long BytesCopied
+        {
+            get { return _bytesCopied; }
+            set { _bytesCopied = value; OnPropertyChanged(nameof(BytesCopied)); }
+        }
+
+        private int _progressPercentage;
+        public int ProgressPercentage
+        {
+            get { return _progressPercentage; }
+            set { _progressPercentage = value; OnPropertyChanged(nameof(ProgressPercentage)); }
+        }
+
 
         public ICommand ChangeBackupCommand { get; private set; }
         public ICommand DeleteBackupCommand { get; private set; }
@@ -228,6 +255,17 @@ namespace EasySaveApp_WPF.ViewModel
         {
             if (SelectedBackups != null)
             {
+                long totalSize = 0;
+
+                // Calculer la taille totale des fichiers à copier
+                foreach (var backup in SelectedBackups)
+                {
+                    DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
+                    totalSize += dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
+                }
+                TotalBytes = totalSize;
+                BytesCopied = 0; // Réinitialiser BytesCopied
+
                 Parallel.ForEach(SelectedBackups, backup =>
                 {
                     Thread backupThread = new Thread(() =>
@@ -236,21 +274,23 @@ namespace EasySaveApp_WPF.ViewModel
                         {
                             Stopwatch stopwatch = new Stopwatch();
                             stopwatch.Start();
-
+                            string stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
                             backup.ExecuteCopy();
                             backup.Executed = true;
                             stopwatch.Stop();
-                            string stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
+                            stateName = stopwatch.IsRunning ? "In Progress" : (stopwatch.ElapsedMilliseconds > 0 ? "Finished" : "Not Started");
 
-                            BackupLogHandler a = new BackupLogHandler();
-                            string sourceFilePath = backup.FileSource;
 
                             int filesAlreadyCopied = backup.CopiedFiles.Count;
 
                             DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
                             long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
 
-                            long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
+                            Interlocked.Add(ref _bytesCopied, size);
+
+                            ProgressPercentage = (int)((double)_bytesCopied / _totalBytes * 100);
+                            long remainingSize = _totalBytes - _bytesCopied;
+                            //long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
                             int totalFilesToCopy = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Count();
                             int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
 
