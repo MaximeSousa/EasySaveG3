@@ -39,8 +39,9 @@ namespace EasySaveApp_WPF.ViewModel
 
             AllowedExtensions = new ObservableCollection<ExtensionItem>
         {
-            new ExtensionItem { Extension = ".docx", IsSelected = true }
+            new ExtensionItem { Extension = ".txt", IsSelected = true }
         };
+            MaxFileSize = 100 * 1024;
 
             SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
         }
@@ -178,6 +179,19 @@ namespace EasySaveApp_WPF.ViewModel
         {
             Regex regex = new Regex(@"^\.[a-zA-Z0-9\-]+$");
             return regex.IsMatch(extension);
+        }
+
+        private int _maxFileSize;
+
+        // propriété pour la taille maximale des fichiers en Ko
+        public int MaxFileSize
+        {
+            get { return _maxFileSize; }
+            set
+            {
+                _maxFileSize = value;
+                OnPropertyChanged(nameof(MaxFileSize));
+            }
         }
     }
 }
