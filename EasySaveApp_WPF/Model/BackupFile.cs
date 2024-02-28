@@ -21,7 +21,9 @@ namespace EasySaveApp_WPF.Models
         public BackupType Type { get; set; }
         public long FileSize { get; set; }
         public string FileTransferTime { get; set; }
-        public bool IsPaused { get; set; }
+        public bool IsPaused { get; set; } // Ajout de la propriété IsPaused pour gérer la pause
+        public bool IsStoped { get; set; } // Ajout de la propriété IsStoped pour gérer le stop
+
         public VMSettings Settings { get; set; }
 
         public List<string> CopiedFiles { get; set; }
@@ -176,7 +178,7 @@ namespace EasySaveApp_WPF.Models
         // Méthode pour arrêter complètement la sauvegarde
         public void Stop()
         {
-            IsPaused = false;
+            IsStoped = true;
         }
     }
 
