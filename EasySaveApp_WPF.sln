@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.34407.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasySaveApp_WPF", "EasySaveApp_WPF\EasySaveApp_WPF.csproj", "{CEE15963-6340-4636-9B7A-365D1EBDCAAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client_WPF", "Client_WPF\Client_WPF.csproj", "{EEEC88B2-A766-41FC-AAF3-2157725025E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client_WPF", "Client_WPF\Client_WPF.csproj", "{EEEC88B2-A766-41FC-AAF3-2157725025E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSoft", "CryptoSoft\CryptoSoft.csproj", "{028757C8-2C95-4B85-A08F-3888365A35F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{EEEC88B2-A766-41FC-AAF3-2157725025E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEEC88B2-A766-41FC-AAF3-2157725025E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEEC88B2-A766-41FC-AAF3-2157725025E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{028757C8-2C95-4B85-A08F-3888365A35F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{028757C8-2C95-4B85-A08F-3888365A35F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{028757C8-2C95-4B85-A08F-3888365A35F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{028757C8-2C95-4B85-A08F-3888365A35F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
