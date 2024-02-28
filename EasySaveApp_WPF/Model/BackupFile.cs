@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace EasySaveApp_WPF.Models
 {
-    public class BackupFile : IBase
+    public class BackupFile : IBase , INotifyPropertyChanged
     {
         public static bool canBeExecuted = true;
         private static bool IsInExecution = false;
@@ -20,7 +21,7 @@ namespace EasySaveApp_WPF.Models
         public BackupType Type { get; set; }
         public long FileSize { get; set; }
         public string FileTransferTime { get; set; }
-        public bool IsPaused { get; set; } // Ajout de la propriété IsPaused pour gérer la pause
+        public bool IsPaused { get; set; }
         public VMSettings Settings { get; set; }
 
         public List<string> CopiedFiles { get; set; }
@@ -33,6 +34,23 @@ namespace EasySaveApp_WPF.Models
         {
             get { return backups; }
             set { backups = value; }
+        }
+
+        private int _progress;
+        public int Progress
+        {
+            get { return _progress; }
+            set
+            {
+                _progress = value;
+                OnPropertyChanged(nameof(Progress));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public BackupFile(string FileName, string FileSource, string FileTarget, BackupType Type, bool IsPaused)
@@ -79,19 +97,26 @@ namespace EasySaveApp_WPF.Models
             string BackupSaveFolder = Path.Combine(FileTarget, FileName);
             Directory.CreateDirectory(BackupSaveFolder);
 
+            int totalFiles = Directory.GetFiles(FileSource, "*", SearchOption.AllDirectories).Length;
+            int currentFile = 0;
+
             foreach (var filePath in Directory.GetFiles(FileSource))
             {
+                
                 var fileName = Path.GetFileName(filePath);
                 var targetPath = Path.Combine(BackupSaveFolder, fileName);
 
                 if (Type == BackupType.Full || (Type == BackupType.Differential && File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath)))
                 {
-                    while (backup.IsPaused) // Attendre si la sauvegarde est en pause
+                    while (backup.IsPaused) 
                     {
                         Thread.Sleep(1000);
                     }
                     File.Copy(filePath, targetPath, true);
                     CopiedFiles.Add(filePath);
+
+                    currentFile++;
+                    Progress = (int)(((double)currentFile / totalFiles) * 100);
                 }
             }
 
