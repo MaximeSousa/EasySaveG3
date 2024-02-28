@@ -6,8 +6,9 @@ using EasySaveApp_WPF.Models;
 using System.IO;
 using System.Threading.Tasks;
 using System.Text;
-using System.Linq;
 using Microsoft.Win32;
+using System.Diagnostics;
+using System.Linq;
 
 namespace EasySaveApp_WPF.ViewModel
 {
@@ -71,7 +72,6 @@ namespace EasySaveApp_WPF.ViewModel
                 OnPropertyChanged(nameof(IsDifferentialBackup));
             }
         }
-        private readonly string[] AllowedExtensions = { ".txt", ".pdf" };
 
         private ObservableCollection<BackupFile> _backups;
         public ObservableCollection<BackupFile> Backups
@@ -178,62 +178,52 @@ namespace EasySaveApp_WPF.ViewModel
                     Backups.Add(newBackup);
                     BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
                 }
-                if (IsFullBackup || IsDifferentialBackup)
+
+                VMSettings settings = new VMSettings();
+                ObservableCollection<ExtensionItem> allowedExtensions = settings.AllowedExtensions;
+
+                string[] allFiles = Directory.GetFiles(Source, "*", SearchOption.AllDirectories);
+
+                // Exécution en parallèle
+                Parallel.ForEach(allFiles, filePath =>
                 {
-                    EncryptFiles(Source, Destination);
-                }
-                BackupName = "";
+                    string fileExtension = Path.GetExtension(filePath);
+
+                    // Vérifier si l'extension du fichier est autorisée
+                    if (allowedExtensions.Any(ext => ext.Extension.Equals(fileExtension, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        // Appeler l'exécutable CryptoSoft pour crypter les fichiers
+                        string cryptoSoftPath = @"C:\Users\akiza\source\repos\MaximeSousa\EasySaveG3\CryptoSoft\bin\Debug\net5.0\CryptoSoft.exe";
+                        string arguments = $"\"{Source}\" \"{Destination}\" \"(x:W$\"";
+
+                        ProcessStartInfo startInfo = new ProcessStartInfo(cryptoSoftPath, arguments);
+                        startInfo.CreateNoWindow = true;
+                        startInfo.UseShellExecute = false;
+
+                        using (Process process = Process.Start(startInfo))
+                        {
+                            process.WaitForExit();
+                        }
+                    }
+                    else
+                    {
+                        // Afficher un message indiquant que le fichier n'a pas été crypté en raison de son extension non autorisée
+                        MessageBox.Show($"Le fichier '{filePath}' n'a pas été crypté car son extension n'est pas autorisée.");
+                    }
+                });
+
                 Source = "";
                 Destination = "";
                 IsFullBackup = false;
                 IsDifferentialBackup = false;
 
-                MessageBox.Show("Backup created successfully and crypted.");
+                MessageBox.Show("Backup created successfully .");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to create backup: {ex.Message}");
             }
         }
-        private void EncryptFiles(string Source, string Destination)
-        {
-            string[] files = Directory.GetFiles(Source);
-
-            Parallel.ForEach(files, file =>
-            {
-                EncryptFile(file, Destination);
-            });
-        }
-        private void EncryptFile(string filePath, string Destination)
-        {
-            string fileName = Path.GetFileName(filePath);
-            string extension = Path.GetExtension(fileName);
-
-            if (AllowedExtensions.Contains(extension.ToLower()))
-            {
-                string encryptedFilePath = Path.Combine(Destination, fileName + ".encrypted");
-
-                byte[] key = Encoding.UTF8.GetBytes("cledechiffrement");
-
-                using (FileStream sourceStream = File.OpenRead(filePath))
-                using (FileStream targetStream = File.Create(encryptedFilePath))
-                {
-                    int bytesRead;
-                    byte[] buffer = new byte[1024];
-
-                    while ((bytesRead = sourceStream.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        // Chiffrement XOR
-                        for (int i = 0; i < bytesRead; i++)
-                        {
-                            buffer[i] = (byte)(buffer[i] ^ key[i % key.Length]);
-                        }
-
-                        targetStream.Write(buffer, 0, bytesRead);
-                    }
-                }
-            }
-        }
-
+        
     }
 }

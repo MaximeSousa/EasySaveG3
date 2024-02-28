@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CryptoSoft\CryptoSoft.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\IconBackup.png" />
     <Resource Include="Images\IconCreate.png" />
     <Resource Include="Images\IconDelete.png" />

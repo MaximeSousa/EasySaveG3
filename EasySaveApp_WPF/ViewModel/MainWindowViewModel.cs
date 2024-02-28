@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
 using System.Windows.Controls;
 using EasySaveApp_WPF.View;
-using EasySaveApp_WPF.Model;
+using EasySaveApp_WPF.Models;
 using System.Windows;
 using System;
 
@@ -9,6 +9,7 @@ namespace EasySaveApp_WPF.ViewModel
 {
     public class MainWindowViewModel : VMBaseViewModel
     {
+
         private Page _currentPage;
         public Page CurrentPage
         {
@@ -33,8 +34,7 @@ namespace EasySaveApp_WPF.ViewModel
             NavigateToExecuteBackupCommand = new RelayCommand(NavigateToExecuteBackup);
             NavigateToHomeBackupCommand = new RelayCommand(NavigateToHomeBackup);
             NavigateToSettingsBackupCommand = new RelayCommand(NavigateToSettings);
-            ButtonExitCommand = new RelayCommand(ExitCommand);
-
+            ButtonExitCommand = new RelayCommand(ExitCommand);;
             // Initially the current page
             CurrentPage = new HomePage();
         }

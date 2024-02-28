@@ -7,18 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <StackPanel Name="MessagePanel" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <!-- Ajoutez ici les éléments pour afficher le nom de la sauvegarde et sa barre de progression -->
-            <!-- Par exemple : -->
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Backup1:" Margin="0,0,10,0"/>
-                <ProgressBar Name="ProgressBar1" Width="200" Height="20" Minimum="0" Maximum="100"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                <Label Content="Backup2:" Margin="0,0,10,0"/>
-                <ProgressBar Name="ProgressBar2" Width="200" Height="20" Minimum="0" Maximum="100"/>
-            </StackPanel>
-            <!-- Ajoutez d'autres éléments au besoin pour d'autres sauvegardes -->
-        </StackPanel>
+        <ListView x:Name="BackupListView" ItemsSource="{Binding BackupList}" Margin="10" Height="300">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Backup Name" DisplayMemberBinding="{Binding BackupName}" Width="150"/>
+                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding BackupState}" Width="150"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

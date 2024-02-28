@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:EasySaveApp_WPF.ViewModel"
+      xmlns:local="clr-namespace:EasySaveApp_WPF.ViewModel" d:DataContext="{d:DesignInstance Type=local:VMSettings}"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="400"
       Title="SettingsPage">
@@ -11,28 +11,54 @@
     <Page.Resources>
 
     </Page.Resources>
- 
-        <Grid>
-        <StackPanel Orientation="Vertical">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" RenderTransformOrigin="0.5,0.5" Margin="-2,-1,-87,-3" Grid.ColumnSpan="2">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.205"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+            <!-- Language -->
+            <TextBlock Text="{DynamicResource Language}" Foreground="#DBDBDB" />
+            <ComboBox Width="200" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBoxItem Content="French"/>
+                <ComboBoxItem Content="English"/>
+            </ComboBox>
+            <TextBlock Text="Log" Foreground="#DBDBDB" />
+            <RadioButton Content="XML" GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Foreground="White" />
+            <RadioButton Content="JSON" GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Foreground="White" />
+            <Button Content="{DynamicResource Confirm}" Command="{Binding SelectFormat}" Height="26" Width="219" />
+
+            <TextBlock Text="Extensions autorisées" Foreground="#DBDBDB" />
+            <TextBox x:Name="CustomExtensionTextBox" Width="150" Text="{Binding CustomExtension, UpdateSourceTrigger=PropertyChanged}"/>
+            <ListBox x:Name="AllowedExtensionsList" Width="200" Height="100" SelectionMode="Extended" ItemsSource="{Binding AllowedExtensions}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Content="{Binding Extension}" IsChecked="{Binding IsSelected}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Content="Ajouter" Command="{Binding AddCustomExtensionCommand}" Width="100"/>
+            <Button Content="Supprimer" Command="{Binding RemoveSelectedExtensionsCommand}" Width="100"/>
+            <!-- Exemple de Slider pour la taille maximale des fichiers -->
+            <TextBlock Text="Taille maximale des fichiers (Ko)" Foreground="#DBDBDB"/>
+            <Slider x:Name="FileSizeSlider" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" />
+
             <TextBlock Text="{DynamicResource settings}" Foreground="#DBDBDB"
 
                        FontSize="18"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Margin="20,60,0,20" />
-
-            <!-- Language -->
-            <TextBlock Text="{DynamicResource Language}" Margin="20,0,0,0" Foreground="#DBDBDB" />
-            <ComboBox Width="200" Margin="20,5,0,10" SelectionChanged="ComboBox_SelectionChanged">
-                <ComboBoxItem>French</ComboBoxItem>
-                <ComboBoxItem>English</ComboBoxItem>
-            </ComboBox>
             <!-- Log -->
-            <TextBlock Text="Log" Margin="20,0,0,0" Foreground="#DBDBDB" />
-            <RadioButton Content="XML" Margin="20,5,0,0" GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Foreground="White" />
-            <RadioButton Content="JSON" Margin="20,0,0,0" GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Foreground="White" />
-            <Button Content="Confirm" Command="{Binding SelectFormat}" Margin="25,10,0,10" HorizontalAlignment="left"/>
-
         </StackPanel>
     </Grid>
 </Page>
