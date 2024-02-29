@@ -129,6 +129,16 @@ namespace EasySaveApp_WPF.ViewModel
                 OnPropertyChanged(nameof(AllowedExtensions));
             }
         }
+        private ObservableCollection<ExtensionItem> _priorityExtensions = new ObservableCollection<ExtensionItem>();
+        public ObservableCollection<ExtensionItem> PriorityExtensions
+        {
+            get { return _priorityExtensions; }
+            set
+            {
+                _priorityExtensions = value;
+                OnPropertyChanged(nameof(PriorityExtensions));
+            }
+        }
 
 
         private string _customExtension;
@@ -187,9 +197,9 @@ namespace EasySaveApp_WPF.ViewModel
                 string extension = CustomPriorityExtension.Trim();
                 if (IsValidExtension(extension))
                 {
-                    if (!AllowedExtensions.Any(ext => ext.Extension == extension))
+                    if (!PriorityExtensions.Any(ext => ext.Extension == extension))
                     {
-                        AllowedExtensions.Add(new ExtensionItem { Extension = extension, IsSelected = false });
+                        PriorityExtensions.Add(new ExtensionItem { Extension = extension, IsSelected = false });
                     }
                     else
                     {
@@ -214,11 +224,11 @@ namespace EasySaveApp_WPF.ViewModel
         }
         private void RemoveFromPriority(object parameter)
         {
-            for (int i = AllowedExtensions.Count - 1; i >= 0; i--)
+            for (int i = PriorityExtensions.Count - 1; i >= 0; i--)
             {
-                if (AllowedExtensions[i].IsSelected)
+                if (PriorityExtensions[i].IsSelected)
                 {
-                    AllowedExtensions.RemoveAt(i);
+                    PriorityExtensions.RemoveAt(i);
                 }
             }
         }

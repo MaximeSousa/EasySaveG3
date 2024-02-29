@@ -197,23 +197,23 @@ namespace EasySaveApp_WPF.ViewModel
 
                 List<string> oversizedFiles = new List<string>();
 
-                // Vérifier la taille de chaque fichier
-                //Parallel.ForEach(allFiles, filePath =>
-                //{
-                //    FileInfo fileInfo = new FileInfo(filePath);
-                //    if (fileInfo.Length > maxFileSize * 1024) // Convertir la taille maximale en octets
-                //    {
-                //        oversizedFiles.Add(filePath);
-                //    }
-                //});
+                //Vérifier la taille de chaque fichier
+                Parallel.ForEach(allFiles, filePath =>
+                {
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    if (fileInfo.Length > maxFileSize * 1024) // Convertir la taille maximale en octets
+                    {
+                        oversizedFiles.Add(filePath);
+                    }
+                });
 
-                //// Vérifier s'il existe des fichiers dont la taille dépasse la limite
-                //if (oversizedFiles.Any())
-                //{
-                //    string oversizedFileList = string.Join(Environment.NewLine, oversizedFiles);
-                //    MessageBox.Show($"Les fichiers suivants dépassent la taille maximale autorisée ({maxFileSize} Ko) :\n{oversizedFileList}");
-                //    return; // Arrêter le processus de sauvegarde si des fichiers sont trop volumineux
-                //}
+                // Vérifier s'il existe des fichiers dont la taille dépasse la limite
+                if (oversizedFiles.Any())
+                {
+                    string oversizedFileList = string.Join(Environment.NewLine, oversizedFiles);
+                    MessageBox.Show($"Les fichiers suivants dépassent la taille maximale autorisée ({maxFileSize} Ko) :\n{oversizedFileList}");
+                    return; // Arrêter le processus de sauvegarde si des fichiers sont trop volumineux
+                }
 
                 // Exécution en parallèle
                 Parallel.ForEach(allFiles, filePath =>
