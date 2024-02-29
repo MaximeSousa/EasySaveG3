@@ -22,6 +22,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
@@ -59,18 +60,9 @@
             <Button Content="Ajouter" Command="{Binding AddCustomExtensionCommand}" Width="100"/>
             <Button Content="Supprimer" Command="{Binding RemoveSelectedExtensionsCommand}" Width="100"/>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0">
-            <!-- Taille maximale des fichiers (Ko) -->
-            <TextBlock Text="Taille maximale des fichiers (Ko)" Foreground="#DBDBDB"/>
-          
-            <Slider x:Name="FileSizeSlider" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" Height="30" Width="330" RenderTransformOrigin="0.515,2.213" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True">
-                <Slider.Ticks>
-                    <DoubleCollection>0 10 20 30 40 50 60 70 80 90 100</DoubleCollection>
-                </Slider.Ticks>
-            </Slider>
-            <TextBlock Text="{Binding MaxFileSize, StringFormat={}{0}}" Grid.Column="0" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1">
+            <!-- Extensions prioritaires -->
             <TextBlock Text="Extensions prioritaires" Foreground="#DBDBDB" />
-            <TextBox x:Name="CustomPriorityExtensionTextBox" Width="150" Text="{Binding CustomPriorityExtension, UpdateSourceTrigger=PropertyChanged}"/>
             <ListBox x:Name="PriorityExtensionsListBox" Width="182" Height="100" ItemsSource="{Binding PriorityExtensions}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -80,6 +72,17 @@
             </ListBox>
             <Button Content="Ajouter" Command="{Binding AddCustomPriorityExtensionCommand}" Width="100"/>
             <Button Content="Supprimer" Command="{Binding RemoveFromPriorityCommand}" Width="100"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0">
+            <!-- Taille maximale des fichiers (Ko) -->
+            <TextBlock Text="Taille maximale des fichiers (Ko)" Foreground="#DBDBDB"/>
+
+            <Slider x:Name="FileSizeSlider" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" Height="30" Width="330" RenderTransformOrigin="0.515,2.213" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True">
+                <Slider.Ticks>
+                    <DoubleCollection>0 10 20 30 40 50 60 70 80 90 100</DoubleCollection>
+                </Slider.Ticks>
+            </Slider>
+            <TextBlock Text="{Binding MaxFileSize, StringFormat={}{0}}" Grid.Column="0" VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Page>
