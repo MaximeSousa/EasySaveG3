@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using EasySaveApp_WPF.ViewModel;
-using System.Configuration;
-
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace EasySaveApp_WPF.ViewModel
 {
@@ -30,31 +27,8 @@ namespace EasySaveApp_WPF.ViewModel
     public class VMSettings : VMBaseViewModel
     {
         public ICommand SelectFormat { get; private set; }
-
-        public VMSettings()
-        {
-
-            AddCustomExtensionCommand = new RelayCommand(AddCustomExtension);
-            RemoveSelectedExtensionsCommand = new RelayCommand(RemoveSelectedExtensions);
-
-            AllowedExtensions = new ObservableCollection<ExtensionItem>
-        {
-            new ExtensionItem { Extension = ".txt", IsSelected = true }
-        };
-            MaxFileSize = 100 * 1024;
-
-            SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
-        }
-
-        public void TraductorEnglish()
-        {
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
-        }
-
-        public void TraductorFrench()
-        {
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryFrench.xaml", UriKind.RelativeOrAbsolute);
-        }
+        public ICommand AddCustomExtensionCommand { get; }
+        public ICommand RemoveSelectedExtensionsCommand { get; }
 
         private bool _isXmlSelected;
         public bool IsXmlSelected
@@ -100,22 +74,6 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
-        private void ConfirmFormat(object parameter)
-        {
-            if (CanConfirmFormat(null))
-            {
-                MessageBox.Show($"Output format changed to {OutputFormat}.");
-            }
-            else
-            {
-                MessageBox.Show("Please select a format.");
-            }
-        }
-        private bool CanConfirmFormat(object parameter)
-        {
-            return OutputFormat == "xml" || OutputFormat == "json";
-        }
-
         private ObservableCollection<ExtensionItem> _allowedExtensions = new ObservableCollection<ExtensionItem>();
         public ObservableCollection<ExtensionItem> AllowedExtensions
         {
@@ -137,9 +95,44 @@ namespace EasySaveApp_WPF.ViewModel
                 OnPropertyChanged(nameof(CustomExtension));
             }
         }
+        
+        public VMSettings()
+        {
+            AddCustomExtensionCommand = new RelayCommand(AddCustomExtension);
+            RemoveSelectedExtensionsCommand = new RelayCommand(RemoveSelectedExtensions);
+            AllowedExtensions = new ObservableCollection<ExtensionItem>
+        {
+            new ExtensionItem { Extension = ".txt", IsSelected = true }
+        };
+            MaxFileSize = 100 * 1024;
+            SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
+        }
 
-        public ICommand AddCustomExtensionCommand { get; }
-        public ICommand RemoveSelectedExtensionsCommand { get; }
+        public static void TraductorEnglish()
+        {
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
+        }
+
+        public static void TraductorFrench()
+        {
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryFrench.xaml", UriKind.RelativeOrAbsolute);
+        }
+
+        private void ConfirmFormat(object parameter)
+        {
+            if (CanConfirmFormat(null))
+            {
+                MessageBox.Show($"Output format changed to {OutputFormat}.");
+            }
+            else
+            {
+                MessageBox.Show("Please select a format.");
+            }
+        }
+        private bool CanConfirmFormat(object parameter)
+        {
+            return OutputFormat == "xml" || OutputFormat == "json";
+        }
 
         private void AddCustomExtension(object parameter)
         {

@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Windows;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using EasySaveApp_WPF.Models;
 using System.IO;
-using System.Threading.Tasks;
-using System.Text;
-using Microsoft.Win32;
-using System.Diagnostics;
 using System.Linq;
+using System.Windows;
+using System.Diagnostics;
+using System.Windows.Input;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using Microsoft.Win32;
+using EasySaveApp_WPF.Models;
 
 namespace EasySaveApp_WPF.ViewModel
 {
     public class VMCreateBackup : VMBaseViewModel
     {
-               
-
         public ICommand CreateBackupCommand { get; }
         public ICommand BrowseSourceCommand { get; }
         public ICommand BrowseTargetCommand { get; }
@@ -129,17 +126,9 @@ namespace EasySaveApp_WPF.ViewModel
         {
             try
             {
-
                 BackupHandler backupHandler = new BackupHandler();
                 var loadedBackups = backupHandler.LoadBackupsFromJson();
-                if (loadedBackups != null)
-                {
-                    Backups = new ObservableCollection<BackupFile>(loadedBackups);
-                }
-                else
-                {
-                    Backups = new ObservableCollection<BackupFile>();
-                }
+                Backups = loadedBackups != null ? new ObservableCollection<BackupFile>(loadedBackups) : new ObservableCollection<BackupFile>();
             }
             catch (Exception ex)
             {
@@ -170,19 +159,15 @@ namespace EasySaveApp_WPF.ViewModel
                 {
                     throw new ArgumentException("Please select the backup type (Full or Differential).");
                 }
-
                 LoadBackups();
                 BackupType type = IsFullBackup ? BackupType.Full : BackupType.Differential;
-
                 BackupFile newBackup = BackupFile.CreateBackup(BackupName, Source, Destination, type, false);
-
                 newBackup.Executed = false;
                 if (!Backups.Contains(newBackup))
                 {
                     Backups.Add(newBackup);
                     BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
                 }
-
                 VMSettings settings = new VMSettings();
                 ObservableCollection<ExtensionItem> allowedExtensions = settings.AllowedExtensions;
                 int maxFileSize = settings.MaxFileSize;
@@ -194,7 +179,6 @@ namespace EasySaveApp_WPF.ViewModel
                 }
 
                 string[] allFiles = Directory.GetFiles(Source, "*", SearchOption.AllDirectories);
-
                 List<string> oversizedFiles = new List<string>();
 
                 // Vérifier la taille de chaque fichier
@@ -249,7 +233,7 @@ namespace EasySaveApp_WPF.ViewModel
                 IsFullBackup = false;
                 IsDifferentialBackup = false;
 
-                MessageBox.Show("Backup created successfully .");
+                MessageBox.Show("Backup created successfully");
             }
             catch (Exception ex)
             {

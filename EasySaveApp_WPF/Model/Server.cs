@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Net;
 using System.Net.Sockets;
-using System.Windows;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using EasySaveApp_WPF.ViewModel;
 
 namespace EasySaveApp_WPF.Models
 {
     internal class Server
     {
-        private Socket _server;
-        private VMExecuteBackup _executeModel;
-        public Server(VMExecuteBackup executeModel)
+
+        public Server()
         {
-            _executeModel = executeModel;
-            _server = Connect();
+            _ = Connect();
         }
 
         public Socket Connect()
@@ -78,43 +76,6 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-        //static ExecuteBackupInfo GetExecuteBackupInfo()
-        //{
-        //    List<string> runningBackups = new List<string>();
-        //    List<string> backupStates = new List<string>();
-        //    List<int> progressList = new List<int>();
-        //    List<double> percentageList = new List<double>();
-
-        //    // Récupérer les noms de fichiers des sauvegardes sauvegardées
-        //    foreach (var backup in BackupHandler.BackupHandlerInstance._saveBackups)
-        //    {
-        //        runningBackups.Add(backup.FileName);
-
-        //        // Calculer la progression et le pourcentage
-        //        long bytesCopied = backup.BytesCopied;
-        //        long totalBytes = backup.TotalBytes;
-        //        int progress = (int)((bytesCopied * 100) / totalBytes);
-        //        double percentage = (bytesCopied * 100.0) / totalBytes;
-
-        //        progressList.Add(progress);
-        //        percentageList.Add(percentage);
-        //    }
-
-        //    // Récupérer les états de sauvegarde correspondants
-        //    BackupStateHandler backupStateHandler = new BackupStateHandler();
-        //    foreach (var backup in BackupHandler.BackupHandlerInstance._saveBackups)
-        //    {
-        //        if (backupStateHandler.saveState.ContainsKey(backup.FileName))
-        //        {
-        //            backupStates.Add(backupStateHandler.saveState[backup.FileName].StateName);
-        //        }
-        //        else
-        //        {
-        //            backupStates.Add("No State");
-        //        }
-        //    }
-        //    return new ExecuteBackupInfo { RunningBackups = runningBackups, BackupStates = backupStates, ProgressList = progressList, PercentageList = percentageList };
-        //}
 
         static ExecuteBackupInfo GetExecuteBackupInfo()
         {
@@ -137,7 +98,7 @@ namespace EasySaveApp_WPF.Models
                 }
                 else
                 {
-                    backupStates.Add("No State");
+                    backupStates.Add("Not Started");
                 }
             }
             return new ExecuteBackupInfo { RunningBackups = runningBackups, BackupStates = backupStates };

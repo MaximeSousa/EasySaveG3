@@ -30,7 +30,7 @@ namespace EasySaveApp_WPF.View
             }
             else
             {
-                Setting.TraductorEnglish();
+                VMSettings.TraductorEnglish();
             }
         }
 

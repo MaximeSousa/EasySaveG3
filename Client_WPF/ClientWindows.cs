@@ -20,11 +20,11 @@ namespace Client_WPF
 
         public void Client()
         {
-            Socket socket = Seconnecter();
-            Task.Run(async () => await DialoguerRezo(socket));
+            Socket socket = Connect();
+            Task.Run(async () => await Listen(socket));
         }
 
-        private static Socket Seconnecter()
+        private static Socket Connect()
         {
             IPEndPoint ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050); //ip serveur
             Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -34,52 +34,13 @@ namespace Client_WPF
             }
             catch (SocketException soEx)
             {
-                Console.Error.WriteLine("Impossible de se connecter au serveur!");
-                Console.Error.WriteLine(soEx.ToString());
+                MessageBox.Show("Unable to connect to server!");
+                MessageBox.Show(soEx.ToString());
             }
             return server;
         }
 
-        //private async Task DialoguerRezo(Socket server)
-        //{
-        //    while (true)
-        //    {
-        //        byte[] data = new byte[1024];
-        //        int recv = await ReceiveAsync(server, data);
-        //        string stringData = Encoding.UTF8.GetString(data, 0, recv);
-        //        //string[] parts = stringData.Split(':');
-        //        //if (parts.Length == 4)
-        //        //{
-        //        //    string backupName = parts[0];
-        //        //    string BackupState = parts[1];
-        //        //    double percentage = double.Parse(parts[2]);
-        //        //    double progress = double.Parse(parts[3]);
-
-        //        //    OnBackupInfoReceived(backupName, progress, BackupState, percentage);
-        //        //}
-        //        string[] backupMessages = stringData.Split(new string[] { "Backup_" }, StringSplitOptions.RemoveEmptyEntries);
-        //        foreach (string backupMessage in backupMessages)
-        //        {
-        //            string[] parts = backupMessage.Split(':');
-        //            if (parts.Length == 4)
-        //            {
-        //                string backupName = "Backup_" + parts[0];
-        //                string backupState = parts[1];
-        //                double percentage = double.Parse(parts[2]);
-        //                double progress = double.Parse(parts[3]);
-
-        //                OnBackupInfoReceived(backupName, progress, backupState, percentage);
-        //            }
-        //            else
-        //            {
-        //                // Le message n'est pas dans le format attendu
-        //            }
-        //        }
-        //        await Task.Delay(100);
-        //    }
-        //}
-
-        private async Task DialoguerRezo(Socket server)
+        private async Task Listen(Socket server)
         {
             byte[] data = new byte[1024];
             while (true)
@@ -93,13 +54,12 @@ namespace Client_WPF
                     if (parts.Length == 2)
                     {
                         string backupName = parts[0];
-                        string backupState = parts[1];
-
-                        OnBackupInfoReceived(backupName, backupState);
+                        string backupBar = parts[1];
+                        OnBackupInfoReceived(backupName, backupBar);
                     }
                     else
                     {
-                        // Le message n'est pas dans le format attendu
+                        MessageBox.Show("Incorrect Format ");
                     }
                 }
                 await Task.Delay(100);
@@ -113,11 +73,11 @@ namespace Client_WPF
                 socket.EndReceive);
         }
 
-        private void OnBackupInfoReceived(string backupName, string BackupState)
+        private void OnBackupInfoReceived(string backupName, string BackupBar)
         {
             _dispatcher.Invoke(() =>
             {
-                MessageReceived?.Invoke(this, backupName + ":" + BackupState);
+                MessageReceived?.Invoke(this, backupName + ":" + BackupBar);
 
             });
         }

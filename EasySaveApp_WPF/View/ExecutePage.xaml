@@ -55,7 +55,7 @@
             </ListBox>
         </Grid>
 
-        <Grid Grid.Row="2" Visibility="{Binding isChange, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
+        <Grid Grid.Row="2" Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

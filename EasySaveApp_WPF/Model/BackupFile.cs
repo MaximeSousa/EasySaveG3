@@ -21,8 +21,8 @@ namespace EasySaveApp_WPF.Models
         public BackupType Type { get; set; }
         public long FileSize { get; set; }
         public string FileTransferTime { get; set; }
-        public bool IsPaused { get; set; } // Ajout de la propriété IsPaused pour gérer la pause
-        public bool IsStoped { get; set; } // Ajout de la propriété IsStoped pour gérer le stop
+        public bool IsPaused { get; set; }
+        public bool IsStoped { get; set; }
 
         public VMSettings Settings { get; set; }
 
@@ -84,13 +84,10 @@ namespace EasySaveApp_WPF.Models
 
         public static BackupFile CreateBackup(string FileName, string FileSource, string FileTarget, BackupType Type, bool IsPaused)
         {
-            //LoadBackupsFromFile();
             if (BackupHandler.BackupHandlerInstance == null)
                 BackupHandler.BackupHandlerInstance = new BackupHandler();
             BackupFile backup = new BackupFile(FileName, FileSource, FileTarget, Type, IsPaused);
             BackupHandler.BackupHandlerInstance.UpdateBackup(backup);
-            //backups.Add(backup);
-            //SaveBackupsToFile();
             return backup;
         }
 

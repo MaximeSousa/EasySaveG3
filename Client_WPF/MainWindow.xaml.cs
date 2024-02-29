@@ -1,9 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -28,32 +23,31 @@ namespace Client_WPF
 
         private void OnMessageReceived(object sender, string message)
         {
-            // Mise à jour de l'interface utilisateur sur le thread de l'interface utilisateur
             Dispatcher.Invoke(() =>
             {
                 string[] parts = message.Split(':');
                 if (parts.Length == 2)
                 {
                     string backupName = parts[0];
-                    string backupstate = parts[1];
-
+                    string backupbar = parts[1];
                     var existingBackup = backupModels.FirstOrDefault(b => b.BackupName == backupName);
                     if (existingBackup != null)
                     {
-                        existingBackup.BackupState = backupstate;
+                        existingBackup.BackupBar = backupbar;
                     }
                     else
                     {
-                        backupModels.Add(new BackupModel { BackupName = backupName, BackupState = backupstate });
+                        backupModels.Add(new BackupModel { BackupName = backupName, BackupBar = backupbar });
                     }
                 }
                 else
                 {
-                    // Le message n'est pas dans le format attendu
+                    MessageBox.Show("Incorrect Format ");
                 }
             });
         }
     }
+
     public class BackupModel : INotifyPropertyChanged
     {
         private string _backupName;
@@ -67,14 +61,14 @@ namespace Client_WPF
             }
         }
 
-        private string _backupState;
-        public string BackupState
+        private string _backupBar;
+        public string BackupBar
         {
-            get { return _backupState; }
+            get { return _backupBar; }
             set
             {
-                _backupState = value;
-                OnPropertyChanged(nameof(BackupState));
+                _backupBar = value;
+                OnPropertyChanged(nameof(BackupBar));
             }
         }
 
@@ -84,5 +78,4 @@ namespace Client_WPF
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }
