@@ -227,11 +227,6 @@ namespace EasySaveApp_WPF.ViewModel
                             process.WaitForExit();
                         }
                     }
-                    else
-                    {
-                        // Afficher un message indiquant que le fichier n'a pas été crypté en raison de son extension non autorisée
-                        //MessageBox.Show($"Le fichier '{filePath}' n'a pas été crypté car son extension n'est pas autorisée.");
-                    }
                 });
 
                 Source = "";
