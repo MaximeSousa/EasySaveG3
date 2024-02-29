@@ -318,7 +318,6 @@ namespace EasySaveApp_WPF.ViewModel
                 {
                     backup.IsPaused = true; 
                 }
-                MessageBox.Show("Selected backups paused.");
             }
         }
 
@@ -330,7 +329,6 @@ namespace EasySaveApp_WPF.ViewModel
                 {
                     backup.IsPaused = false; 
                 }
-                MessageBox.Show("Selected backups resumed.");
             }
         }
 
@@ -343,7 +341,6 @@ namespace EasySaveApp_WPF.ViewModel
                 {
                     backup.Stop();
                 }
-                MessageBox.Show("Selected backups stopped.");
             }
         }
 

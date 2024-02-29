@@ -36,6 +36,9 @@ namespace EasySaveApp_WPF.ViewModel
 
             AddCustomExtensionCommand = new RelayCommand(AddCustomExtension);
             RemoveSelectedExtensionsCommand = new RelayCommand(RemoveSelectedExtensions);
+            AddCustomPriorityExtensionCommand = new RelayCommand(AddCustomPriorityExtension);
+            RemoveFromPriorityCommand = new RelayCommand(RemoveFromPriority);
+
 
             AllowedExtensions = new ObservableCollection<ExtensionItem>
         {
@@ -127,6 +130,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+
         private string _customExtension;
         public string CustomExtension
         {
@@ -138,8 +142,21 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        private string _customPriorityExtension;
+        public string CustomPriorityExtension
+        {
+            get { return _customPriorityExtension; }
+            set
+            {
+                _customPriorityExtension = value;
+                OnPropertyChanged(nameof(CustomPriorityExtension));
+            }
+        }
+
         public ICommand AddCustomExtensionCommand { get; }
         public ICommand RemoveSelectedExtensionsCommand { get; }
+        public ICommand AddCustomPriorityExtensionCommand { get; }
+        public ICommand RemoveFromPriorityCommand { get; }
 
         private void AddCustomExtension(object parameter)
         {
@@ -163,8 +180,39 @@ namespace EasySaveApp_WPF.ViewModel
                 }
             }
         }
-
+        private void AddCustomPriorityExtension(object parameter)
+        {
+            if (!string.IsNullOrEmpty(CustomPriorityExtension))
+            {
+                string extension = CustomPriorityExtension.Trim();
+                if (IsValidExtension(extension))
+                {
+                    if (!AllowedExtensions.Any(ext => ext.Extension == extension))
+                    {
+                        AllowedExtensions.Add(new ExtensionItem { Extension = extension, IsSelected = false });
+                    }
+                    else
+                    {
+                        MessageBox.Show("L'extension existe déjà dans la liste des extensions prioritaires.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Extension invalide. Veuillez saisir une extension au format correct (par exemple, '.txt').");
+                }
+            }
+        }
         private void RemoveSelectedExtensions(object parameter)
+        {
+            for (int i = AllowedExtensions.Count - 1; i >= 0; i--)
+            {
+                if (AllowedExtensions[i].IsSelected)
+                {
+                    AllowedExtensions.RemoveAt(i);
+                }
+            }
+        }
+        private void RemoveFromPriority(object parameter)
         {
             for (int i = AllowedExtensions.Count - 1; i >= 0; i--)
             {

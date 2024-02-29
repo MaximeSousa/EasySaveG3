@@ -1,4 +1,4 @@
-﻿<Page x:Class="EasySaveApp_WPF.View.Settings"
+<Page x:Class="EasySaveApp_WPF.View.Settings"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,17 +17,20 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
             <TextBlock Text="Settings" Foreground="#DBDBDB"
            FontSize="24"
            FontWeight="Bold"
            HorizontalAlignment="Left"
            VerticalAlignment="Top" />
+
             <!-- Language -->
             <TextBlock Text="{DynamicResource Language}" Foreground="#DBDBDB" />
             <ComboBox Width="200" SelectionChanged="ComboBox_SelectionChanged">
@@ -46,7 +49,7 @@
             <!-- Extensions autorisées -->
             <TextBlock Text="Extensions autorisées" Foreground="#DBDBDB" />
             <TextBox x:Name="CustomExtensionTextBox" Width="150" Text="{Binding CustomExtension, UpdateSourceTrigger=PropertyChanged}"/>
-            <ListBox x:Name="AllowedExtensionsList" Width="200" Height="100" SelectionMode="Extended" ItemsSource="{Binding AllowedExtensions}">
+            <ListBox x:Name="AllowedExtensionsList" Width="182" Height="60" SelectionMode="Extended" ItemsSource="{Binding AllowedExtensions}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <CheckBox Content="{Binding Extension}" IsChecked="{Binding IsSelected}" />
@@ -59,11 +62,24 @@
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0">
             <!-- Taille maximale des fichiers (Ko) -->
             <TextBlock Text="Taille maximale des fichiers (Ko)" Foreground="#DBDBDB"/>
+          
             <Slider x:Name="FileSizeSlider" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" Height="30" Width="330" RenderTransformOrigin="0.515,2.213" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True">
                 <Slider.Ticks>
                     <DoubleCollection>0 10 20 30 40 50 60 70 80 90 100</DoubleCollection>
                 </Slider.Ticks>
             </Slider>
+            <TextBlock Text="{Binding MaxFileSize, StringFormat={}{0}}" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBlock Text="Extensions prioritaires" Foreground="#DBDBDB" />
+            <TextBox x:Name="CustomPriorityExtensionTextBox" Width="150" Text="{Binding CustomPriorityExtension, UpdateSourceTrigger=PropertyChanged}"/>
+            <ListBox x:Name="PriorityExtensionsListBox" Width="182" Height="100" ItemsSource="{Binding PriorityExtensions}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Content="{Binding Extension}" IsChecked="{Binding IsSelected}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Content="Ajouter" Command="{Binding AddCustomPriorityExtensionCommand}" Width="100"/>
+            <Button Content="Supprimer" Command="{Binding RemoveFromPriorityCommand}" Width="100"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -61,6 +61,7 @@ namespace EasySaveApp_WPF.Models
             this.FileSource = FileSource;
             this.FileTarget = FileTarget;
             this.Type = Type;
+            this.IsPaused = IsPaused;
             CopiedFiles = new List<string>();
         }
 
@@ -76,7 +77,6 @@ namespace EasySaveApp_WPF.Models
                     // Pause
                     Thread.Sleep(1000);
                 }
-
             }
             else
                 canBeExecuted = true;
@@ -110,7 +110,7 @@ namespace EasySaveApp_WPF.Models
 
                 if (Type == BackupType.Full || (Type == BackupType.Differential && File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath)))
                 {
-                    while (backup.IsPaused) 
+                    while (!canBeExecuted || backup.IsPaused) 
                     {
                         Thread.Sleep(1000);
                     }
@@ -125,7 +125,7 @@ namespace EasySaveApp_WPF.Models
 
             foreach (var DirectoryPath in Directory.GetDirectories(FileSource))
             {
-                while (backup.IsPaused) // Attendre si la sauvegarde est en pause
+                while (!canBeExecuted || backup.IsPaused) // Attendre si la sauvegarde est en pause
                 {
                     Thread.Sleep(1000);
                 }
