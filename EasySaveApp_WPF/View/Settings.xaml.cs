@@ -33,7 +33,7 @@ namespace EasySaveApp_WPF.View
                 VMSettings.TraductorEnglish();
             }
         }
-
+       
 
     }
 }

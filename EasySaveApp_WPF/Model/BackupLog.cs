@@ -19,6 +19,8 @@ namespace EasySaveApp_WPF.Models
         public string FileTransferTime { get; set; }
         public DateTime FileTime { get; set; }
         public string Details { get; set; }
+        public long EncryptionTime { get; set; }
+
     }
 
     // Serializable dictionary for XML serialization

@@ -203,7 +203,9 @@ namespace EasySaveApp_WPF.ViewModel
                             Directory.Delete(BackupFolder, true);
                         }
                         BackupHandler.BackupHandlerInstance.DeleteBackup(backup);
-                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, 0, "", "Delete", OutputFormat);
+
+                        long defaultTimeElapsed = 0;
+                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, 0, defaultTimeElapsed, "", "Delete", OutputFormat);
                     }
                     BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
                 }
@@ -221,8 +223,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
-        // Method to execute backups
-        private void ExecuteBackup(object parameter)
+        public void ExecuteBackup(object parameter)
         {
             if (SelectedBackups != null)
             {
@@ -259,7 +260,10 @@ namespace EasySaveApp_WPF.ViewModel
 
                             filesAlreadyCopied = backup.CopiedFiles.Count;
                             var FileTransferTime = stopwatch.Elapsed.ToString();
-                            CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, FileTransferTime, "Execute", OutputFormat);
+                            long timeElapsed = stopwatch.ElapsedMilliseconds;
+                            string encryptionTimeStr = timeElapsed.ToString();
+
+                            CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, timeElapsed, "", "Details", "OutputFormat");
                             StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, totalFilesToCopy, 0, 0, "Finished");
                         }
                         catch (Exception ex)
@@ -333,8 +337,8 @@ namespace EasySaveApp_WPF.ViewModel
             a.UpdateState(state);
         }
 
-        // Method to create backup log
-        public static void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime, string details, string outputFormat)
+        public void CreateLog(string _name, string _source, string _target, long size, long timeElapsed, string FileTransferTime, string details, string outputFormat)
+
         {
             VMSettings vmSettings = new VMSettings();
             BackupLogHandler a = new BackupLogHandler(vmSettings);
@@ -352,6 +356,7 @@ namespace EasySaveApp_WPF.ViewModel
                     FileSize = size,
                     FileTransferTime = FileTransferTime,
                     FileTime = DateTime.Now,
+                    EncryptionTime = timeElapsed,
                 };
                 a.UpdateLog(log);
                 if (outputFormat == "json")

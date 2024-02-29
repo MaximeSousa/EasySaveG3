@@ -27,8 +27,40 @@ namespace EasySaveApp_WPF.ViewModel
     public class VMSettings : VMBaseViewModel
     {
         public ICommand SelectFormat { get; private set; }
+
         public ICommand AddCustomExtensionCommand { get; }
         public ICommand RemoveSelectedExtensionsCommand { get; }
+        public ICommand AddCustomPriorityExtensionCommand { get; }
+        public ICommand RemoveFromPriorityCommand { get; }
+
+
+        public VMSettings()
+        {
+
+            AddCustomExtensionCommand = new RelayCommand(AddCustomExtension);
+            RemoveSelectedExtensionsCommand = new RelayCommand(RemoveSelectedExtensions);
+            AddCustomPriorityExtensionCommand = new RelayCommand(AddCustomPriorityExtension);
+            RemoveFromPriorityCommand = new RelayCommand(RemoveFromPriority);
+
+
+            AllowedExtensions = new ObservableCollection<ExtensionItem>
+        {
+            new ExtensionItem { Extension = ".txt", IsSelected = true }
+        };
+            MaxFileSize = 100 * 1024;
+
+            SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
+        }
+
+        public void TraductorEnglish()
+        {
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
+        }
+
+        public void TraductorFrench()
+        {
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryFrench.xaml", UriKind.RelativeOrAbsolute);
+        }
 
         private bool _isXmlSelected;
         public bool IsXmlSelected
@@ -85,6 +117,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+
         private string _customExtension;
         public string CustomExtension
         {
@@ -140,6 +173,9 @@ namespace EasySaveApp_WPF.ViewModel
             return OutputFormat == "xml" || OutputFormat == "json";
         }
 
+
+
+
         // Method to add custom extension
         private void AddCustomExtension(object parameter)
         {
@@ -164,8 +200,43 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+
+        // Method to add Priority extensions
+        private void AddCustomPriorityExtension(object parameter)
+        {
+            if (!string.IsNullOrEmpty(CustomPriorityExtension))
+            {
+                string extension = CustomPriorityExtension.Trim();
+                if (IsValidExtension(extension))
+                {
+                    if (!AllowedExtensions.Any(ext => ext.Extension == extension))
+                    {
+                        AllowedExtensions.Add(new ExtensionItem { Extension = extension, IsSelected = false });
+                    }
+                    else
+                    {
+                        MessageBox.Show("L'extension existe déjà dans la liste des extensions prioritaires.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Extension invalide. Veuillez saisir une extension au format correct (par exemple, '.txt').");
+                }
+            }
+        }
+
         // Method to remove selected extensions
         private void RemoveSelectedExtensions(object parameter)
+        {
+            for (int i = AllowedExtensions.Count - 1; i >= 0; i--)
+            {
+                if (AllowedExtensions[i].IsSelected)
+                {
+                    AllowedExtensions.RemoveAt(i);
+                }
+            }
+        }
+        private void RemoveFromPriority(object parameter)
         {
             for (int i = AllowedExtensions.Count - 1; i >= 0; i--)
             {
