@@ -12,36 +12,38 @@
 
     </Page.Resources>
 
-    <Grid>
+    <Grid Margin="20,20,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="27*"/>
-            <RowDefinition Height="146*"/>
-            <RowDefinition Height="277*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" RenderTransformOrigin="0.5,0.5" Margin="-2,-1,-4,-3" Grid.ColumnSpan="2" Grid.RowSpan="3">
-            <StackPanel.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="0.205"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </StackPanel.RenderTransform>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+            <TextBlock Text="Settings" Foreground="#DBDBDB"
+           FontSize="24"
+           FontWeight="Bold"
+           HorizontalAlignment="Left"
+           VerticalAlignment="Top" />
             <!-- Language -->
             <TextBlock Text="{DynamicResource Language}" Foreground="#DBDBDB" />
             <ComboBox Width="200" SelectionChanged="ComboBox_SelectionChanged">
                 <ComboBoxItem Content="French"/>
                 <ComboBoxItem Content="English"/>
             </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <!-- Log -->
             <TextBlock Text="Log" Foreground="#DBDBDB" />
             <RadioButton Content="XML" GroupName="format_group" IsChecked="{Binding IsXmlSelected}" Foreground="White" />
             <RadioButton Content="JSON" GroupName="format_group" IsChecked="{Binding IsJsonSelected}" Foreground="White" />
-            <Button Content="{DynamicResource Confirm}" Command="{Binding SelectFormat}" Height="26" Width="219" />
-
+            <Button Content="{DynamicResource Confirm}" Command="{Binding SelectFormat}" Height="25" Width="220" />
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0">
+            <!-- Extensions autorisées -->
             <TextBlock Text="Extensions autorisées" Foreground="#DBDBDB" />
             <TextBox x:Name="CustomExtensionTextBox" Width="150" Text="{Binding CustomExtension, UpdateSourceTrigger=PropertyChanged}"/>
             <ListBox x:Name="AllowedExtensionsList" Width="200" Height="100" SelectionMode="Extended" ItemsSource="{Binding AllowedExtensions}">
@@ -53,19 +55,15 @@
             </ListBox>
             <Button Content="Ajouter" Command="{Binding AddCustomExtensionCommand}" Width="100"/>
             <Button Content="Supprimer" Command="{Binding RemoveSelectedExtensionsCommand}" Width="100"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0">
+            <!-- Taille maximale des fichiers (Ko) -->
             <TextBlock Text="Taille maximale des fichiers (Ko)" Foreground="#DBDBDB"/>
-            <Slider x:Name="FileSizeSlider" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" Height="30" Width="334" RenderTransformOrigin="0.515,2.213" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True">
+            <Slider x:Name="FileSizeSlider" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" Height="30" Width="330" RenderTransformOrigin="0.515,2.213" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True">
                 <Slider.Ticks>
                     <DoubleCollection>0 10 20 30 40 50 60 70 80 90 100</DoubleCollection>
                 </Slider.Ticks>
             </Slider>
-            <TextBlock Text="{DynamicResource settings}" Foreground="#DBDBDB"
-
-                       FontSize="18"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Margin="20,60,0,20" />
-            <!-- Log -->
         </StackPanel>
     </Grid>
 </Page>
