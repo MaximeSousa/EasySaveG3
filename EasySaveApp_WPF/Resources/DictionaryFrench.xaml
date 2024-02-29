@@ -28,7 +28,7 @@
     <system:String x:Key="Nameofthesave">Nom de la sauvegarde</system:String>
     <system:String x:Key="Type">Type</system:String>
     <system:String x:Key="Browse">Parcourir</system:String>
-    <system:String x:Key="Allowed extensions">Allowed extensions</system:String>
+    <system:String x:Key="Allowed extensions">Extensions autorisées</system:String>
     <system:String x:Key="Add">Ajouter</system:String>
     <system:String x:Key="Delete">Supprimer</system:String>
     <system:String x:Key="Maximum file size (KB)">Taille maximale du fichier (Ko)</system:String>
