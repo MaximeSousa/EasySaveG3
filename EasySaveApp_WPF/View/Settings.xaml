@@ -16,18 +16,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="27*"/>
             <RowDefinition Height="146*"/>
-            <RowDefinition Height="277*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="262*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" RenderTransformOrigin="0.5,0.5" Margin="-2,-1,-4,-3" Grid.ColumnSpan="2" Grid.RowSpan="3">
+        <StackPanel Orientation="Vertical" RenderTransformOrigin="0.5,0.5" Margin="-2,-1,21,1" Grid.ColumnSpan="2" Grid.RowSpan="5">
             <StackPanel.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="0.205"/>
+                    <RotateTransform Angle="-0.254"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </StackPanel.RenderTransform>
@@ -44,7 +46,7 @@
 
             <TextBlock Text="Extensions autorisées" Foreground="#DBDBDB" />
             <TextBox x:Name="CustomExtensionTextBox" Width="150" Text="{Binding CustomExtension, UpdateSourceTrigger=PropertyChanged}"/>
-            <ListBox x:Name="AllowedExtensionsList" Width="200" Height="100" SelectionMode="Extended" ItemsSource="{Binding AllowedExtensions}">
+            <ListBox x:Name="AllowedExtensionsList" Width="182" Height="60" SelectionMode="Extended" ItemsSource="{Binding AllowedExtensions}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <CheckBox Content="{Binding Extension}" IsChecked="{Binding IsSelected}" />
@@ -54,11 +56,32 @@
             <Button Content="Ajouter" Command="{Binding AddCustomExtensionCommand}" Width="100"/>
             <Button Content="Supprimer" Command="{Binding RemoveSelectedExtensionsCommand}" Width="100"/>
             <TextBlock Text="Taille maximale des fichiers (Ko)" Foreground="#DBDBDB"/>
-            <Slider x:Name="FileSizeSlider" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" Height="30" Width="334" RenderTransformOrigin="0.515,2.213" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True">
-                <Slider.Ticks>
-                    <DoubleCollection>0 10 20 30 40 50 60 70 80 90 100</DoubleCollection>
-                </Slider.Ticks>
-            </Slider>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Slider x:Name="FileSizeSlider" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" Height="30" Width="334" RenderTransformOrigin="0.515,2.213" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True">
+                    <Slider.Ticks>
+                        <DoubleCollection>0 10 20 30 40 50 60 70 80 90 100</DoubleCollection>
+                    </Slider.Ticks>
+                </Slider>
+
+                <TextBlock Text="{Binding MaxFileSize, StringFormat={}{0}}" Grid.Column="0" VerticalAlignment="Center"/>
+            </Grid>
+            <TextBlock Text="Extensions prioritaires" Foreground="#DBDBDB" />
+            <TextBox x:Name="CustomPriorityExtensionTextBox" Width="150" Text="{Binding CustomPriorityExtension, UpdateSourceTrigger=PropertyChanged}"/>
+            <ListBox x:Name="PriorityExtensionsListBox" Width="182" Height="100" ItemsSource="{Binding PriorityExtensions}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Content="{Binding Extension}" IsChecked="{Binding IsSelected}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Content="Ajouter" Command="{Binding AddCustomPriorityExtensionCommand}" Width="100"/>
+            <Button Content="Supprimer" Command="{Binding RemoveFromPriorityCommand}" Width="100"/>
+
             <TextBlock Text="{DynamicResource settings}" Foreground="#DBDBDB"
 
                        FontSize="18"
