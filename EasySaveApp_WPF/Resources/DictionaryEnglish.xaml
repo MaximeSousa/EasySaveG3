@@ -27,6 +27,14 @@
     <system:String x:Key="Nameofthesave">Name of the save</system:String>
     <system:String x:Key="Type">Type</system:String>
     <system:String x:Key="Browse">Browse</system:String>
+    <system:String x:Key="Allowed extensions">Allowed extensions</system:String>
+    <system:String x:Key="Add">Add</system:String>
+    <system:String x:Key="Delete">Delete</system:String>
+    <system:String x:Key="Maximum file size (KB)">Maximum file size (KB)</system:String>
+    <system:String x:Key="Priority extensions">Priority extensions</system:String>
+
+
+
 
 
 </ResourceDictionary>

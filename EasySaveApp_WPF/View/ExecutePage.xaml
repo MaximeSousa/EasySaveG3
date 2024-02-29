@@ -78,7 +78,7 @@
             <Grid  Grid.Column="1">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Row="2">
 
-                    <TextBlock Text="TypeofSave}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
+                    <TextBlock Text="{DynamicResource TypeofSave}" Margin="20,0,0,0" Foreground="#DBDBDB"/>
                     <StackPanel Orientation="Horizontal" Margin="25,10,0,10" Width="200" HorizontalAlignment="Left">
                         <RadioButton Content="{DynamicResource Full}" Margin="0,0,50,0" GroupName="BackupType" IsChecked="{Binding IsFullBackup, Mode=TwoWay}" Foreground="White"/>
                         <RadioButton Content="{DynamicResource Differential}" GroupName="BackupType" IsChecked="{Binding IsDifferentialBackup, Mode=TwoWay}" Foreground="White"/>

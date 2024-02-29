@@ -25,7 +25,7 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-            <TextBlock Text="Settings" Foreground="#DBDBDB"
+            <TextBlock Text="{DynamicResource Settings}" Foreground="#DBDBDB"
            FontSize="24"
            FontWeight="Bold"
            HorizontalAlignment="Left"
@@ -47,7 +47,7 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0">
             <!-- Extensions autorisées -->
-            <TextBlock Text="Extensions autorisées" Foreground="#DBDBDB" />
+            <TextBlock Text="{DynamicResource Allowed extensions}" Foreground="#DBDBDB" />
             <TextBox x:Name="CustomExtensionTextBox" Width="150" Text="{Binding CustomExtension, UpdateSourceTrigger=PropertyChanged}"/>
             <ListBox x:Name="AllowedExtensionsList" Width="182" Height="60" SelectionMode="Extended" ItemsSource="{Binding AllowedExtensions}">
                 <ListBox.ItemTemplate>
@@ -56,12 +56,12 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Content="Ajouter" Command="{Binding AddCustomExtensionCommand}" Width="100"/>
-            <Button Content="Supprimer" Command="{Binding RemoveSelectedExtensionsCommand}" Width="100"/>
+            <Button Content="{DynamicResource Add}" Command="{Binding AddCustomExtensionCommand}" Width="100"/>
+            <Button Content="{DynamicResource Delete}" Command="{Binding RemoveSelectedExtensionsCommand}" Width="100"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0">
             <!-- Taille maximale des fichiers (Ko) -->
-            <TextBlock Text="Taille maximale des fichiers (Ko)" Foreground="#DBDBDB"/>
+            <TextBlock Text="{DynamicResource Maximum file size (KB)}" Foreground="#DBDBDB"/>
           
             <Slider x:Name="FileSizeSlider" Minimum="0" Maximum="100" Value="{Binding MaxFileSize}" Height="30" Width="330" RenderTransformOrigin="0.515,2.213" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True">
                 <Slider.Ticks>
@@ -69,7 +69,7 @@
                 </Slider.Ticks>
             </Slider>
             <TextBlock Text="{Binding MaxFileSize, StringFormat={}{0}}" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBlock Text="Extensions prioritaires" Foreground="#DBDBDB" />
+            <TextBlock Text="{DynamicResource Priority extensions}" Foreground="#DBDBDB" />
             <TextBox x:Name="CustomPriorityExtensionTextBox" Width="150" Text="{Binding CustomPriorityExtension, UpdateSourceTrigger=PropertyChanged}"/>
             <ListBox x:Name="PriorityExtensionsListBox" Width="182" Height="100" ItemsSource="{Binding PriorityExtensions}">
                 <ListBox.ItemTemplate>
@@ -78,8 +78,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Content="Ajouter" Command="{Binding AddCustomPriorityExtensionCommand}" Width="100"/>
-            <Button Content="Supprimer" Command="{Binding RemoveFromPriorityCommand}" Width="100"/>
+            <Button Content="{DynamicResource Add}" Command="{Binding AddCustomPriorityExtensionCommand}" Width="100"/>
+            <Button Content="{DynamicResource Delete}" Command="{Binding RemoveFromPriorityCommand}" Width="100"/>
         </StackPanel>
     </Grid>
 </Page>
