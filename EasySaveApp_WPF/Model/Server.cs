@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Net;
 using System.Net.Sockets;
-using System.Windows;
-using EasySaveApp_WPF.ViewModel;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EasySaveApp_WPF.Models
 {
     internal class Server
     {
-        private Socket _server;
-        private VMExecuteBackup _executeModel;
-        public Server(VMExecuteBackup executeModel)
+        public Server()
         {
-            _executeModel = executeModel;
-            _server = Connect();
+            _ = Connect(); // Start the server when an instance of Server is created
         }
 
+        // Method to establish a connection and start the server
         public Socket Connect()
         {
             try
@@ -28,6 +25,7 @@ namespace EasySaveApp_WPF.Models
                 Socket newSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 newSocket.Bind(ipServer);
                 newSocket.Listen(10);
+                // Start accepting connections asynchronously
                 Task.Run(() => AcceptConnections(newSocket));
                 return newSocket;
             }
@@ -38,6 +36,7 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
+        // Method to accept incoming connections
         private void AcceptConnections(Socket newSocket)
         {
             while (true)
@@ -45,7 +44,8 @@ namespace EasySaveApp_WPF.Models
                 try
                 {
                     Socket clientSocket = newSocket.Accept();
-                    Task.Run(() => EcouterReseau(clientSocket));
+                    // Handle the connection in a separate task
+                    Task.Run(() => Listen(clientSocket));
                 }
                 catch (Exception ex)
                 {
@@ -54,13 +54,15 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-        public static void Deconnecter(Socket socket)
+        // Method to disconnect a client
+        public static void Disconnect(Socket socket)
         {
             MessageBox.Show(string.Format("Déconnexion de {0}", ((IPEndPoint)socket.RemoteEndPoint).Address));
             socket.Close();
         }
 
-        static async void EcouterReseau(Socket client)
+        // Method to listen to network messages from the client
+        static async void Listen(Socket client)
         {
             try
             {
@@ -78,44 +80,7 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-        //static ExecuteBackupInfo GetExecuteBackupInfo()
-        //{
-        //    List<string> runningBackups = new List<string>();
-        //    List<string> backupStates = new List<string>();
-        //    List<int> progressList = new List<int>();
-        //    List<double> percentageList = new List<double>();
-
-        //    // Récupérer les noms de fichiers des sauvegardes sauvegardées
-        //    foreach (var backup in BackupHandler.BackupHandlerInstance._saveBackups)
-        //    {
-        //        runningBackups.Add(backup.FileName);
-
-        //        // Calculer la progression et le pourcentage
-        //        long bytesCopied = backup.BytesCopied;
-        //        long totalBytes = backup.TotalBytes;
-        //        int progress = (int)((bytesCopied * 100) / totalBytes);
-        //        double percentage = (bytesCopied * 100.0) / totalBytes;
-
-        //        progressList.Add(progress);
-        //        percentageList.Add(percentage);
-        //    }
-
-        //    // Récupérer les états de sauvegarde correspondants
-        //    BackupStateHandler backupStateHandler = new BackupStateHandler();
-        //    foreach (var backup in BackupHandler.BackupHandlerInstance._saveBackups)
-        //    {
-        //        if (backupStateHandler.saveState.ContainsKey(backup.FileName))
-        //        {
-        //            backupStates.Add(backupStateHandler.saveState[backup.FileName].StateName);
-        //        }
-        //        else
-        //        {
-        //            backupStates.Add("No State");
-        //        }
-        //    }
-        //    return new ExecuteBackupInfo { RunningBackups = runningBackups, BackupStates = backupStates, ProgressList = progressList, PercentageList = percentageList };
-        //}
-
+        // Method to retrieve information about running backups
         static ExecuteBackupInfo GetExecuteBackupInfo()
         {
             List<string> runningBackups = new List<string>();
@@ -137,7 +102,7 @@ namespace EasySaveApp_WPF.Models
                 }
                 else
                 {
-                    backupStates.Add("No State");
+                    backupStates.Add("Not Started");
                 }
             }
             return new ExecuteBackupInfo { RunningBackups = runningBackups, BackupStates = backupStates };
@@ -146,6 +111,7 @@ namespace EasySaveApp_WPF.Models
         static List<string> previousBackupList = new List<string>();
         static List<string> previousBackupStates = new List<string>();
 
+        // Method to send running backups information to the client
         static async Task SendRunningBackups(Socket client, ExecuteBackupInfo backupInfo)
         {
             // Vérifiez si la liste des sauvegardes à envoyer est identique à la liste précédente
@@ -174,6 +140,7 @@ namespace EasySaveApp_WPF.Models
             await Task.Delay(100);
         }
 
+        // Method to send data to the clien
         static void SendClient(Socket client, string message)
         {
             byte[] data = Encoding.UTF8.GetBytes(message);
@@ -181,6 +148,7 @@ namespace EasySaveApp_WPF.Models
         }
     }
 
+    // Model representing information about running backups
     public class ExecuteBackupInfo
     {
         public List<string> RunningBackups { get; set; }

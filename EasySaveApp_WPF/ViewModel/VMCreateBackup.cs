@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Windows;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using EasySaveApp_WPF.Models;
 using System.IO;
-using System.Threading.Tasks;
-using System.Text;
-using Microsoft.Win32;
-using System.Diagnostics;
 using System.Linq;
+using System.Windows;
+using System.Diagnostics;
+using System.Windows.Input;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using Microsoft.Win32;
+using EasySaveApp_WPF.Models;
 
 namespace EasySaveApp_WPF.ViewModel
 {
     public class VMCreateBackup : VMBaseViewModel
     {
-               
-
         public ICommand CreateBackupCommand { get; }
         public ICommand BrowseSourceCommand { get; }
         public ICommand BrowseTargetCommand { get; }
@@ -90,11 +87,13 @@ namespace EasySaveApp_WPF.ViewModel
         public VMCreateBackup()
         {
             LoadBackups();
+            // Initialize command bindings
             CreateBackupCommand = new RelayCommand(CreateBackup);
             BrowseSourceCommand = new RelayCommand(BrowseSource);
             BrowseTargetCommand = new RelayCommand(BrowseTarget);
         }
 
+        // Opens a dialog box to select the source folder for the backup
         private void BrowseSource(object obj)
         {
             OpenFileDialog FolderDialog = new();
@@ -110,6 +109,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        // Opens a dialog box to select the target folder for the backup
         private void BrowseTarget(object obj)
         {
             OpenFileDialog FolderDialog = new();
@@ -125,28 +125,21 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        //Loads existing backups from JSON file and updates the collection
         private void LoadBackups()
         {
             try
             {
-
                 BackupHandler backupHandler = new BackupHandler();
                 var loadedBackups = backupHandler.LoadBackupsFromJson();
-                if (loadedBackups != null)
-                {
-                    Backups = new ObservableCollection<BackupFile>(loadedBackups);
-                }
-                else
-                {
-                    Backups = new ObservableCollection<BackupFile>();
-                }
+                Backups = loadedBackups != null ? new ObservableCollection<BackupFile>(loadedBackups) : new ObservableCollection<BackupFile>();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erreur lors du chargement des sauvegardes : {ex.Message}");
             }
         }
-
+        // Create Backup file and save it 
         private void CreateBackup(object obj)
         {
             try
@@ -170,31 +163,28 @@ namespace EasySaveApp_WPF.ViewModel
                 {
                     throw new ArgumentException("Please select the backup type (Full or Differential).");
                 }
-
                 LoadBackups();
                 BackupType type = IsFullBackup ? BackupType.Full : BackupType.Differential;
-
                 BackupFile newBackup = BackupFile.CreateBackup(BackupName, Source, Destination, type, false);
-
                 newBackup.Executed = false;
                 if (!Backups.Contains(newBackup))
                 {
                     Backups.Add(newBackup);
                     BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
                 }
-
                 VMSettings settings = new VMSettings();
                 ObservableCollection<ExtensionItem> allowedExtensions = settings.AllowedExtensions;
+
+                // Verify file size
                 int maxFileSize = settings.MaxFileSize;
 
                 if (maxFileSize <= 0)
                 {
-                    throw new InvalidOperationException("Veuillez définir une taille maximale des fichiers valide.");
+                    throw new InvalidOperationException("Please set a valid maximum file size.");
                 
                 }
 
                 string[] allFiles = Directory.GetFiles(Source, "*", SearchOption.AllDirectories);
-
                 List<string> oversizedFiles = new List<string>();
 
                 // Vérifier la taille de chaque fichier
@@ -237,11 +227,6 @@ namespace EasySaveApp_WPF.ViewModel
                             process.WaitForExit();
                         }
                     }
-                    else
-                    {
-                        // Afficher un message indiquant que le fichier n'a pas été crypté en raison de son extension non autorisée
-                        //MessageBox.Show($"Le fichier '{filePath}' n'a pas été crypté car son extension n'est pas autorisée.");
-                    }
                 });
 
                 Source = "";
@@ -249,7 +234,7 @@ namespace EasySaveApp_WPF.ViewModel
                 IsFullBackup = false;
                 IsDifferentialBackup = false;
 
-                MessageBox.Show("Backup created successfully .");
+                MessageBox.Show("Backup created successfully");
             }
             catch (Exception ex)
             {

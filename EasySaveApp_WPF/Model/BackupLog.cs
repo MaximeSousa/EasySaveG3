@@ -9,6 +9,7 @@ using EasySaveApp_WPF.ViewModel;
 
 namespace EasySaveApp_WPF.Models
 {
+    // Model representing a backup log entry
     public class BackupLog
     {
         public string FileName { get; set; }
@@ -22,6 +23,7 @@ namespace EasySaveApp_WPF.Models
 
     }
 
+    // Serializable dictionary for XML serialization
     [XmlRoot("dictionary")]
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
     {
@@ -83,6 +85,8 @@ namespace EasySaveApp_WPF.Models
             }
         }
     }
+
+    // Class for handling backup logs
     public class BackupLogHandler
     {
         private VMSettings _vmSettings;
@@ -104,6 +108,7 @@ namespace EasySaveApp_WPF.Models
         }
 
 
+        // Method to update the backup log
         public void UpdateLog(BackupLog log)
         {
             saveLog[log.FileName] = log;
@@ -118,13 +123,14 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-
+        // Method to save the backup log to JSON
         public void SaveLogToJson(string fileName)
         {
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(saveLog, Newtonsoft.Json.Formatting.Indented);
-            System.IO.File.WriteAllText(fileName, json);
+            string json = JsonConvert.SerializeObject(saveLog, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText(fileName, json);
         }
 
+        // Method to save the backup log to XML
         public void SaveLogToXml(string fileName)
         {
             var serializer = new XmlSerializer(typeof(SerializableDictionary<string, BackupLog>));
@@ -134,6 +140,7 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
+        // Method to load the backup log from JSON
         public void LoadLogFromJson()
         {
             if (File.Exists("Log.json"))
@@ -142,6 +149,8 @@ namespace EasySaveApp_WPF.Models
                 saveLog = JsonConvert.DeserializeObject<SerializableDictionary<string, BackupLog>>(json);
             }
         }
+
+        // Method to load the backup log from XML
         public void LoadLogFromXml()
         {
             if (File.Exists("Log.xml"))

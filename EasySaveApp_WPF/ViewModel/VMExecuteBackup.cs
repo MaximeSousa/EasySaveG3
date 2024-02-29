@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 using EasySaveApp_WPF.Models;
-using System.Diagnostics;
-using System.Collections.Generic;
 
 namespace EasySaveApp_WPF.ViewModel
 {
@@ -86,32 +85,6 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
-        private long _totalBytes;
-        public long TotalBytes
-        {
-            get { return _totalBytes; }
-            set
-            {
-                _totalBytes = value;
-                OnPropertyChanged(nameof(TotalBytes));
-            }
-        }
-
-        private long _bytesCopied;
-        public long BytesCopied
-        {
-            get { return _bytesCopied; }
-            set { _bytesCopied = value; OnPropertyChanged(nameof(BytesCopied)); }
-        }
-
-        private int _progressPercentage;
-        public int ProgressPercentage
-        {
-            get { return _progressPercentage; }
-            set { _progressPercentage = value; OnPropertyChanged(nameof(ProgressPercentage)); }
-        }
-
-
         public ICommand ChangeBackupCommand { get; private set; }
         public ICommand DeleteBackupCommand { get; private set; }
         public ICommand ExecuteBackupCommand { get; private set; }
@@ -124,12 +97,12 @@ namespace EasySaveApp_WPF.ViewModel
         public string Source { get; set; }
         public string Destination { get; set; }
         public BackupType Type { get; set; }
-
         public static string OutputFormat { get; set; } = "json";
 
         public VMExecuteBackup()
         {
             LoadBackups();
+            // Initialize command bindings
             SelectedBackups = new ObservableCollection<BackupFile>();
             ChangeBackupCommand = new RelayCommand(ChangeBackup);
             DeleteBackupCommand = new RelayCommand(DeleteBackup);
@@ -140,20 +113,15 @@ namespace EasySaveApp_WPF.ViewModel
             StopBackupCommand = new RelayCommand(StopBackup);
         }
 
+        // Method to load backups
         private void LoadBackups()
         {
             try
             {
                 BackupHandler backupHandler = new BackupHandler();
                 var loadedBackups = backupHandler.LoadBackupsFromJson();
-                if (loadedBackups != null)
-                {
-                    Backups = new ObservableCollection<BackupFile>(loadedBackups);
-                }
-                else
-                {
-                    Backups = new ObservableCollection<BackupFile>();
-                }
+                // Initialize backups collection with loaded backups
+                Backups = loadedBackups != null ? new ObservableCollection<BackupFile>(loadedBackups) : new ObservableCollection<BackupFile>();
             }
             catch (Exception ex)
             {
@@ -161,11 +129,13 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        // Method to make Change visible
         private void Visible(object parameter)
         {
             IsChange = true;
         }
 
+        // Method to change backup parameters
         private void ChangeBackup(object parameter)
         {
             if (SelectedBackups != null && SelectedBackups.Count == 1)
@@ -176,9 +146,7 @@ namespace EasySaveApp_WPF.ViewModel
                 {
                     BackupHandler backupHandler = BackupHandler.BackupHandlerInstance;
                     // Recherche de la sauvegarde existante dans la liste _saveBackups
-                    var existingBackup = backupHandler._saveBackups.FirstOrDefault(b => b.FileName == backup.FileName
-                                                                       && b.FileSource == backup.FileSource
-                                                                       && b.FileTarget == backup.FileTarget);
+                    var existingBackup = backupHandler._saveBackups.FirstOrDefault(b => b.FileName == backup.FileName && b.FileSource == backup.FileSource && b.FileTarget == backup.FileTarget);
 
                     if (existingBackup != null)
                     {
@@ -218,6 +186,8 @@ namespace EasySaveApp_WPF.ViewModel
                 MessageBox.Show("Please select a backup to modify.");
             }
         }
+
+        // Method to delete backups
         private void DeleteBackup(object parameter)
         {
             if (SelectedBackups != null && SelectedBackups.Count > 0)
@@ -259,48 +229,48 @@ namespace EasySaveApp_WPF.ViewModel
             {
                 long totalSize = 0;
 
-                // Calculer la taille totale des fichiers à copier
+                
                 foreach (var backup in SelectedBackups)
                 {
+                    // Calculer la taille totale des fichiers à copier
                     DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
                     totalSize += dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
                 }
-                TotalBytes = totalSize;
-                BytesCopied = 0; // Réinitialiser BytesCopied
-
                 Parallel.ForEach(SelectedBackups, backup =>
                 {
                     Thread backupThread = new Thread(() =>
                     {
                         try
                         {
+                            DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
+                            long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
+                            long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
+                            int totalFilesToCopy = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Count();
+                            int filesAlreadyCopied = 0;
+                            int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
+
                             Stopwatch stopwatch = new Stopwatch();
                             stopwatch.Start();
+                            string stateName = stopwatch.IsRunning ? "In Progress" : "Not Started";
+                            StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
                             backup.ExecuteCopy(backup);
-
+                            backup.Progress = 100;
                             backup.Executed = true;
                             stopwatch.Stop();
 
-                            DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
-                            long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
-
-                            Interlocked.Add(ref _bytesCopied, size);
-
-                            ProgressPercentage = (int)((double)_bytesCopied / _totalBytes * 100);
-                            backup.Progress = ProgressPercentage;
-
+                            filesAlreadyCopied = backup.CopiedFiles.Count;
+                            var FileTransferTime = stopwatch.Elapsed.ToString();
                             long timeElapsed = stopwatch.ElapsedMilliseconds;
-
                             string encryptionTimeStr = timeElapsed.ToString();
 
                             CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, timeElapsed, "", "Details", "OutputFormat");
+                            StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, totalFilesToCopy, 0, 0, "Finished");
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show($"Error executing backup '{backup.FileName}': {ex.Message}");
                         }
                     });
-
                     backupThread.Start();
                 });
             }
@@ -344,7 +314,8 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
-        public void StateForBackup(string _name, string _source, string _target, long size, int filesAlreadyCopied, long remainingSize, int remainingFiles, string stateName)
+        // Method to update backup state
+        public static void StateForBackup(string _name, string _source, string _target, long size, int filesAlreadyCopied, long remainingSize, int remainingFiles, string stateName)
         {
             BackupStateHandler a = new BackupStateHandler();
             string sourceFilePath = _source;
@@ -367,6 +338,7 @@ namespace EasySaveApp_WPF.ViewModel
         }
 
         public void CreateLog(string _name, string _source, string _target, long size, long timeElapsed, string FileTransferTime, string details, string outputFormat)
+
         {
             VMSettings vmSettings = new VMSettings();
             BackupLogHandler a = new BackupLogHandler(vmSettings);

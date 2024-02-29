@@ -26,11 +26,11 @@ namespace EasySaveApp_WPF.View
            
             if (selectedItems.Content.ToString() == "French")
             {
-                Setting.TraductorFrench();
+                VMSettings.TraductorFrench();
             }
             else
             {
-                Setting.TraductorEnglish();
+                VMSettings.TraductorEnglish();
             }
         }
        

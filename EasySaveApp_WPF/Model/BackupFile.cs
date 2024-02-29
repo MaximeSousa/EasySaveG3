@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using EasySaveApp_WPF.ViewModel;
 using Newtonsoft.Json;
@@ -15,14 +12,16 @@ namespace EasySaveApp_WPF.Models
     {
         public static bool canBeExecuted = true;
         private static bool IsInExecution = false;
+
+        // Properties for backup file details
         public string FileName { get; set; }
         public string FileSource { get; set; }
         public string FileTarget { get; set; }
         public BackupType Type { get; set; }
         public long FileSize { get; set; }
         public string FileTransferTime { get; set; }
-        public bool IsPaused { get; set; } // Ajout de la propriété IsPaused pour gérer la pause
-        public bool IsStoped { get; set; } // Ajout de la propriété IsStoped pour gérer le stop
+        public bool IsPaused { get; set; }
+        public bool IsStoped { get; set; }
 
         public VMSettings Settings { get; set; }
 
@@ -65,6 +64,7 @@ namespace EasySaveApp_WPF.Models
             CopiedFiles = new List<string>();
         }
 
+        // Method to monitor processes
         public static void MonitorProcess()
         {
             // Start the process monitoring thread
@@ -72,28 +72,29 @@ namespace EasySaveApp_WPF.Models
             if (processes.Length > 0)   // check if a software of the list is running
             {
                 canBeExecuted = false;
-                if (IsInExecution == true)
+                if (IsInExecution)
                 {
                     // Pause
                     Thread.Sleep(1000);
                 }
             }
             else
+            {
                 canBeExecuted = true;
+            }
         }
 
+        // Method to create a backup
         public static BackupFile CreateBackup(string FileName, string FileSource, string FileTarget, BackupType Type, bool IsPaused)
         {
-            //LoadBackupsFromFile();
             if (BackupHandler.BackupHandlerInstance == null)
                 BackupHandler.BackupHandlerInstance = new BackupHandler();
             BackupFile backup = new BackupFile(FileName, FileSource, FileTarget, Type, IsPaused);
             BackupHandler.BackupHandlerInstance.UpdateBackup(backup);
-            //backups.Add(backup);
-            //SaveBackupsToFile();
             return backup;
         }
 
+        // Method to execute the backup copy process
         public void ExecuteCopy(BackupFile backup)
         {
             string BackupSaveFolder = Path.Combine(FileTarget, FileName);
@@ -135,6 +136,7 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
+        // Method to recursively copy directories
         private void CopyDirectory(string sourceDir, string targetDir)
         {
             if (!Directory.Exists(targetDir))
@@ -160,7 +162,7 @@ namespace EasySaveApp_WPF.Models
 
         public void Dispose()
         {
-            // Libérer les ressources non managées si nécessaire
+            // Release unmanaged resources if necessary
         }
 
         // Méthode pour mettre la sauvegarde en pause
@@ -182,6 +184,7 @@ namespace EasySaveApp_WPF.Models
         }
     }
 
+    // Class for handling backups
     public class BackupHandler
     {
         private static BackupHandler _backupHandlerInstance;
@@ -210,6 +213,7 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
+        // Method to update a backup
         public void UpdateBackup(BackupFile backup)
         {
             int index = _saveBackups.FindIndex(b => b.FileName == backup.FileName && b.FileSource == backup.FileSource && b.FileTarget == backup.FileTarget);
@@ -228,13 +232,14 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-
+        // Method to save backups to JSON
         public void SaveBackupsToJson()
         {
             string json = JsonConvert.SerializeObject(_saveBackups, Formatting.Indented);
             File.WriteAllText("backups.json", json);
         }
 
+        // Method to load backups from JSON
         public List<BackupFile> LoadBackupsFromJson()
         {
             if (File.Exists("backups.json"))
@@ -246,6 +251,7 @@ namespace EasySaveApp_WPF.Models
             return null;
         }
 
+        // Method to delete a backup
         public void DeleteBackup(BackupFile backup)
         {
             int index = _saveBackups.FindIndex(b => b.FileName == backup.FileName && b.FileSource == backup.FileSource && b.FileTarget == backup.FileTarget);
@@ -257,6 +263,7 @@ namespace EasySaveApp_WPF.Models
         }
     }
 
+    // Enumeration for backup types
     public enum BackupType
     {
         Full,

@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListView x:Name="BackupListView" ItemsSource="{Binding BackupList}" Margin="10" Height="300">
+        <ListView x:Name="BackupListView" Margin="10" Height="300">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Backup Name" DisplayMemberBinding="{Binding BackupName}" Width="150"/>
-                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding BackupState}" Width="150"/>
+                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding BackupBar}" Width="150"/>
                 </GridView>
             </ListView.View>
         </ListView>
