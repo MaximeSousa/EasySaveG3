@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,10 +39,16 @@ namespace CryptoSoft
                 Directory.CreateDirectory(destinationDirectory);
             }
 
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             Parallel.ForEach(Directory.GetFiles(sourceDirectory, "*", SearchOption.AllDirectories), filePath =>
             {
                 EncryptFile(filePath, sourceDirectory, destinationDirectory, key);
             });
+            stopwatch.Stop();
+            long timeElapsed = stopwatch.ElapsedMilliseconds;
+
         }
 
         // Permet de chiffrer chaque fichier selon le chiffrement XOR

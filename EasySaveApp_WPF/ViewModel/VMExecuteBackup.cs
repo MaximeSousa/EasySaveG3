@@ -233,7 +233,9 @@ namespace EasySaveApp_WPF.ViewModel
                             Directory.Delete(BackupFolder, true);
                         }
                         BackupHandler.BackupHandlerInstance.DeleteBackup(backup);
-                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, 0, "", "Delete", OutputFormat);
+
+                        long defaultTimeElapsed = 0;
+                        CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, 0, defaultTimeElapsed, "", "Delete", OutputFormat);
                     }
                     BackupHandler.BackupHandlerInstance.SaveBackupsToJson();
                 }
@@ -251,7 +253,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
-        private void ExecuteBackup(object parameter)
+        public void ExecuteBackup(object parameter)
         {
             if (SelectedBackups != null)
             {
@@ -277,7 +279,7 @@ namespace EasySaveApp_WPF.ViewModel
                             backup.ExecuteCopy(backup);
 
                             backup.Executed = true;
-                            stopwatch.Stop();            
+                            stopwatch.Stop();
 
                             DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
                             long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
@@ -285,7 +287,13 @@ namespace EasySaveApp_WPF.ViewModel
                             Interlocked.Add(ref _bytesCopied, size);
 
                             ProgressPercentage = (int)((double)_bytesCopied / _totalBytes * 100);
-                            backup.Progress = ProgressPercentage; // Mettre à jour la progression de la sauvegarde
+                            backup.Progress = ProgressPercentage;
+
+                            long timeElapsed = stopwatch.ElapsedMilliseconds;
+
+                            string encryptionTimeStr = timeElapsed.ToString();
+
+                            CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, timeElapsed, "", "Details", "OutputFormat");
                         }
                         catch (Exception ex)
                         {
@@ -358,7 +366,7 @@ namespace EasySaveApp_WPF.ViewModel
             a.UpdateState(state);
         }
 
-        public void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime, string details, string outputFormat)
+        public void CreateLog(string _name, string _source, string _target, long size, long timeElapsed, string FileTransferTime, string details, string outputFormat)
         {
             VMSettings vmSettings = new VMSettings();
             BackupLogHandler a = new BackupLogHandler(vmSettings);
@@ -376,6 +384,7 @@ namespace EasySaveApp_WPF.ViewModel
                     FileSize = size,
                     FileTransferTime = FileTransferTime,
                     FileTime = DateTime.Now,
+                    EncryptionTime = timeElapsed,
                 };
                 a.UpdateLog(log);
                 if (outputFormat == "json")
