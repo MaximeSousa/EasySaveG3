@@ -33,35 +33,6 @@ namespace EasySaveApp_WPF.ViewModel
         public ICommand AddCustomPriorityExtensionCommand { get; }
         public ICommand RemoveFromPriorityCommand { get; }
 
-
-        public VMSettings()
-        {
-
-            AddCustomExtensionCommand = new RelayCommand(AddCustomExtension);
-            RemoveSelectedExtensionsCommand = new RelayCommand(RemoveSelectedExtensions);
-            AddCustomPriorityExtensionCommand = new RelayCommand(AddCustomPriorityExtension);
-            RemoveFromPriorityCommand = new RelayCommand(RemoveFromPriority);
-
-
-            AllowedExtensions = new ObservableCollection<ExtensionItem>
-        {
-            new ExtensionItem { Extension = ".txt", IsSelected = true }
-        };
-            MaxFileSize = 100 * 1024;
-
-            SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
-        }
-
-        public void TraductorEnglish()
-        {
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
-        }
-
-        public void TraductorFrench()
-        {
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryFrench.xaml", UriKind.RelativeOrAbsolute);
-        }
-
         private bool _isXmlSelected;
         public bool IsXmlSelected
         {
@@ -128,7 +99,17 @@ namespace EasySaveApp_WPF.ViewModel
                 OnPropertyChanged(nameof(CustomExtension));
             }
         }
-        
+        private string _customPriorityExtension;
+        public string CustomPriorityExtension
+        {
+            get { return _customPriorityExtension; }
+            set
+            {
+                _customPriorityExtension = value;
+                OnPropertyChanged(nameof(CustomPriorityExtension));
+            }
+        }
+
         public VMSettings()
         {
             // Initialize command bindings
