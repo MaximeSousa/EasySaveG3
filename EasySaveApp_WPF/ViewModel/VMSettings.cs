@@ -98,26 +98,30 @@ namespace EasySaveApp_WPF.ViewModel
         
         public VMSettings()
         {
+            // Initialize command bindings
             AddCustomExtensionCommand = new RelayCommand(AddCustomExtension);
             RemoveSelectedExtensionsCommand = new RelayCommand(RemoveSelectedExtensions);
             AllowedExtensions = new ObservableCollection<ExtensionItem>
         {
             new ExtensionItem { Extension = ".txt", IsSelected = true }
         };
-            MaxFileSize = 100 * 1024;
+            MaxFileSize = 100 * 1024; // Default max file size (100KB)
             SelectFormat = new RelayCommand(ConfirmFormat, CanConfirmFormat);
         }
 
+        // Method to change language to English
         public static void TraductorEnglish()
         {
             Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryEnglish.xaml", UriKind.RelativeOrAbsolute);
         }
 
+        // Method to change language to French
         public static void TraductorFrench()
         {
             Application.Current.Resources.MergedDictionaries[0].Source = new Uri("/Resources/DictionaryFrench.xaml", UriKind.RelativeOrAbsolute);
         }
 
+        // Method to confirm output format selection
         private void ConfirmFormat(object parameter)
         {
             if (CanConfirmFormat(null))
@@ -129,11 +133,14 @@ namespace EasySaveApp_WPF.ViewModel
                 MessageBox.Show("Please select a format.");
             }
         }
+
+        // Method to check if output format can be confirmed
         private bool CanConfirmFormat(object parameter)
         {
             return OutputFormat == "xml" || OutputFormat == "json";
         }
 
+        // Method to add custom extension
         private void AddCustomExtension(object parameter)
         {
             if (!string.IsNullOrEmpty(CustomExtension))
@@ -157,6 +164,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        // Method to remove selected extensions
         private void RemoveSelectedExtensions(object parameter)
         {
             for (int i = AllowedExtensions.Count - 1; i >= 0; i--)
@@ -168,6 +176,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        // Method to validate extension format
         private bool IsValidExtension(string extension)
         {
             Regex regex = new Regex(@"^\.[a-zA-Z0-9\-]+$");
@@ -176,7 +185,7 @@ namespace EasySaveApp_WPF.ViewModel
 
         private int _maxFileSize;
 
-        // propriété pour la taille maximale des fichiers en Ko
+        // Property for maximum file size in KB
         public int MaxFileSize
         {
             get { return _maxFileSize; }

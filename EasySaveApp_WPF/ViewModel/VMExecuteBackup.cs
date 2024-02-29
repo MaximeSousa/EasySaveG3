@@ -102,6 +102,7 @@ namespace EasySaveApp_WPF.ViewModel
         public VMExecuteBackup()
         {
             LoadBackups();
+            // Initialize command bindings
             SelectedBackups = new ObservableCollection<BackupFile>();
             ChangeBackupCommand = new RelayCommand(ChangeBackup);
             DeleteBackupCommand = new RelayCommand(DeleteBackup);
@@ -112,20 +113,15 @@ namespace EasySaveApp_WPF.ViewModel
             StopBackupCommand = new RelayCommand(StopBackup);
         }
 
+        // Method to load backups
         private void LoadBackups()
         {
             try
             {
                 BackupHandler backupHandler = new BackupHandler();
                 var loadedBackups = backupHandler.LoadBackupsFromJson();
-                if (loadedBackups != null)
-                {
-                    Backups = new ObservableCollection<BackupFile>(loadedBackups);
-                }
-                else
-                {
-                    Backups = new ObservableCollection<BackupFile>();
-                }
+                // Initialize backups collection with loaded backups
+                Backups = loadedBackups != null ? new ObservableCollection<BackupFile>(loadedBackups) : new ObservableCollection<BackupFile>();
             }
             catch (Exception ex)
             {
@@ -133,11 +129,13 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        // Method to make Change visible
         private void Visible(object parameter)
         {
             IsChange = true;
         }
 
+        // Method to change backup parameters
         private void ChangeBackup(object parameter)
         {
             if (SelectedBackups != null && SelectedBackups.Count == 1)
@@ -188,6 +186,8 @@ namespace EasySaveApp_WPF.ViewModel
                 MessageBox.Show("Please select a backup to modify.");
             }
         }
+
+        // Method to delete backups
         private void DeleteBackup(object parameter)
         {
             if (SelectedBackups != null && SelectedBackups.Count > 0)
@@ -221,15 +221,17 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        // Method to execute backups
         private void ExecuteBackup(object parameter)
         {
             if (SelectedBackups != null)
             {
                 long totalSize = 0;
 
-                // Calculer la taille totale des fichiers à copier
+                
                 foreach (var backup in SelectedBackups)
                 {
+                    // Calculer la taille totale des fichiers à copier
                     DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
                     totalSize += dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
                 }
@@ -308,6 +310,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        // Method to update backup state
         public static void StateForBackup(string _name, string _source, string _target, long size, int filesAlreadyCopied, long remainingSize, int remainingFiles, string stateName)
         {
             BackupStateHandler a = new BackupStateHandler();
@@ -330,6 +333,7 @@ namespace EasySaveApp_WPF.ViewModel
             a.UpdateState(state);
         }
 
+        // Method to create backup log
         public static void CreateLog(string _name, string _source, string _target, long size, string FileTransferTime, string details, string outputFormat)
         {
             VMSettings vmSettings = new VMSettings();

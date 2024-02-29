@@ -87,11 +87,13 @@ namespace EasySaveApp_WPF.ViewModel
         public VMCreateBackup()
         {
             LoadBackups();
+            // Initialize command bindings
             CreateBackupCommand = new RelayCommand(CreateBackup);
             BrowseSourceCommand = new RelayCommand(BrowseSource);
             BrowseTargetCommand = new RelayCommand(BrowseTarget);
         }
 
+        // Opens a dialog box to select the source folder for the backup
         private void BrowseSource(object obj)
         {
             OpenFileDialog FolderDialog = new();
@@ -107,6 +109,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        // Opens a dialog box to select the target folder for the backup
         private void BrowseTarget(object obj)
         {
             OpenFileDialog FolderDialog = new();
@@ -122,6 +125,7 @@ namespace EasySaveApp_WPF.ViewModel
             }
         }
 
+        //Loads existing backups from JSON file and updates the collection
         private void LoadBackups()
         {
             try
@@ -135,7 +139,7 @@ namespace EasySaveApp_WPF.ViewModel
                 MessageBox.Show($"Erreur lors du chargement des sauvegardes : {ex.Message}");
             }
         }
-
+        // Create Backup file and save it 
         private void CreateBackup(object obj)
         {
             try
@@ -170,11 +174,13 @@ namespace EasySaveApp_WPF.ViewModel
                 }
                 VMSettings settings = new VMSettings();
                 ObservableCollection<ExtensionItem> allowedExtensions = settings.AllowedExtensions;
+
+                // Verify file size
                 int maxFileSize = settings.MaxFileSize;
 
                 if (maxFileSize <= 0)
                 {
-                    throw new InvalidOperationException("Veuillez définir une taille maximale des fichiers valide.");
+                    throw new InvalidOperationException("Please set a valid maximum file size.");
                 
                 }
 

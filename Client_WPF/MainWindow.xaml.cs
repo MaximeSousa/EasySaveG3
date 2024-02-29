@@ -1,7 +1,7 @@
 ﻿using System.Windows;
+using System.Linq;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Client_WPF
 {
@@ -21,6 +21,7 @@ namespace Client_WPF
             _client.Client();
         }
 
+        // Event handler for when a message is received from the client
         private void OnMessageReceived(object sender, string message)
         {
             Dispatcher.Invoke(() =>
@@ -48,6 +49,7 @@ namespace Client_WPF
         }
     }
 
+    // Model class for backup data
     public class BackupModel : INotifyPropertyChanged
     {
         private string _backupName;

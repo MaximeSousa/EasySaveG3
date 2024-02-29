@@ -6,18 +6,17 @@ using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasySaveApp_WPF.ViewModel;
 
 namespace EasySaveApp_WPF.Models
 {
     internal class Server
     {
-
         public Server()
         {
-            _ = Connect();
+            _ = Connect(); // Start the server when an instance of Server is created
         }
 
+        // Method to establish a connection and start the server
         public Socket Connect()
         {
             try
@@ -26,6 +25,7 @@ namespace EasySaveApp_WPF.Models
                 Socket newSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 newSocket.Bind(ipServer);
                 newSocket.Listen(10);
+                // Start accepting connections asynchronously
                 Task.Run(() => AcceptConnections(newSocket));
                 return newSocket;
             }
@@ -36,6 +36,7 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
+        // Method to accept incoming connections
         private void AcceptConnections(Socket newSocket)
         {
             while (true)
@@ -43,7 +44,8 @@ namespace EasySaveApp_WPF.Models
                 try
                 {
                     Socket clientSocket = newSocket.Accept();
-                    Task.Run(() => EcouterReseau(clientSocket));
+                    // Handle the connection in a separate task
+                    Task.Run(() => Listen(clientSocket));
                 }
                 catch (Exception ex)
                 {
@@ -52,13 +54,15 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-        public static void Deconnecter(Socket socket)
+        // Method to disconnect a client
+        public static void Disconnect(Socket socket)
         {
             MessageBox.Show(string.Format("Déconnexion de {0}", ((IPEndPoint)socket.RemoteEndPoint).Address));
             socket.Close();
         }
 
-        static async void EcouterReseau(Socket client)
+        // Method to listen to network messages from the client
+        static async void Listen(Socket client)
         {
             try
             {
@@ -76,7 +80,7 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
-
+        // Method to retrieve information about running backups
         static ExecuteBackupInfo GetExecuteBackupInfo()
         {
             List<string> runningBackups = new List<string>();
@@ -107,6 +111,7 @@ namespace EasySaveApp_WPF.Models
         static List<string> previousBackupList = new List<string>();
         static List<string> previousBackupStates = new List<string>();
 
+        // Method to send running backups information to the client
         static async Task SendRunningBackups(Socket client, ExecuteBackupInfo backupInfo)
         {
             // Vérifiez si la liste des sauvegardes à envoyer est identique à la liste précédente
@@ -135,6 +140,7 @@ namespace EasySaveApp_WPF.Models
             await Task.Delay(100);
         }
 
+        // Method to send data to the clien
         static void SendClient(Socket client, string message)
         {
             byte[] data = Encoding.UTF8.GetBytes(message);
@@ -142,6 +148,7 @@ namespace EasySaveApp_WPF.Models
         }
     }
 
+    // Model representing information about running backups
     public class ExecuteBackupInfo
     {
         public List<string> RunningBackups { get; set; }

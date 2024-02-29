@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-
 using EasySaveApp_WPF.Models;
 using EasySaveApp_WPF.ViewModel;
 using System.Windows.Threading;

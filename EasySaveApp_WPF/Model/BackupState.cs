@@ -7,6 +7,7 @@ namespace EasySaveApp_WPF.Models
 {
     public class BackupState
     {
+        // Model representing the state of a backup
         public string FileName { get; set; }
         public DateTime Timestamp { get; set; }
         public string StateName { get; set; }
@@ -34,18 +35,21 @@ namespace EasySaveApp_WPF.Models
             }
         }
 
+        // Method to update the backup state
         public void UpdateState(BackupState state)
         {
             saveState[state.FileName] = state;
             SaveStateToJson();
         }
 
+        // Method to save the backup state to JSON
         public void SaveStateToJson()
         {
             string json = JsonConvert.SerializeObject(saveState, Formatting.Indented);
             File.WriteAllText("State.json", json);
         }
 
+        // Method to load the backup state from JSON
         public void LoadStateFromJson()
         {
             if (File.Exists("State.json"))

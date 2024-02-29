@@ -13,20 +13,23 @@ namespace Client_WPF
         public event EventHandler<string> MessageReceived;
         private readonly Dispatcher _dispatcher;
 
+        // Constructor to initialize the dispatcher
         public ClientWindows(Dispatcher dispatcher)
         {
             _dispatcher = dispatcher;
         }
 
+        // Method to start the client
         public void Client()
         {
             Socket socket = Connect();
             Task.Run(async () => await Listen(socket));
         }
 
+        // Method to establish a connection to the server
         private static Socket Connect()
         {
-            IPEndPoint ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050); //ip serveur
+            IPEndPoint ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050);
             Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
@@ -40,6 +43,7 @@ namespace Client_WPF
             return server;
         }
 
+        // Method to listen for messages from the server
         private async Task Listen(Socket server)
         {
             byte[] data = new byte[1024];
@@ -66,6 +70,7 @@ namespace Client_WPF
             }
         }
 
+        // Method to asynchronously receive data from the server
         private async Task<int> ReceiveAsync(Socket socket, byte[] buffer)
         {
             return await Task<int>.Factory.FromAsync(
@@ -73,6 +78,7 @@ namespace Client_WPF
                 socket.EndReceive);
         }
 
+        // Method to handle received backup information
         private void OnBackupInfoReceived(string backupName, string BackupBar)
         {
             _dispatcher.Invoke(() =>

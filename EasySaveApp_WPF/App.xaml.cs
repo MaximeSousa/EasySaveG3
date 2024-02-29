@@ -9,6 +9,7 @@ namespace EasySaveApp_WPF
     /// </summary>
     public partial class App : Application
     {
+        // Mutex called to ensure single instance of the application.
         private Mutex _mutex;
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -31,6 +32,7 @@ namespace EasySaveApp_WPF
             }
         }
 
+        // Method when the application exits.
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
