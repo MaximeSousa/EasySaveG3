@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using EasySaveApp_WPF.ViewModel;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace EasySaveApp_WPF.Models
 {
@@ -100,26 +101,24 @@ namespace EasySaveApp_WPF.Models
             string BackupSaveFolder = Path.Combine(FileTarget, FileName);
             Directory.CreateDirectory(BackupSaveFolder);
 
-            int totalFiles = Directory.GetFiles(FileSource, "*", SearchOption.AllDirectories).Length;
-            int currentFile = 0;
+            long totalBytes = Directory.GetFiles(FileSource, "*", SearchOption.AllDirectories).Sum(file => new FileInfo(file).Length);
+            long bytesCopied = 0;
 
             foreach (var filePath in Directory.GetFiles(FileSource))
             {
-                
                 var fileName = Path.GetFileName(filePath);
                 var targetPath = Path.Combine(BackupSaveFolder, fileName);
 
                 if (Type == BackupType.Full || (Type == BackupType.Differential && File.GetLastWriteTime(filePath) > File.GetLastWriteTime(targetPath)))
                 {
-                    while (!canBeExecuted || backup.IsPaused) 
+                    while (!canBeExecuted || backup.IsPaused)
                     {
                         Thread.Sleep(1000);
                     }
                     File.Copy(filePath, targetPath, true);
-                    CopiedFiles.Add(filePath);
+                    bytesCopied += new FileInfo(filePath).Length;
 
-                    currentFile++;
-                    Progress = (int)(((double)currentFile / totalFiles) * 100);
+                    Progress = (int)(((double)bytesCopied / totalBytes) * 100);
                     OnPropertyChanged(nameof(Progress));
                 }
             }

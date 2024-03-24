@@ -227,51 +227,53 @@ namespace EasySaveApp_WPF.ViewModel
         {
             if (SelectedBackups != null)
             {
-                long totalSize = 0;
-
-                
-                foreach (var backup in SelectedBackups)
-                {
-                    // Calculer la taille totale des fichiers à copier
-                    DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
-                    totalSize += dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
-                }
                 Parallel.ForEach(SelectedBackups, backup =>
                 {
-                    Thread backupThread = new Thread(() =>
+                    try
                     {
-                        try
+                        DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
+                        long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
+                        long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
+                        int remainingFiles = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Count();
+
+                        // Calcul du nombre total de bytes déjà copiés
+                        int bytesAlreadyCopied = (int)backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
+
+                        Thread backupThread = new Thread(() =>
                         {
-                            DirectoryInfo dirInfo = new DirectoryInfo(backup.FileSource);
-                            long size = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
-                            long remainingSize = size - backup.CopiedFiles.Sum(file => new FileInfo(file).Length);
-                            int totalFilesToCopy = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Count();
-                            int filesAlreadyCopied = 0;
-                            int remainingFiles = Math.Max(totalFilesToCopy - filesAlreadyCopied, 0);
+                            try
+                            {
+                                Stopwatch stopwatch = new Stopwatch();
+                                stopwatch.Start();
+                                string stateName = stopwatch.IsRunning ? "In Progress" : "Not Started";
+                                StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, bytesAlreadyCopied, remainingSize, remainingFiles, "Finished");
 
-                            Stopwatch stopwatch = new Stopwatch();
-                            stopwatch.Start();
-                            string stateName = stopwatch.IsRunning ? "In Progress" : "Not Started";
-                            StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, filesAlreadyCopied, remainingSize, remainingFiles, stateName);
-                            backup.ExecuteCopy(backup);
-                            backup.Progress = 100;
-                            backup.Executed = true;
-                            stopwatch.Stop();
+                                // Exécuter la copie
+                                backup.ExecuteCopy(backup);
+                                backup.Progress = 100;
+                                backup.Executed = true;
+                                stopwatch.Stop();
 
-                            filesAlreadyCopied = backup.CopiedFiles.Count;
-                            var FileTransferTime = stopwatch.Elapsed.ToString();
-                            long timeElapsed = stopwatch.ElapsedMilliseconds;
-                            string encryptionTimeStr = timeElapsed.ToString();
+                                // Calcul du temps de transfert des fichiers
+                                string FileTransferTime = stopwatch.Elapsed.ToString();
+                                long timeElapsed = stopwatch.ElapsedMilliseconds;
 
-                            CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, timeElapsed, "", "Details", "OutputFormat");
-                            StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, totalFilesToCopy, 0, 0, "Finished");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Error executing backup '{backup.FileName}': {ex.Message}");
-                        }
-                    });
-                    backupThread.Start();
+                                CreateLog(backup.FileName, backup.FileSource, backup.FileTarget, size, timeElapsed, FileTransferTime, "Details", OutputFormat);
+
+                                // Mise à jour de l'état de la sauvegarde
+                                StateForBackup(backup.FileName, backup.FileSource, backup.FileTarget, size, bytesAlreadyCopied, remainingSize, remainingFiles, "Finished");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Error executing backup '{backup.FileName}': {ex.Message}");
+                            }
+                        });
+                        backupThread.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error calculating backup size: {ex.Message}");
+                    }
                 });
             }
             else
